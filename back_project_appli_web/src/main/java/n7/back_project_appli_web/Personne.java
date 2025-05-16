@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 // import java.util.Collection;
 @Entity
+@Table(name = "personne")
 public class Personne {
 
     @Id
@@ -12,9 +13,25 @@ public class Personne {
 
 	String nom;
 	String prenom;
-    String pseudoUnique;
+
+    @Column(unique = true)
+    String pseudo; // pseudo unique
+
+    @Column(unique = true)
     String email;
-    String mot_de_passe; // mot de passe crypté !!!
+
+    String motDePasse; // mot de passe crypté !!!
+
+    public Personne() {
+    }
+
+    public Personne(String nom, String prenom, String pseudo, String email, String motDePasse) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.pseudo = pseudo;
+        this.email = email;
+        this.motDePasse = motDePasse;
+    }
 
     //Collection<Evenement> historiqueEvenements;
     //Collection<Evenement> evenementsFavoris;
@@ -62,11 +79,11 @@ public class Personne {
     }
 
     public String getPseudo() {
-        return this.pseudoUnique;
+        return this.pseudo;
     }
 
     public void setPseudo(String pseudo) {
-        this.pseudoUnique = pseudo;
+        this.pseudo = pseudo;
     }
 
     public String getEmail() {
@@ -77,12 +94,12 @@ public class Personne {
         this.email = email;
     }
 
-    public String getMot_de_passe() {
-        return mot_de_passe;
+    public String getMotDePasse() {
+        return motDePasse;
     }
 
-    public void setMot_de_passe(String mot_de_passe) {
-        this.mot_de_passe = mot_de_passe;
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
     }
 
 }
