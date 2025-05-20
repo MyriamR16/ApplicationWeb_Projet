@@ -59,7 +59,7 @@ public class Event {
         return this.date;
     }
 
-    public String Lieu() {
+    public String getLieu() {
         return this.lieu;
     }
 
@@ -73,7 +73,7 @@ public class Event {
         return this.description;
     }
     
-    public LocalTime getDebutHorraire() {
+    public LocalTime getDebutHoraire() {
         return this.debutHoraire;
     }
 
@@ -116,7 +116,7 @@ public class Event {
         this.description = Description;
     }
     
-    public void setDebutHorraire(LocalTime DebutHoraire) {
+    public void setDebutHoraire(LocalTime DebutHoraire) {
         this.debutHoraire = DebutHoraire;
     }
     
