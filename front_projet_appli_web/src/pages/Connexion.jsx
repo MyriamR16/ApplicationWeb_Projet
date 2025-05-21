@@ -17,8 +17,33 @@ function Connexion() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    navigate('/accueil');
+
+    fetch('http://localhost:8080/api/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: valueEmail,
+        motDePasse: valuePassword,
+      }),
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          // Connexion réussie
+          navigate('/accueil');
+        } else {
+          // Erreur dans la connexion : on récupère le message d’erreur
+          const errorMessage = await response.text();
+          alert(errorMessage);
+        }
+      })
+      .catch((error) => {
+        console.error('Erreur réseau:', error);
+        alert('Erreur lors de la connexion, réessayez plus tard.');
+      });
   }
+
 
   return (
     <div style={styles.container}>

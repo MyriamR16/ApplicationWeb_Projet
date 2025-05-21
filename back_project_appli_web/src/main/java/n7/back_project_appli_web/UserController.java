@@ -39,19 +39,6 @@ public class UserController {
         pr.save(personne);
     }
 
-//     @PostMapping("/")
-//     public ResponseEntity<String> createPersonne(@RequestBody Personne personne) {
-//         try {
-//             System.out.println("Inscription reçue : " + personne);
-//             pr.save(personne);
-//             return ResponseEntity.ok("Inscription réussie !");
-//         } catch (Exception e) {
-//             e.printStackTrace(); // <--- IMPORTANT
-//             return ResponseEntity.status(500).body("Erreur lors de l'inscription : " + e.getMessage());
-//     }
-// }
-
-
     @PutMapping("/{id}")
     public void updatePersonne(@PathVariable Long id, @RequestBody Personne personne) {
         Personne existingPersonne = pr.findById(id).orElse(null);
@@ -71,5 +58,18 @@ public class UserController {
     public void deletePersonne(@PathVariable Long id) {
         pr.deleteById(id);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        Personne personne = pr.findByEmail(loginRequest.getEmail());
+        if (personne == null) {
+            return ResponseEntity.status(401).body("Email non trouvé");
+        }
+        if (!personne.getMotDePasse().equals(loginRequest.getMotDePasse())) {
+            return ResponseEntity.status(401).body("Mot de passe incorrect");
+        }
+        return ResponseEntity.ok("Connexion réussie !");
+    }
+
     
 }
