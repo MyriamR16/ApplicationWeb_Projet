@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,6 +38,19 @@ public class UserController {
     public void createPersonne(@RequestBody Personne personne) {
         pr.save(personne);
     }
+
+//     @PostMapping("/")
+//     public ResponseEntity<String> createPersonne(@RequestBody Personne personne) {
+//         try {
+//             System.out.println("Inscription reçue : " + personne);
+//             pr.save(personne);
+//             return ResponseEntity.ok("Inscription réussie !");
+//         } catch (Exception e) {
+//             e.printStackTrace(); // <--- IMPORTANT
+//             return ResponseEntity.status(500).body("Erreur lors de l'inscription : " + e.getMessage());
+//     }
+// }
+
 
     @PutMapping("/{id}")
     public void updatePersonne(@PathVariable Long id, @RequestBody Personne personne) {
