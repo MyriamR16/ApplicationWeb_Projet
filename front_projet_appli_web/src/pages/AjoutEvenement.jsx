@@ -23,11 +23,62 @@ function AjoutEvent() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  function handleSubmit (event) {
+  function handleSubmit(event) {
     event.preventDefault();
-    console.log('Envoi du formulaire :', formData);
-    navigate('/Accueil');
-  };
+
+    // Vérification des champs obligatoires
+    if (
+      !formData.nomEvent ||
+      !formData.nomOrganisateur ||
+      !formData.description ||
+      !formData.lieu ||
+      !formData.dateEvent ||
+      !formData.heure ||
+      !formData.nombreParticipantsMax
+    ) {
+      alert("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+
+    // Vérification que le nombre de participants est un nombre positif
+    if (isNaN(formData.nombreParticipantsMax) || Number(formData.nombreParticipantsMax) <= 0) {
+      alert("Le nombre de participants doit être un nombre positif.");
+      return;
+    }
+
+    const payload = {
+      nomEvent: formData.nomEvent,
+      nomOrganisateur: formData.nomOrganisateur,
+      description: formData.description,
+      niveau: formData.niveau,
+      typeEvent: formData.type,         
+      lieu: formData.lieu,
+      date: formData.dateEvent,       
+      debutHoraire: formData.heure,    
+      nombreParticipantsMax: Number(formData.nombreParticipantsMax),
+      op: formData.op,
+    };
+
+
+    fetch('http://localhost:8080/api/event/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erreur lors de l'ajout de l'évènement");
+        }
+        alert("Évènement ajouté avec succès !");
+        navigate('/accueil');
+      })
+      .catch((error) => {
+        console.error('Erreur :', error);
+        alert("Une erreur est survenue lors de l'ajout de l'évènement.");
+      });
+  }
 
   return (
     <div>

@@ -76,21 +76,27 @@ function Navigation() {
     },
     {
       label: "Événements",
-      link: "/evenements",
+      link: null,
       submenu: [
-        { title: null, items: ["Rechercher une course.", "Créer un événement."] },
+        { 
+          title: null, 
+          items: [
+            "Rechercher une course.",
+            <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement.</NavLink>
+          ] 
+        },
       ],
     },
     {
       label: "Communauté",
-      link: "/communaute",
+      link: null,
       submenu: [
         { title: null, items: ["Liste des amis / groupes de running.", "Forum / discussions."] },
       ],
     },
     {
       label: "Défis",
-      link: "/defis",
+      link: null,
       submenu: [
         { title: null, items: ["Défis hebdomadaires/mensuels.", "Classements."] },
       ],

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/event")
 public class EventController {
 
     @Autowired
@@ -18,8 +18,8 @@ public class EventController {
     public List<Event> listEvents() {
         Collection<Event> events = er.findAll();
         List<Event> eventsJSON = new ArrayList<>();
-        for (Event personne : events) {
-            events.add(personne);
+        for (Event event : events) {
+            events.add(event);
         }
 
         return eventsJSON;
