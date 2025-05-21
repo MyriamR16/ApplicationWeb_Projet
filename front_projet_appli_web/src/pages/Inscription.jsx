@@ -19,11 +19,7 @@ function Inscription() {
     setFormData(prev => ({ ...prev, [name]: value }));
   }
 
-  function isPasswordStrong(password) {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#^()_+=-])[A-Za-z\d@$!%*?&.#^()_+=-]{8,}$/;
-    return regex.test(password);
-  }
-
+  //Lien avec le backend
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -37,8 +33,40 @@ function Inscription() {
       return;
     }
 
-    console.log('Envoi du formulaire :', formData);
-    navigate('/connexion');
+    const payload = {
+      nom: formData.nom,
+      prenom: formData.prenom,
+      pseudo: formData.pseudo,
+      email: formData.email,
+      motDePasse: formData.motDePasse,
+    };
+
+    fetch('http://localhost:8080/api/user/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+     .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erreur lors de l'inscription");
+        }
+        // Si le backend ne renvoie pas de JSON :
+        alert('Inscription réussie !');
+        navigate('/connexion');
+      })
+      .catch((error) => {
+        console.error('Erreur :', error);
+        alert("Une erreur est survenue lors de l'inscription.");
+      });
+  }
+
+
+
+  function isPasswordStrong(password) {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#^()_+=-])[A-Za-z\d@$!%*?&.#^()_+=-]{8,}$/;
+    return regex.test(password);
   }
 
   return (
