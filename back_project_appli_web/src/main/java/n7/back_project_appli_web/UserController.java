@@ -9,12 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
     PersonneRepository pr;
+
+    private final String SECRET_KEY = "u8V2M6+Y3x7NfE+qgQs7J3N4V1R6O2lkd9XqGZyxhPg=";
 
     @GetMapping("/")
     public List<Personne> listPersonnes() {
@@ -59,8 +65,10 @@ public class UserController {
         pr.deleteById(id);
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        System.out.println("Token reçu");
         Personne personne = pr.findByEmail(loginRequest.getEmail());
         if (personne == null) {
             return ResponseEntity.status(401).body("Email non trouvé");
@@ -68,7 +76,18 @@ public class UserController {
         if (!personne.getMotDePasse().equals(loginRequest.getMotDePasse())) {
             return ResponseEntity.status(401).body("Mot de passe incorrect");
         }
-        return ResponseEntity.ok("Connexion réussie !");
+
+        // Création du token JWT
+        String token = Jwts.builder()
+                .setSubject(personne.getEmail())
+                .claim("id", personne.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 heures de validité
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+
+        // Retourner le token dans le corps de la réponse
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
     

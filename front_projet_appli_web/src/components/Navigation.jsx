@@ -103,10 +103,7 @@ function Navigation() {
     },
     {
       label: "Profil",
-      link: "/profil",
-      submenu: [
-        { title: null, items: ["Statistiques personnelles.", "Paramètres du compte.", "Historique des courses."] },
-      ],
+      link: "/profil"
     },
     {
       label: "Déconnexion",

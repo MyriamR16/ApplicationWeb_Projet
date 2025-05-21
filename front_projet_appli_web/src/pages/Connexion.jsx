@@ -17,8 +17,9 @@ function Connexion() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    console.log('handleSubmit appelé'); // <== vérifie que le clic fonctionne
 
-    fetch('http://localhost:8080/api/user/login', {
+    fetch('http://localhost:8081/api/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,10 +31,10 @@ function Connexion() {
     })
       .then(async (response) => {
         if (response.ok) {
-          // Connexion réussie
-          navigate('/accueil');
+          const data = await response.json(); // ✅ on lit le JSON contenant le token
+          localStorage.setItem('token', data.token); // ✅ on stocke le token pour s'en servir après
+          navigate('/accueil'); // redirection
         } else {
-          // Erreur dans la connexion : on récupère le message d’erreur
           const errorMessage = await response.text();
           alert(errorMessage);
         }
@@ -42,6 +43,9 @@ function Connexion() {
         console.error('Erreur réseau:', error);
         alert('Erreur lors de la connexion, réessayez plus tard.');
       });
+
+
+
   }
 
 

@@ -6,6 +6,7 @@ import AjoutEvent from './pages/AjoutEvenement'
 import Inscription from './pages/Inscription'
 import Connexion from './pages/Connexion'
 import ListeCourses from './pages/ListeEvents'
+import Profil from './pages/Profil'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/inscription" element={<Inscription />} />
         <Route path="/connexion" element={<Connexion />} />
         <Route path="/listecourses" element={<ListeCourses />} />
+        <Route path="/profil" element={<Profil />} />
       </Routes>
     </BrowserRouter>
   )
