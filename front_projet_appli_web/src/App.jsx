@@ -5,6 +5,7 @@ import Accueil from './pages/Accueil'
 import AjoutEvent from './pages/AjoutEvenement'
 import Inscription from './pages/Inscription'
 import Connexion from './pages/Connexion'
+import ListeCourses from './pages/ListeEvents'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/ajoutevent" element={<AjoutEvent />} />
         <Route path="/inscription" element={<Inscription />} />
         <Route path="/connexion" element={<Connexion />} />
+        <Route path="/listecourses" element={<ListeCourses />} />
       </Routes>
     </BrowserRouter>
   )

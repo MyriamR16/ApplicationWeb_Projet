@@ -16,13 +16,15 @@ public class EventController {
 
     @GetMapping("/")
     public List<Event> listEvents() {
-        Collection<Event> events = er.findAll();
-        List<Event> eventsJSON = new ArrayList<>();
-        for (Event event : events) {
-            events.add(event);
-        }
+        // Collection<Event> events = er.findAll();
+        // List<Event> eventsJSON = new ArrayList<>();
+        // for (Event event : events) {
+        //     eventsJSON.add(event);
+        // }
 
-        return eventsJSON;
+        // return eventsJSON;
+
+        return (List<Event>) er.findAll();
     }
 
     @GetMapping("/{id}")

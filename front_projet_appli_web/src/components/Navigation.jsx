@@ -81,7 +81,7 @@ function Navigation() {
         { 
           title: null, 
           items: [
-            "Rechercher une course.",
+            <NavLink to="/listecourses" style={styles.dropdownItem}>Rechercher une course.</NavLink>,
             <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement.</NavLink>
           ] 
         },
