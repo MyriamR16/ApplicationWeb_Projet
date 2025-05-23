@@ -1,34 +1,61 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import Navigation from '../components/Navigation';
 import fondImage from '../assets/fond_page.jpg';
 
 function Profil() {
   const { id } = useParams();
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const [userFromToken, setUserFromToken] = useState(null);
+  const [userFromApi, setUserFromApi] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
+    if (!token) {
+      navigate('/connexion');
+      return;
+    }
+
     setLoading(true);
     setError(null);
-    fetch(`http://localhost:8081/api/user/${id}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erreur HTTP ${response.status}`);
+
+    try {
+      const decodedToken = jwtDecode(token);
+      setUserFromToken(decodedToken);
+      const userIdToFetch = id || decodedToken.id;
+      fetch(`http://localhost:8082/api/user/${userIdToFetch}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-        return response.json();
       })
-      .then((data) => {
-        setUser(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Erreur chargement utilisateur :', error);
-        setError('Impossible de charger le profil utilisateur.');
-        setLoading(false);
-      });
-  }, [id]);
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Erreur HTTP ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setUserFromApi(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Erreur chargement utilisateur :', error);
+          setError('Impossible de charger le profil utilisateur.');
+          setLoading(false);
+        });
+    } catch (e) {
+      console.error('Erreur de décodage du token:', e);
+      setError('Token invalide');
+      setLoading(false);
+      navigate('/connexion');
+    }
+  }, [id, token, navigate]);
+
+  // Détermine l'utilisateur à afficher (API prioritaire, sinon token)
+  const user = userFromApi || userFromToken;
 
   return (
     <div style={styles.page}>
@@ -36,7 +63,7 @@ function Profil() {
 
       <div style={styles.content}>
         <Navigation />
-        <h1 style={styles.title}>Profil</h1>
+        <h1 style={styles.title}>Profil {user?.pseudo ? `- ${user.pseudo}` : ''}</h1>
 
         {loading && <p>Chargement du profil...</p>}
 
@@ -45,7 +72,6 @@ function Profil() {
         {!loading && !error && user ? (
           <div style={styles.profileContainer}>
             <div style={styles.info}>
-              <p><strong>ID :</strong> {user.id}</p>
               <p><strong>Nom :</strong> {user.nom}</p>
               <p><strong>Prénom :</strong> {user.prenom}</p>
               <p><strong>Pseudo :</strong> {user.pseudo}</p>
@@ -55,7 +81,7 @@ function Profil() {
         ) : null}
 
         {!loading && !error && !user && (
-          <p>Aucun utilisateur trouvé pour cet ID.</p>
+          <p>Aucun utilisateur trouvé.</p>
         )}
       </div>
     </div>
@@ -108,5 +134,15 @@ const styles = {
   info: {
     fontSize: '16px',
     lineHeight: '1.8',
+    width: '100%',
+  },
+  editButton: {
+    marginTop: '20px',
+    padding: '10px 20px',
+    backgroundColor: '#5da7db',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
   },
 };

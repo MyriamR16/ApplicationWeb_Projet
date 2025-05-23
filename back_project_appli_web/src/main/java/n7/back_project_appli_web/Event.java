@@ -15,8 +15,8 @@ public class Event {
 
     private String nomEvent;
 
-    //@ManyToMany
-    private String nomOrganisateur;
+    @ManyToOne
+    private Personne organisateur;
 
     private LocalDate date;
 
@@ -50,8 +50,8 @@ public class Event {
         return this.nomEvent;
     }
 
-    public String getOrganisateur() {
-        return this.nomOrganisateur;
+    public Personne getOrganisateur() {
+        return this.organisateur;
     }
 
 
@@ -94,8 +94,8 @@ public class Event {
         this.nomEvent = NomEvent;
     }
 
-    public void setOrganisateur(String NomOrganisateur) {
-        this.nomOrganisateur = NomOrganisateur;
+    public void setOrganisateur(Personne NouveauOrganisateur) {
+        this.organisateur = NouveauOrganisateur;
     }
 
 

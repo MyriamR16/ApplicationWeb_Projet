@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import image_runners from '../assets/connexion_runners.jpg';
 
 function Connexion() {
@@ -19,7 +20,7 @@ function Connexion() {
     event.preventDefault();
     console.log('handleSubmit appelé'); // <== vérifie que le clic fonctionne
 
-    fetch('http://localhost:8081/api/user/login', {
+    fetch('http://localhost:8082/api/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,21 +32,20 @@ function Connexion() {
     })
       .then(async (response) => {
         if (response.ok) {
-          const data = await response.json(); // ✅ on lit le JSON contenant le token
-          localStorage.setItem('token', data.token); // ✅ on stocke le token pour s'en servir après
-          navigate('/accueil'); // redirection
+          const data = await response.json();
+          localStorage.setItem('token', data.token);
+          
+          // Stocke aussi les infos de base de l'utilisateur
+          const decoded = jwtDecode(data.token);
+          localStorage.setItem('userId', decoded.id);
+          localStorage.setItem('userPseudo', decoded.pseudo);
+          
+          navigate('/accueil');
         } else {
           const errorMessage = await response.text();
           alert(errorMessage);
         }
       })
-      .catch((error) => {
-        console.error('Erreur réseau:', error);
-        alert('Erreur lors de la connexion, réessayez plus tard.');
-      });
-
-
-
   }
 
 

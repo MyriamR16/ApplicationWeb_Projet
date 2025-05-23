@@ -1,16 +1,42 @@
 import React, { useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import Navigation from '../components/Navigation';
-import fondImage from '../assets/fond_page.jpg'; // Remplace par le bon nom de fichier
+import fondImage from '../assets/fond_page.jpg'; 
 
 function Accueil() {
   const [weather, setWeather] = useState(null);
+  const [userFromToken, setUserFromToken] = useState(null);
+  const [userFromApi, setUserFromApi] = useState(null);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserFromToken(decoded);
+        
+        // Récupérer les infos complètes de l'utilisateur
+        fetch(`http://localhost:8082/api/user/${decoded.id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+          .then(response => response.json())
+          .then(data => setUserFromApi(data))
+          .catch(error => console.error('Erreur:', error));
+      } catch (e) {
+        console.error('Erreur de décodage du token:', e);
+      }
+    }
+
     fetch('https://api.open-meteo.com/v1/forecast?latitude=43.6&longitude=1.44&current_weather=true')
       .then((response) => response.json())
       .then((data) => setWeather(data.current_weather))
       .catch((error) => console.error('Erreur météo:', error));
   }, []);
+
+  // Détermine le pseudo à afficher
+  const pseudo = userFromApi?.pseudo || userFromToken?.pseudo || userFromToken?.email;
 
   return (
     <div style={styles.page}>
@@ -19,7 +45,10 @@ function Accueil() {
       <div style={styles.content}>
         <Navigation />
         <h1 style={styles.title}>Run7 - Accueil</h1>
-        <p style={styles.subtitle}>Bienvenue sur la page d'accueil de Run7 !</p>
+        
+        {pseudo && (
+          <p style={styles.subtitle}>Bienvenue {pseudo} !</p>
+        )}
 
         {weather && (
           <div style={styles.weather}>
@@ -28,35 +57,34 @@ function Accueil() {
             <p>💨 Vent : <strong>{weather.windspeed} km/h</strong></p>
           </div>
         )}
+
       </div>
     </div>
-
-          // Tableau de bord personnel :
-          //   "Statistiques de course (km parcourus ce mois-ci, objectifs atteints, etc.)",
-          //   "Progression sous forme de graphique (ex : courbe de performance).",
-          //   "Dernières activités enregistrées (date, distance, temps).",
-
-          // Événements à venir:
-          //   "Liste des courses/événements sportifs auxquels l'utilisateur est inscrit.",
-          //   "Suggestions d'événements populaires près de chez lui.",
-        
-      
-          // Défis & Récompenses:
-          //   'Badges à débloquer (ex : "5 km en moins de 25 min").',
-          //   "Classement amical (comparaison avec les amis).",
-          //   "Récompenses (réductions chez des partenaires sportifs).",
-        
-          // Motivation
-          //   "Citation inspirante aléatoire.",
-          //   "Météo locale (pour encourager à courir aujourd’hui).",
-
-          //   "Musique recommandée (playlist Spotify ou autre).",
-
-
-
-
   );
 }
+
+// Tableau de bord personnel :
+//   "Statistiques de course (km parcourus ce mois-ci, objectifs atteints, etc.)",
+//   "Progression sous forme de graphique (ex : courbe de performance).",
+//   "Dernières activités enregistrées (date, distance, temps).",
+
+// Événements à venir:
+//   "Liste des courses/événements sportifs auxquels l'utilisateur est inscrit.",
+//   "Suggestions d'événements populaires près de chez lui.",
+
+
+// Défis & Récompenses:
+//   'Badges à débloquer (ex : "5 km en moins de 25 min").',
+//   "Classement amical (comparaison avec les amis).",
+//   "Récompenses (réductions chez des partenaires sportifs).",
+
+// Motivation
+//   "Citation inspirante aléatoire.",
+//   "Météo locale (pour encourager à courir aujourd’hui).",
+
+//   "Musique recommandée (playlist Spotify ou autre).",
+
+
 
 export default Accueil;
 

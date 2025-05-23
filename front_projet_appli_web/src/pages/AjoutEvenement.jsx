@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import Navigation from '../components/Navigation';
 import { useNavigate } from 'react-router-dom';
 
 function AjoutEvent() {
   const navigate = useNavigate();
-
+  const [userFromToken, setUserFromToken] = useState(null);
+  const [userFromApi, setUserFromApi] = useState(null);
   const [formData, setFormData] = useState({
     nomEvent: '',
-    nomOrganisateur: '',
     description: '',
     niveau: 'DEBUTANT',
     type: 'COURSE_3KM',
@@ -18,64 +19,93 @@ function AjoutEvent() {
     op: 'ajoutEvent',
   });
 
-  function handleChange(event) {
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserFromToken(decoded);
+        fetch(`http://localhost:8082/api/user/${decoded.id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+          .then(response => response.json())
+          .then(data => setUserFromApi(data))
+          .catch(error => console.error('Erreur:', error));
+      } catch (e) {
+        console.error('Erreur de décodage du token:', e);
+      }
+    }
+  }, []);
+
+  function handleChange (event) {
     const { name, value } = event.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (
-      !formData.nomEvent ||
-      !formData.nomOrganisateur ||
-      !formData.description ||
-      !formData.lieu ||
-      !formData.dateEvent ||
-      !formData.heure ||
-      !formData.nombreParticipantsMax
-    ) {
-      alert("Veuillez remplir tous les champs obligatoires.");
-      return;
-    }
-
-    if (isNaN(formData.nombreParticipantsMax) || Number(formData.nombreParticipantsMax) <= 0) {
-      alert("Le nombre de participants doit être un nombre positif.");
-      return;
-    }
-
-    const payload = {
-      nomEvent: formData.nomEvent,
-      nomOrganisateur: formData.nomOrganisateur,
-      description: formData.description,
-      niveau: formData.niveau,
-      typeEvent: formData.type,
-      lieu: formData.lieu,
-      date: formData.dateEvent,
-      debutHoraire: formData.heure,
-      nombreParticipantsMax: Number(formData.nombreParticipantsMax),
-      op: formData.op,
-    };
-
-    fetch('http://localhost:8081/api/event/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'ajout de l'évènement");
-        }
-        alert("Évènement ajouté avec succès !");
-        navigate('/accueil');
-      })
-      .catch((error) => {
-        console.error('Erreur :', error);
-        alert("Une erreur est survenue lors de l'ajout de l'évènement.");
-      });
+  // Vérification des champs obligatoires
+  if (
+    !formData.nomEvent ||
+    !formData.description ||
+    !formData.lieu ||
+    !formData.dateEvent ||
+    !formData.heure ||
+    !formData.nombreParticipantsMax
+  ) {
+    alert("Veuillez remplir tous les champs obligatoires.");
+    return;
   }
+
+  // Vérification que le nombre de participants est un nombre positif
+  if (isNaN(formData.nombreParticipantsMax) || Number(formData.nombreParticipantsMax) <= 0) {
+    alert("Le nombre de participants doit être un nombre positif.");
+    return;
+  }
+
+  const payload = {
+    nomEvent: formData.nomEvent,
+    description: formData.description,
+    niveau: formData.niveau,
+    typeEvent: formData.type,
+    lieu: formData.lieu,
+    date: formData.dateEvent,
+    debutHoraire: formData.heure,
+    nombreParticipantsMax: Number(formData.nombreParticipantsMax),
+  };
+
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    alert("Vous devez être connecté pour créer un événement.");
+    return;
+  }
+
+  fetch('http://localhost:8082/api/event/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,  // ajoute le token dans l'entête pour l'authentification
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'ajout de l'évènement");
+      }
+      alert("Évènement ajouté avec succès !");
+      navigate('/accueil');
+    })
+    .catch((error) => {
+      console.error('Erreur :', error);
+      alert("Une erreur est survenue lors de l'ajout de l'évènement.");
+    });
+  }
+
 
   return (
     <div style={styles.container}>
@@ -92,18 +122,6 @@ function AjoutEvent() {
               onChange={handleChange} 
               style={styles.input}
               placeholder="Nom de l'événement"
-            />
-          </div>
-
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nom de l'organisateur :</label>
-            <input 
-              type="text" 
-              name="nomOrganisateur" 
-              value={formData.nomOrganisateur} 
-              onChange={handleChange} 
-              style={styles.input}
-              placeholder="Organisateur"
             />
           </div>
 

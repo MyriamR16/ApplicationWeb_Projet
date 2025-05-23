@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 
 function Navigation() {
   const [openMenu, setOpenMenu] = useState(null);
+  const [userFromToken, setUserFromToken] = useState(null);
+  const [userFromApi, setUserFromApi] = useState(null);
 
   const styles = {
     nav: {
@@ -72,7 +74,6 @@ function Navigation() {
     {
       label: "Accueil",
       link: "/accueil",
-
     },
     {
       label: "Événements",
@@ -112,7 +113,13 @@ function Navigation() {
     },
     {
       label: "Déconnexion",
-      link: "/connexion"
+      link: "/",
+      onClick: () => {
+        setUserFromToken(null);
+        setUserFromApi(null);
+        localStorage.removeItem('token');
+        window.location.href = "/";
+      }
     },
   ];
 

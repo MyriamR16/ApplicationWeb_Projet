@@ -43,7 +43,7 @@ function Inscription() {
       motDePasse: formData.motDePasse,
     };
 
-    fetch('http://localhost:8081/api/user/', {
+    fetch('http://localhost:8082/api/user/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

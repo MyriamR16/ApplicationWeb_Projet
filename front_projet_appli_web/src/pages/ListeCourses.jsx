@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 
@@ -7,9 +8,31 @@ function ListeCourses() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userFromToken, setUserFromToken] = useState(null);
+    const [userFromApi, setUserFromApi] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8081/api/event/')
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setUserFromToken(decoded);
+                
+                // Récupérer les infos complètes de l'utilisateur
+                fetch(`http://localhost:8082/api/user/${decoded.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => setUserFromApi(data))
+                    .catch(error => console.error('Erreur:', error));
+            } catch (e) {
+                console.error('Erreur de décodage du token:', e);
+            }
+        }
+        
+        fetch('http://localhost:8082/api/event/')
         .then(res => {
             if (!res.ok) throw new Error('Erreur lors du chargement');
             return res.json();
