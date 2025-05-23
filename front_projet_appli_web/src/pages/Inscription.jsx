@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import image_runners from '../assets/inscription_runners.jpg';
 
@@ -50,20 +50,25 @@ function Inscription() {
       },
       body: JSON.stringify(payload),
     })
-     .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'inscription");
-        }
-        // Si le backend ne renvoie pas de JSON :
-        alert('Inscription réussie !');
-        navigate('/connexion');
-      })
-      .catch((error) => {
-        console.error('Erreur :', error);
-        alert("Une erreur est survenue lors de l'inscription.");
-      });
-  }
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+      alert('Inscription réussie !');
+      navigate('/connexion');
+    })
+    .catch((error) => {
+      console.error('Erreur :', error);
 
+      if (error.message.includes('Pseudo déjà utilisé')) {
+        alert('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
+      } else {
+        alert(error.message); // Pour d'autres types d'erreurs
+      }
+    });
+
+  }
 
 
   function isPasswordStrong(password) {

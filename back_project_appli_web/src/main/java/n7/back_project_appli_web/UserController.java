@@ -57,6 +57,17 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<?> createPersonne(@RequestBody Personne personne) { 
+        
+        // Vérifier si l'email existe déjà
+        if (pr.findByEmail(personne.getEmail()) != null) {
+            return ResponseEntity.status(409).body("Cet email est déjà utilisé");
+        }
+        
+        // Vérifier si le pseudo existe déjà
+        if (pr.findByPseudo(personne.getPseudo()) != null) {
+            return ResponseEntity.status(409).body("Ce pseudo est déjà utilisé");
+        }
+
         // Hacher le mot de passe avant sauvegarde
         personne.setMotDePasse(passwordEncoder.encode(personne.getMotDePasse()));
         Personne savedPersonne = pr.save(personne);
