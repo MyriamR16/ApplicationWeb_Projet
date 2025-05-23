@@ -20,6 +20,8 @@ public class Personne {
     @Column(unique = true)
     String email;
 
+    private String niveau; // "DEBUTANT", "INTERMEDIAIRE", etc.
+
     @Transient
     private String motDePasseNonHache; // Ne sera pas persisté en base
 
@@ -64,6 +66,14 @@ public class Personne {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNiveau() {
+        return niveau;
+    }
+
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
     }
 
     public String getNom() {

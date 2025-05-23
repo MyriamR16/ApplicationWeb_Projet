@@ -91,7 +91,12 @@ function Navigation() {
       label: "Communauté",
       link: null,
       submenu: [
-        { title: null, items: ["Liste des amis / groupes de running.", "Forum / discussions."] },
+        { title: null, 
+          items: [
+            "Liste des amis / groupes de running.",
+            "Forum / discussions.", 
+            <NavLink to="/listeinscrits" style={styles.dropdownItem}>Liste des inscrits</NavLink>,
+            ] },
       ],
     },
     {

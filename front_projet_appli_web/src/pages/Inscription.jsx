@@ -10,6 +10,7 @@ function Inscription() {
     nom: '',
     pseudo: '',
     email: '',
+    niveau : 'DEBUTANT',
     motDePasse: '',
     motDePasseConfirm: '',
   });
@@ -38,6 +39,7 @@ function Inscription() {
       prenom: formData.prenom,
       pseudo: formData.pseudo,
       email: formData.email,
+      niveau: formData.niveau,
       motDePasse: formData.motDePasse,
     };
 
@@ -86,6 +88,15 @@ function Inscription() {
             </div>
             <div style={styles.formGroup}>
               <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required style={styles.input} />
+            </div>
+            <div>
+              <label htmlFor="niveau">Niveau :</label>
+              <select name="niveau" value={formData.niveau} onChange={handleChange}>
+                <option value="DEBUTANT">DEBUTANT</option>
+                <option value="INTERMEDIAIRE">INTERMEDIAIRE</option>
+                <option value="AVANCE">AVANCE</option>
+                <option value="EXPERT">EXPERT</option>
+              </select>
             </div>
             <div style={styles.formGroup}>
               <input type="password" name="motDePasse" placeholder="Mot de passe" value={formData.motDePasse} onChange={handleChange} required style={styles.input} />

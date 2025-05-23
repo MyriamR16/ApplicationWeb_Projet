@@ -4,6 +4,7 @@ package n7.back_project_appli_web;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,16 @@ public class UserController {
         return personnesJSON;
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<List<PersonneDTO>> listPersonnesSimplified() {
+        List<Personne> personnes = pr.findAll();
+        List<PersonneDTO> dtos = personnes.stream()
+            .map(p -> new PersonneDTO(p.getPseudo(), p.getNiveau()))
+            .collect(Collectors.toList());
+        
+        return ResponseEntity.ok(dtos);
+    }
+
     @GetMapping("/{id}")
     public Personne getPersonne(@PathVariable Long id) {
         Personne personne = pr.findById(id).orElse(null);
@@ -60,6 +71,7 @@ public class UserController {
         if (existingPersonne != null) {
             existingPersonne.setNom(personne.getNom());
             existingPersonne.setPrenom(personne.getPrenom());
+            existingPersonne.setNiveau(personne.getNiveau());
             existingPersonne.setPseudo(personne.getPseudo());
             existingPersonne.setEmail(personne.getEmail());
             existingPersonne.setMotDePasse(personne.getMotDePasse());
