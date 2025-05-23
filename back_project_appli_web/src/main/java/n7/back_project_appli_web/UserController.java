@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import io.jsonwebtoken.Jwts;
@@ -19,6 +20,10 @@ public class UserController {
 
     @Autowired
     PersonneRepository pr;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     private final String SECRET_KEY = "u8V2M6+Y3x7NfE+qgQs7J3N4V1R6O2lkd9XqGZyxhPg=";
 
@@ -36,13 +41,15 @@ public class UserController {
     @GetMapping("/{id}")
     public Personne getPersonne(@PathVariable Long id) {
         Personne personne = pr.findById(id).orElse(null);
-
         return personne;
     }
 
     @PostMapping("/")
-    public void createPersonne(@RequestBody Personne personne) {
-        pr.save(personne);
+    public ResponseEntity<?> createPersonne(@RequestBody Personne personne) { 
+        // Hacher le mot de passe avant sauvegarde
+        personne.setMotDePasse(passwordEncoder.encode(personne.getMotDePasse()));
+        Personne savedPersonne = pr.save(personne);
+        return ResponseEntity.ok(savedPersonne);
     }
 
     @PutMapping("/{id}")
@@ -73,7 +80,9 @@ public class UserController {
         if (personne == null) {
             return ResponseEntity.status(401).body("Email non trouvé");
         }
-        if (!personne.getMotDePasse().equals(loginRequest.getMotDePasse())) {
+        
+        // Vérifier le mot de passe haché
+        if (!passwordEncoder.matches(loginRequest.getMotDePasse(), personne.getMotDePasse())) {
             return ResponseEntity.status(401).body("Mot de passe incorrect");
         }
 

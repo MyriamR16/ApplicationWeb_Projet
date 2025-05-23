@@ -20,10 +20,14 @@ public class Personne {
     @Column(unique = true)
     String email;
 
-    String motDePasse; // mot de passe crypté !!!
+    @Transient
+    private String motDePasseNonHache; // Ne sera pas persisté en base
 
+    @Column(name = "mot_de_passe")
+    private String motDePasse; // Stockera le mot de passe haché
+        
     public Personne() {
-    }
+        }
 
     public Personne(String nom, String prenom, String pseudo, String email, String motDePasse) {
         this.nom = nom;

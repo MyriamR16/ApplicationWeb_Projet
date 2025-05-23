@@ -9,7 +9,7 @@ function ListeCourses() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/event/')
+        fetch('http://localhost:8081/api/event/')
         .then(res => {
             if (!res.ok) throw new Error('Erreur lors du chargement');
             return res.json();

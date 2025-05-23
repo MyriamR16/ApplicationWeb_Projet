@@ -12,7 +12,7 @@ function Profil() {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    fetch(`http://localhost:8080/api/user/${id}`)
+    fetch(`http://localhost:8081/api/user/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Erreur HTTP ${response.status}`);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import image_runners from '../assets/inscription_runners.jpg';
 
@@ -41,7 +41,7 @@ function Inscription() {
       motDePasse: formData.motDePasse,
     };
 
-    fetch('http://localhost:8080/api/user/', {
+    fetch('http://localhost:8081/api/user/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
