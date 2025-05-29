@@ -1,16 +1,12 @@
 package n7.back_project_appli_web.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+import lombok.Data;
 
 // import java.util.Collection;
 @Entity
 @Table(name = "personne")
+@Data
 public class Personne {
 
     @Id
@@ -33,7 +29,9 @@ public class Personne {
 
     @Column(name = "mot_de_passe")
     private String motDePasse; // Stockera le mot de passe haché
-        
+    
+    private String role;
+
     public Personne() {
         }
 
@@ -73,7 +71,15 @@ public class Personne {
     public void setId(Long id) {
         this.id = id;
     }
-    /* Get et set Niveau */
+
+    public String getRole() {
+        return this.role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getNiveau() {
         return niveau;
     }
