@@ -10,22 +10,46 @@ function ListeInscrits() {
     const [error, setError] = useState(null);
     const [pseudoSearch, setPseudoSearch] = useState('');
     const [levelFilter, setLevelFilter] = useState('TOUS');
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8081/api/user/list')
-            .then(res => {
-                if (!res.ok) throw new Error('Erreur lors du chargement');
-                return res.json();
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+        console.log('TOKEN:', token, 'USERID:', userId);
+        if (userId && token) {
+            fetch(`http://localhost:8081/api/user/${userId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
             })
-            .then(data => {
-                setUsers(data);
-                setFilteredUsers(data);
-                setLoading(false);
+                .then(res => {
+                    if (!res.ok) throw new Error('Utilisateur non trouvé');
+                    return res.json();
+                })
+                .then(data => setCurrentUser(data))
+                .catch(err => console.error('Erreur chargement utilisateur:', err));
+        }
+        if (token) {
+            fetch('http://localhost:8081/api/user/list', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             })
-            .catch(err => {
-                setError(err.message);
-                setLoading(false);
-            });
+                .then(res => {
+                    if (!res.ok) throw new Error('Erreur lors du chargement');
+                    return res.json();
+                })
+                .then(data => {
+                    setUsers(data);
+                    setFilteredUsers(data);
+                    setLoading(false);
+                })
+                .catch(err => {
+                    setError(err.message);
+                    setLoading(false);
+                });
+        }
     }, []);
 
     useEffect(() => {
@@ -133,6 +157,11 @@ function ListeInscrits() {
             </style>
 
             <Navigation />
+            {currentUser && (
+                <div style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+                    Bonjour {currentUser.pseudo} !
+                </div>
+            )}
             <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Liste des inscrits</h2>
 
             <div className="search-filter-container">

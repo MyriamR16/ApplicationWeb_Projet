@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import { useNavigate } from 'react-router-dom';
 
 function AjoutEvent() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
   const [formData, setFormData] = useState({
     nomEvent: '',
@@ -17,6 +18,25 @@ function AjoutEvent() {
     nombreParticipantsMax: '',
     op: 'ajoutEvent',
   });
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    if (userId && token) {
+      fetch(`http://localhost:8081/api/user/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Utilisateur non trouvé');
+          return res.json();
+        })
+        .then(data => setUser(data))
+        .catch(err => console.error('Erreur chargement utilisateur:', err));
+    }
+  }, []);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -82,6 +102,11 @@ function AjoutEvent() {
       <Navigation />
       <div style={styles.formContainer}>
         <h1 style={styles.title}>Ajouter un nouvel événement</h1>
+        {user && (
+          <div style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+            Bonjour {user.pseudo} !
+          </div>
+        )}
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Nom de l'évènement :</label>
@@ -119,7 +144,7 @@ function AjoutEvent() {
             />
           </div>
 
-          <div style={styles.formRow}>
+          <div className="form-row" style={styles.formRow}>
             <div style={styles.formGroup}>
               <label style={styles.label}>Niveau :</label>
               <select
@@ -168,7 +193,7 @@ function AjoutEvent() {
             />
           </div>
 
-          <div style={styles.formRow}>
+          <div className="form-row" style={styles.formRow}>
             <div style={styles.formGroup}>
               <label style={styles.label}>Date de la course :</label>
               <input

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom"; 
 
 function Navigation() {
   const [openMenu, setOpenMenu] = useState(null);
+  const navigate = useNavigate(); 
 
   const styles = {
     nav: {
@@ -78,12 +79,12 @@ function Navigation() {
       label: "Événements",
       link: null,
       submenu: [
-        { 
-          title: null, 
+        {
+          title: null,
           items: [
             <NavLink to="/listecourses" style={styles.dropdownItem}>Rechercher une course.</NavLink>,
             <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement.</NavLink>
-          ] 
+          ]
         },
       ],
     },
@@ -91,12 +92,14 @@ function Navigation() {
       label: "Communauté",
       link: null,
       submenu: [
-        { title: null, 
+        {
+          title: null,
           items: [
             "Liste des amis / groupes de running.",
-            "Forum / discussions.", 
+            "Forum / discussions.",
             <NavLink to="/listeinscrits" style={styles.dropdownItem}>Liste des inscrits</NavLink>,
-            ] },
+          ]
+        },
       ],
     },
     {
@@ -116,6 +119,12 @@ function Navigation() {
     },
   ];
 
+  function handleLogout(e) {
+    e.preventDefault();
+    localStorage.clear();
+    navigate("/connexion");
+  }
+
   function toggleMenu(index) {
     setOpenMenu(openMenu === index ? null : index);
   }
@@ -131,17 +140,28 @@ function Navigation() {
             onMouseLeave={() => setOpenMenu(null)}
             onClick={() => toggleMenu(i)} // toggle au clic aussi
           >
-            <NavLink
-              to={menu.link}
-              style={({ isActive }) => ({
-                ...styles.link,
-                fontWeight: isActive ? '900' : '700',
-                textDecoration: isActive ? 'underline' : 'none',
-              })}
-              end={menu.link === "/"}
-            >
-              {menu.label}
-            </NavLink>
+            {menu.label === "Déconnexion" ? (
+              <a
+                href="/connexion"
+                style={styles.link}
+                onClick={handleLogout}
+              >
+                {menu.label}
+              </a>
+            ) : (
+              <NavLink
+                to={menu.link}
+                style={({ isActive }) => ({
+                  ...styles.link,
+                  fontWeight: isActive ? '900' : '700',
+                  textDecoration: isActive ? 'underline' : 'none',
+                })}
+                end={menu.link === "/"}
+              >
+                {menu.label}
+              </NavLink>
+            )}
+
 
             {openMenu === i && menu.submenu && (
               <div style={styles.dropdown}>

@@ -25,9 +25,15 @@ function Accueil() {
           'Authorization': `Bearer ${token}`
         }
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error('Erreur HTTP ' + res.status);
+          return res.json();
+        })
         .then(data => setUser(data))
-        .catch(err => console.error('Erreur chargement utilisateur:', err));
+        .catch(err => {
+          setUser(null);
+          console.error('Erreur chargement utilisateur:', err);
+        });
     }
   }, []);
 
