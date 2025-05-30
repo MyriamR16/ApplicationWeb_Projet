@@ -60,6 +60,7 @@ public class PersonneController {
             existingPersonne.setPseudo(personne.getPseudo());
             existingPersonne.setEmail(personne.getEmail());
             existingPersonne.setMotDePasse(personne.getMotDePasse());
+            existingPersonne.setRole(personne.getRole());
             pr.save(existingPersonne);
         }
     }

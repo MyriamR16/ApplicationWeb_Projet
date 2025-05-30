@@ -51,6 +51,26 @@ function ListeCourses() {
     if (loading) return <p>Chargement en cours...</p>;
     if (error) return <p>Erreur : {error}</p>;
 
+    function handleParticipate(courseId) {
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+        fetch(`http://localhost:8081/api/event/${courseId}/participer`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId })
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Erreur lors de l'inscription");
+                alert("Inscription réussie !");
+            })
+            .catch(err => {
+                alert("Erreur : " + err.message);
+            });
+    }
+
     return (
         <div style={{ padding: '20px' }}>
             <Navigation />
@@ -75,6 +95,7 @@ function ListeCourses() {
                             <th style={{ textAlign: 'left', padding: '8px' }}>Niveau</th>
                             <th style={{ textAlign: 'left', padding: '8px' }}>Type</th>
                             <th style={{ textAlign: 'left', padding: '8px' }}>Participants max</th>
+                            <th style={{ textAlign: 'left', padding: '8px' }}>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +110,21 @@ function ListeCourses() {
                                 <td style={{ padding: '8px' }}>{course.niveau}</td>
                                 <td style={{ padding: '8px' }}>{course.typeEvent || course.type}</td>
                                 <td style={{ padding: '8px' }}>{course.nombreParticipantsMax}</td>
+                                <td style={{ padding: '8px' }}>
+                                    <button
+                                        onClick={() => handleParticipate(course.id)}
+                                        style={{
+                                            backgroundColor: '#3498db',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '5px',
+                                            padding: '6px 12px',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        Participer
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

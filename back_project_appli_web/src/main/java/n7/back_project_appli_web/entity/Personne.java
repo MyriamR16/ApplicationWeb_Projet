@@ -1,8 +1,15 @@
 package n7.back_project_appli_web.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "personne")
 @Data
@@ -31,8 +38,8 @@ public class Personne {
     
     private String role;
 
-    public Personne() {
-        }
+    @ManyToMany(mappedBy = "participants")
+    private Collection<Event> events = new ArrayList<>();
 
     public Personne(String nom, String prenom, String pseudo, String email, String motDePasse) {
         this.nom = nom;
@@ -64,87 +71,5 @@ public class Personne {
     //suivi des objectifs (tracker, selon la difficulté de l'objectif)
     
     /* Get et set Id  */
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRole() {
-        return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getNiveau() {
-        return niveau;
-    }
-    public void setNiveau(String niveau) {
-        this.niveau = niveau;
-    }
-    /* Get et set Nom */
-    public String getNom() {
-        return nom;
-    }
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-    /* Get et set Prenom */
-    public String getPrenom() {
-        return prenom;
-    } 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-    /* Get et set Pseudo */
-    public String getPseudo() {
-        return this.pseudo;
-    }
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
-    }
-    /* Get et set Email */
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    /* Get et set MotDePasse */
-    public String getMotDePasse() {
-        return motDePasse;
-    }
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Personne personne = (Personne) o;
-        return id != null && id.equals(personne.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-    
-    @Override
-    public String toString() {
-        return "Personne{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", pseudo='" + pseudo + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-
-
+ 
 }

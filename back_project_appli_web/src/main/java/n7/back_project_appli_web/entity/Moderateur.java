@@ -6,8 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Data
 @Table(name = "moderateur")
 public class Moderateur {
 
@@ -20,31 +26,9 @@ public class Moderateur {
 
     private String motDePasse;
 
-    public Moderateur() {
-    }
-
     public Moderateur(String pseudo, String motDePasse) {
         this.pseudo = pseudo;
         this.motDePasse = motDePasse;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getPseudo() {
-        return pseudo;
-    }
-
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
-    }
-
-    public String getMotDePasse() {
-        return motDePasse;
-    }
-
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
-    }
 }
