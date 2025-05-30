@@ -4,11 +4,11 @@ import image_runners from '../assets/connexion_runners.jpg';
 
 function Connexion() {
   const navigate = useNavigate();
-  const [valueEmail, setValueEmail] = useState('');
+  const [valuePseudo, setValuePseudo] = useState('');
   const [valuePassword, setValuePassword] = useState('');
 
-  function handleEmailChange(event) {
-    setValueEmail(event.target.value);
+  function handlePseudoChange(event) {
+    setValuePseudo(event.target.value);
   }
 
   function handlePasswordChange(event) {
@@ -17,22 +17,23 @@ function Connexion() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('handleSubmit appelé'); // <== vérifie que le clic fonctionne
+    console.log('handleSubmit appelé');
 
-    fetch('http://localhost:8081/api/user/login', {
+    fetch('http://localhost:8081/api/auth/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: valueEmail,
+        pseudo: valuePseudo,
         motDePasse: valuePassword,
       }),
     })
       .then(async (response) => {
         if (response.ok) {
-          const data = await response.json(); // ✅ on lit le JSON contenant le token
-          localStorage.setItem('token', data.token); // ✅ on stocke le token pour s'en servir après
+          const data = await response.json();
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.userId);
           navigate('/accueil'); // redirection
         } else {
           const errorMessage = await response.text();
@@ -43,9 +44,6 @@ function Connexion() {
         console.error('Erreur réseau:', error);
         alert('Erreur lors de la connexion, réessayez plus tard.');
       });
-
-
-
   }
 
 
@@ -57,10 +55,10 @@ function Connexion() {
           <form onSubmit={handleSubmit}>
             <div style={styles.formGroup}>
               <input
-                type="email"
-                placeholder="Votre Email"
-                value={valueEmail}
-                onChange={handleEmailChange}
+                type="text"
+                placeholder="Votre Pseudo"
+                value={valuePseudo}
+                onChange={handlePseudoChange}
                 required
                 style={styles.input}
               />

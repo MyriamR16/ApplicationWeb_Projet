@@ -4,12 +4,31 @@ import fondImage from '../assets/fond_page.jpg'; // Remplace par le bon nom de f
 
 function Accueil() {
   const [weather, setWeather] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+
     fetch('https://api.open-meteo.com/v1/forecast?latitude=43.6&longitude=1.44&current_weather=true')
       .then((response) => response.json())
       .then((data) => setWeather(data.current_weather))
       .catch((error) => console.error('Erreur météo:', error));
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    if (token && userId) {
+      fetch(`http://localhost:8081/api/user/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => setUser(data))
+        .catch(err => console.error('Erreur chargement utilisateur:', err));
+    }
   }, []);
 
   return (
@@ -20,7 +39,15 @@ function Accueil() {
         <Navigation />
         <h1 style={styles.title}>Run7 - Accueil</h1>
         <p style={styles.subtitle}>Bienvenue sur la page d'accueil de Run7 !</p>
-
+        <div>
+          {user && (
+            <div>
+              <p>Bienvenue, {user.prenom} {user.nom} !</p>
+              <p>Pseudo : {user.pseudo}</p>
+              {/* autres infos */}
+            </div>
+          )}
+        </div>
         {weather && (
           <div style={styles.weather}>
             <p>📍 Météo à Toulouse</p>
@@ -31,26 +58,26 @@ function Accueil() {
       </div>
     </div>
 
-          // Tableau de bord personnel :
-          //   "Statistiques de course (km parcourus ce mois-ci, objectifs atteints, etc.)",
-          //   "Progression sous forme de graphique (ex : courbe de performance).",
-          //   "Dernières activités enregistrées (date, distance, temps).",
+    // Tableau de bord personnel :
+    //   "Statistiques de course (km parcourus ce mois-ci, objectifs atteints, etc.)",
+    //   "Progression sous forme de graphique (ex : courbe de performance).",
+    //   "Dernières activités enregistrées (date, distance, temps).",
 
-          // Événements à venir:
-          //   "Liste des courses/événements sportifs auxquels l'utilisateur est inscrit.",
-          //   "Suggestions d'événements populaires près de chez lui.",
-        
-      
-          // Défis & Récompenses:
-          //   'Badges à débloquer (ex : "5 km en moins de 25 min").',
-          //   "Classement amical (comparaison avec les amis).",
-          //   "Récompenses (réductions chez des partenaires sportifs).",
-        
-          // Motivation
-          //   "Citation inspirante aléatoire.",
-          //   "Météo locale (pour encourager à courir aujourd’hui).",
+    // Événements à venir:
+    //   "Liste des courses/événements sportifs auxquels l'utilisateur est inscrit.",
+    //   "Suggestions d'événements populaires près de chez lui.",
 
-          //   "Musique recommandée (playlist Spotify ou autre).",
+
+    // Défis & Récompenses:
+    //   'Badges à débloquer (ex : "5 km en moins de 25 min").',
+    //   "Classement amical (comparaison avec les amis).",
+    //   "Récompenses (réductions chez des partenaires sportifs).",
+
+    // Motivation
+    //   "Citation inspirante aléatoire.",
+    //   "Météo locale (pour encourager à courir aujourd’hui).",
+
+    //   "Musique recommandée (playlist Spotify ou autre).",
 
 
 

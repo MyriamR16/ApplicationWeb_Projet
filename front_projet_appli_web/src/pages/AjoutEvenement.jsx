@@ -85,11 +85,11 @@ function AjoutEvent() {
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Nom de l'évènement :</label>
-            <input 
-              type="text" 
-              name="nomEvent" 
-              value={formData.nomEvent} 
-              onChange={handleChange} 
+            <input
+              type="text"
+              name="nomEvent"
+              value={formData.nomEvent}
+              onChange={handleChange}
               style={styles.input}
               placeholder="Nom de l'événement"
             />
@@ -97,11 +97,11 @@ function AjoutEvent() {
 
           <div style={styles.formGroup}>
             <label style={styles.label}>Nom de l'organisateur :</label>
-            <input 
-              type="text" 
-              name="nomOrganisateur" 
-              value={formData.nomOrganisateur} 
-              onChange={handleChange} 
+            <input
+              type="text"
+              name="nomOrganisateur"
+              value={formData.nomOrganisateur}
+              onChange={handleChange}
               style={styles.input}
               placeholder="Organisateur"
             />
@@ -122,9 +122,9 @@ function AjoutEvent() {
           <div style={styles.formRow}>
             <div style={styles.formGroup}>
               <label style={styles.label}>Niveau :</label>
-              <select 
-                name="niveau" 
-                value={formData.niveau} 
+              <select
+                name="niveau"
+                value={formData.niveau}
                 onChange={handleChange}
                 style={styles.select}
               >
@@ -137,9 +137,9 @@ function AjoutEvent() {
 
             <div style={styles.formGroup}>
               <label style={styles.label}>Type :</label>
-              <select 
-                name="type" 
-                value={formData.type} 
+              <select
+                name="type"
+                value={formData.type}
                 onChange={handleChange}
                 style={styles.select}
               >
@@ -158,12 +158,12 @@ function AjoutEvent() {
 
           <div style={styles.formGroup}>
             <label style={styles.label}>Lieu de départ :</label>
-            <input 
-              type="text" 
-              name="lieu" 
-              placeholder="Adresse ou lieu précis" 
-              value={formData.lieu} 
-              onChange={handleChange} 
+            <input
+              type="text"
+              name="lieu"
+              placeholder="Adresse ou lieu précis"
+              value={formData.lieu}
+              onChange={handleChange}
               style={styles.input}
             />
           </div>
@@ -171,22 +171,22 @@ function AjoutEvent() {
           <div style={styles.formRow}>
             <div style={styles.formGroup}>
               <label style={styles.label}>Date de la course :</label>
-              <input 
-                type="date" 
-                name="dateEvent" 
-                value={formData.dateEvent} 
-                onChange={handleChange} 
+              <input
+                type="date"
+                name="dateEvent"
+                value={formData.dateEvent}
+                onChange={handleChange}
                 style={styles.input}
               />
             </div>
 
             <div style={styles.formGroup}>
               <label style={styles.label}>Heure de début :</label>
-              <input 
-                type="time" 
-                name="heure" 
-                value={formData.heure} 
-                onChange={handleChange} 
+              <input
+                type="time"
+                name="heure"
+                value={formData.heure}
+                onChange={handleChange}
                 style={styles.input}
               />
             </div>
@@ -194,11 +194,11 @@ function AjoutEvent() {
 
           <div style={styles.formGroup}>
             <label style={styles.label}>Nombre de participants maximal :</label>
-            <input 
-              type="number" 
-              name="nombreParticipantsMax" 
-              value={formData.nombreParticipantsMax} 
-              onChange={handleChange} 
+            <input
+              type="number"
+              name="nombreParticipantsMax"
+              value={formData.nombreParticipantsMax}
+              onChange={handleChange}
               style={styles.input}
               min="1"
               placeholder="50"
