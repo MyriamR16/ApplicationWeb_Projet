@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import n7.back_project_appli_web.configuration.JwtUtils;
-import n7.back_project_appli_web.PersonneRepository;
-import n7.back_project_appli_web.Personne;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,12 +29,12 @@ import n7.back_project_appli_web.Personne;
 public class AuthController {
     private final PersonneRepository personneRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils; 
-    private final AuthenticationManager authenticationManager; 
+    private final JwtUtils jwtUtils;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Personne personne){
-        if (personneRepository.findByPseudo(personne.getPseudo()) != null){
+    public ResponseEntity<?> register(@RequestBody Personne personne) {
+        if (personneRepository.findByPseudo(personne.getPseudo()) != null) {
             return ResponseEntity.badRequest().body("Ce pseudo est déjà connecté");
         }
 
@@ -45,17 +43,20 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Personne personne){
-        try{
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(personne.getPseudo(), personne.getMotDePasse()));
-            if (authentication.isAuthenticated()){
+    public ResponseEntity<?> login(@RequestBody Personne personne) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(personne.getPseudo(), personne.getMotDePasse()));
+            if (authentication.isAuthenticated()) {
+                Personne user = personneRepository.findByPseudo(personne.getPseudo());
                 Map<String, Object> authData = new HashMap<>();
                 authData.put("token", jwtUtils.generateToken(personne.getPseudo()));
                 authData.put("type", "Bearer");
+                authData.put("userId", user.getId());
                 return ResponseEntity.ok(authData);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Pseudo ou Mot de Passe invalide");
-        } catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Pseudo ou Mot de Passe invalide");
         }

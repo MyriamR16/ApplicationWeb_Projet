@@ -20,32 +20,34 @@ import n7.back_project_appli_web.service.CustomUserDetailsService;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailsService;
-    private final JwtUtils jwtUtils;
-    private final JwtFilter jwtFilter;
+        private final CustomUserDetailsService customUserDetailsService;
+        private final JwtUtils jwtUtils;
+        private final JwtFilter jwtFilter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public AuthenticationManager authentificationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
-            throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http
-                .getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
-        return authenticationManagerBuilder.build();
-    }
+        @Bean
+        public AuthenticationManager authentificationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
+                        throws Exception {
+                AuthenticationManagerBuilder authenticationManagerBuilder = http
+                                .getSharedObject(AuthenticationManagerBuilder.class);
+                authenticationManagerBuilder.userDetailsService(customUserDetailsService)
+                                .passwordEncoder(passwordEncoder);
+                return authenticationManagerBuilder.build();
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/*").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
-                        UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/*").permitAll()
+                                                .anyRequest().authenticated())
+                                .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
+                                                UsernamePasswordAuthenticationFilter.class)
+                                .cors(cors -> cors.configure(http));
+                return http.build();
+        }
 }

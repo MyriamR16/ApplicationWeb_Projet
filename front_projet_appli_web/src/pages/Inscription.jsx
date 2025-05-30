@@ -10,9 +10,10 @@ function Inscription() {
     nom: '',
     pseudo: '',
     email: '',
-    niveau : 'DEBUTANT',
+    niveau: 'DEBUTANT',
     motDePasse: '',
     motDePasseConfirm: '',
+    role: 'USER',
   });
 
   function handleChange(event) {
@@ -41,32 +42,33 @@ function Inscription() {
       email: formData.email,
       niveau: formData.niveau,
       motDePasse: formData.motDePasse,
+      role: formData.role,
     };
 
-    fetch('http://localhost:8081/api/user/', {
+    fetch('http://localhost:8081/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     })
-    .then(async (response) => {
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(errorMessage);
-      }
-      alert('Inscription réussie !');
-      navigate('/connexion');
-    })
-    .catch((error) => {
-      console.error('Erreur :', error);
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          throw new Error(errorMessage);
+        }
+        alert('Inscription réussie !');
+        navigate('/connexion');
+      })
+      .catch((error) => {
+        console.error('Erreur :', error);
 
-      if (error.message.includes('Pseudo déjà utilisé')) {
-        alert('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
-      } else {
-        alert(error.message); // Pour d'autres types d'erreurs
-      }
-    });
+        if (error.message.includes('Pseudo déjà utilisé')) {
+          alert('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
+        } else {
+          alert(error.message); // Pour d'autres types d'erreurs
+        }
+      });
 
   }
 
@@ -109,6 +111,7 @@ function Inscription() {
             <div style={styles.formGroup}>
               <input type="password" name="motDePasseConfirm" placeholder="Confirmer le mot de passe" value={formData.motDePasseConfirm} onChange={handleChange} required style={styles.input} />
             </div>
+            <input type="hidden" name="role" value={formData.role} />
             <button type="submit" style={styles.button}>S'inscrire</button>
           </form>
           <div style={styles.link}>
