@@ -3,7 +3,6 @@ package n7.back_project_appli_web.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-// import java.util.Collection;
 @Entity
 @Table(name = "personne")
 @Data

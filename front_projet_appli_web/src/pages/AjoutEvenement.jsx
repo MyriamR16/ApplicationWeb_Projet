@@ -8,7 +8,6 @@ function AjoutEvent() {
 
   const [formData, setFormData] = useState({
     nomEvent: '',
-    nomOrganisateur: '',
     description: '',
     niveau: 'DEBUTANT',
     type: 'COURSE_3KM',
@@ -48,7 +47,6 @@ function AjoutEvent() {
 
     if (
       !formData.nomEvent ||
-      !formData.nomOrganisateur ||
       !formData.description ||
       !formData.lieu ||
       !formData.dateEvent ||
@@ -66,7 +64,7 @@ function AjoutEvent() {
 
     const payload = {
       nomEvent: formData.nomEvent,
-      nomOrganisateur: formData.nomOrganisateur,
+      nomOrganisateur: user ? user.pseudo : '',
       description: formData.description,
       niveau: formData.niveau,
       typeEvent: formData.type,
@@ -81,6 +79,8 @@ function AjoutEvent() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+
       },
       body: JSON.stringify(payload),
     })
@@ -117,18 +117,6 @@ function AjoutEvent() {
               onChange={handleChange}
               style={styles.input}
               placeholder="Nom de l'événement"
-            />
-          </div>
-
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nom de l'organisateur :</label>
-            <input
-              type="text"
-              name="nomOrganisateur"
-              value={formData.nomOrganisateur}
-              onChange={handleChange}
-              style={styles.input}
-              placeholder="Organisateur"
             />
           </div>
 
@@ -268,7 +256,7 @@ const styles = {
   formRow: {
     display: 'flex',
     gap: '20px',
-    '@media (max-width: 768px)': {
+    '@media (maxWidth: 768px)': {
       flexDirection: 'column',
       gap: '20px',
     },

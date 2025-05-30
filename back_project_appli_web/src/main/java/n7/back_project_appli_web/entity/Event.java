@@ -8,8 +8,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Event {
 
@@ -42,93 +47,5 @@ public class Event {
 
     public enum Niveau {
         DEBUTANT, INTERMEDIAIRE, AVANCE, EXPERT
-    }
-
-    // Getters
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getNomEvent() {
-        return this.nomEvent;
-    }
-
-    public String getOrganisateur() {
-        return this.nomOrganisateur;
-    }
-
-
-    public LocalDate getDate() {
-        return this.date;
-    }
-
-    public String getLieu() {
-        return this.lieu;
-    }
-
-
-    public int getNombreParticipantMax() {
-        return this.nombreParticipantsMax;
-    }
-
-
-    public String getDescription() {
-        return this.description;
-    }
-    
-    public LocalTime getDebutHoraire() {
-        return this.debutHoraire;
-    }
-
-    public TypeEvent getTypeEvent() {
-        return this.typeEvent;
-    }
-
-    public Niveau getNiveau() {
-        return this.niveau;
-    }
-
-    // SETTERS
-    public void setId(Long Id) {
-        this.id = Id;
-    }
-
-    public void setNomEvent(String NomEvent) {
-        this.nomEvent = NomEvent;
-    }
-
-    public void setOrganisateur(String NomOrganisateur) {
-        this.nomOrganisateur = NomOrganisateur;
-    }
-
-
-    public void setDate(LocalDate date1) {
-        this.date = date1;
-    }
-
-    public void setLieu(String Lieu) {
-        this.lieu = Lieu;
-    }
-
-    public void setNombreParticipantMax(int NombreParticipantsMax) {
-        this.nombreParticipantsMax = NombreParticipantsMax;
-    }
-
-
-    public void setDescription(String Description) {
-        this.description = Description;
-    }
-    
-    public void setDebutHoraire(LocalTime DebutHoraire) {
-        this.debutHoraire = DebutHoraire;
-    }
-    
-    public void setTypeEvent(TypeEvent typeEvent1) {
-        this.typeEvent = typeEvent1;
-    }
-
-    public void setNiveau(Niveau niveau1) {
-        this.niveau = niveau1;
     }
 }
