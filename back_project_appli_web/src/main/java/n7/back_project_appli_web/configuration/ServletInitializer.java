@@ -1,4 +1,4 @@
-package n7.back_project_appli_web.config;
+package n7.back_project_appli_web.configuration;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

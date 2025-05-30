@@ -3,7 +3,6 @@ package n7.back_project_appli_web.configuration;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -27,17 +26,17 @@ public class JwtUtils {
     @Value("${app.expiration-time}")
     private Long expirationTime;
 
-    public String generateToken(String pseudo){
+    public String generateToken(String pseudo) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims,pseudo);
+        return createToken(claims, pseudo);
     }
 
-    private String createToken(Map<String,Object> claims, String subject){
+    private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -46,11 +45,11 @@ public class JwtUtils {
         byte[] keyBytes = secretKey.getBytes();
         return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
     }
-    
-    public Boolean validateToken(String token, UserDetails userDetails){
-        String pseudo = extractUsername(token); 
-        return (pseudo.equals(userDetails.getUsername()) && !isTokenExpired(token)); 
-      
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        String pseudo = extractUsername(token);
+        return (pseudo.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
     }
 
     private boolean isTokenExpired(String token) {
@@ -58,14 +57,14 @@ public class JwtUtils {
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token,Claims::getSubject);
+        return extractClaim(token, Claims::getSubject);
     }
 
-    private Date extractExpirationDate(String token){
-        return extractClaim(token,Claims::getExpiration);
+    private Date extractExpirationDate(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }

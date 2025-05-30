@@ -1,4 +1,4 @@
-package n7.back_project_appli_web;
+package n7.back_project_appli_web.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import n7.back_project_appli_web.configuration.JwtUtils;
+import n7.back_project_appli_web.entity.Personne;
+import n7.back_project_appli_web.repository.PersonneRepository;
 
 @RestController
 @RequestMapping("/api/auth")

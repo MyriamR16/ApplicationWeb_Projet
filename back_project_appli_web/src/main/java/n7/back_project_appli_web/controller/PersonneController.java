@@ -1,5 +1,5 @@
 
-package n7.back_project_appli_web;
+package n7.back_project_appli_web.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import n7.back_project_appli_web.dto.PersonneDTO;
+import n7.back_project_appli_web.entity.Personne;
+import n7.back_project_appli_web.repository.PersonneRepository;
 
 @RestController
 @RequestMapping("/api/user")

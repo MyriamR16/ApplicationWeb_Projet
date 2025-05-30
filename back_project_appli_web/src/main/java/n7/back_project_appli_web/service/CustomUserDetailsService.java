@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import n7.back_project_appli_web.Personne;
-import n7.back_project_appli_web.PersonneRepository;
+import n7.back_project_appli_web.entity.Personne;
+import n7.back_project_appli_web.repository.PersonneRepository;
 
 @Service
 @RequiredArgsConstructor
