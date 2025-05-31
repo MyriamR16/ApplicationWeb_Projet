@@ -11,6 +11,7 @@ import java.util.List;
 import n7.back_project_appli_web.entity.Message;
 import n7.back_project_appli_web.repository.MessageRepository;
 
+@RestController
 @RequestMapping("/api/messages")
 public class MessageController {
 

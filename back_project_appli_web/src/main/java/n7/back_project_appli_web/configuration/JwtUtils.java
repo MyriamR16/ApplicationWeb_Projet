@@ -3,6 +3,7 @@ package n7.back_project_appli_web.configuration;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -70,9 +71,9 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
+        JwtParser parser = Jwts.parserBuilder()
                 .setSigningKey(getSignKey())
-                .parseClaimsJws(token)
-                .getBody();
+                .build();
+        return parser.parseClaimsJws(token).getBody();
     }
 }
