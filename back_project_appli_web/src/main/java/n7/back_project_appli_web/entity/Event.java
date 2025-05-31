@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -50,7 +52,8 @@ public class Event {
         name = "personne_event",
         joinColumns = @JoinColumn(name = "event_id"),
         inverseJoinColumns = @JoinColumn(name = "personne_id")
-    )    private Collection<Personne> participants;
+    )    
+    private Collection<Personne> participants;
 
     public enum TypeEvent {
         COURSE_3KM, COURSE_5KM, COURSE_10KM, SEMI_MARATHON, MARATHON, RELAIS, COURSE_A_PIED, COURSE_OBSTACLE, AUTRE

@@ -29,7 +29,6 @@ public class EventController {
     @Autowired
     private PersonneRepository personneRepository;
 
-
     @GetMapping("/")
     public List<Event> listEvents() {
         return (List<Event>) er.findAll();
@@ -79,10 +78,31 @@ public class EventController {
             return ResponseEntity.badRequest().body("Event ou utilisateur introuvable");
         }
 
+        // On verifie si le nombre de participants maximal n'est pas dépassé
+        if (event.getParticipants().size() >= event.getNombreParticipantsMax()) {
+            return ResponseEntity.badRequest().body("Nombre maximal de participants atteint");
+        }
+
         event.getParticipants().add(personne);
         er.save(event);
 
         return ResponseEntity.ok("Inscription réussie !");
+    }
+
+    @PostMapping("/{eventId}/desinscrire")
+    public ResponseEntity<?> desinscrire(@PathVariable Long eventId, @RequestBody Map<String, Object> body) {
+        Long userId = Long.valueOf(body.get("userId").toString());
+        Event event = er.findById(eventId).orElse(null);
+        Personne personne = personneRepository.findById(userId).orElse(null);
+
+        if (event == null || personne == null) {
+            return ResponseEntity.badRequest().body("Event ou utilisateur introuvable");
+        }
+
+        event.getParticipants().remove(personne);
+        er.save(event);
+
+        return ResponseEntity.ok("Désinscription réussie !");
     }
 
 }

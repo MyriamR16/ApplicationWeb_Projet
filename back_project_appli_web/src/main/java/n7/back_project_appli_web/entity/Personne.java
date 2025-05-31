@@ -3,6 +3,8 @@ package n7.back_project_appli_web.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +41,7 @@ public class Personne {
     private String role;
 
     @ManyToMany(mappedBy = "participants")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Collection<Event> events = new ArrayList<>();
 
     public Personne(String nom, String prenom, String pseudo, String email, String motDePasse) {
