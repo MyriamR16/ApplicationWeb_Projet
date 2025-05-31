@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import n7.back_project_appli_web.dto.PersonneDTO;
+import n7.back_project_appli_web.entity.Event;
 import n7.back_project_appli_web.entity.Personne;
+import n7.back_project_appli_web.repository.EventRepository;
 import n7.back_project_appli_web.repository.PersonneRepository;
 
 @RestController
@@ -20,6 +22,9 @@ public class PersonneController {
 
     @Autowired
     PersonneRepository pr;
+
+    @Autowired
+    EventRepository er;
 
     @GetMapping("/")
     public List<Personne> listPersonnes() {
@@ -67,6 +72,17 @@ public class PersonneController {
 
     @DeleteMapping("/{id}")
     public void deletePersonne(@PathVariable Long id) {
-        pr.deleteById(id);
+        Personne personne = pr.findById(id).orElse(null);
+        if (personne != null) {
+            // Retirer la personne de tous les events où elle est participante
+            List<Event> events = er.findAll();
+            for (Event event : events) {
+                if (event.getParticipants().contains(personne)) {
+                    event.getParticipants().remove(personne);
+                    er.save(event);
+                }
+            }
+            pr.deleteById(id);
+        }
     }
 }
