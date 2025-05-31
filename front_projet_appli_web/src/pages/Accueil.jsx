@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
-import fondImage from '../assets/fond_page.jpg'; // Remplace par le bon nom de fichier
+import fondImage from '../assets/fond_page.jpg';
 
 function Accueil() {
   const [weather, setWeather] = useState(null);

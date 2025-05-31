@@ -5,5 +5,5 @@ import n7.back_project_appli_web.entity.Message;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {   
-    List<Message> findByForumId(Long forumId);
+    List<Message> findByDiscussionId(Long discussionId);
 }

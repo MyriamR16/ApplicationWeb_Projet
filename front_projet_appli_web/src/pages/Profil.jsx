@@ -1,58 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import fondImage from '../assets/fond_page.jpg';
 
 function Profil() {
-  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null); // Ajout
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-
-    const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-
-    // Fetch du profil consulté AVEC le token
-    fetch(`http://localhost:8081/api/user/${id}`, {
-      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erreur HTTP ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setUser(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Erreur chargement utilisateur :', error);
-        setError('Impossible de charger le profil utilisateur.');
-        setLoading(false);
-      });
-
-    // Fetch de l'utilisateur connecté (déjà correct)
-    if (userId && token) {
+    const userId = localStorage.getItem('userId');
+    if (token && userId) {
       fetch(`http://localhost:8081/api/user/${userId}`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       })
         .then(res => {
-          if (!res.ok) throw new Error('Utilisateur non trouvé');
+          if (!res.ok) throw new Error('Erreur HTTP ' + res.status);
           return res.json();
         })
-        .then(data => setCurrentUser(data))
-        .catch(err => console.error('Erreur chargement utilisateur connecté:', err));
+        .then(data => {
+          setUser(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          setUser(null);
+          setError("Erreur lors du chargement du profil utilisateur.");
+          setLoading(false);
+          console.error('Erreur chargement utilisateur:', err);
+        });
+    } else {
+      setLoading(false);
+      setError("Utilisateur non authentifié.");
     }
-  }, [id]);
+  }, []);
 
   return (
     <div style={styles.page}>
@@ -60,9 +44,9 @@ function Profil() {
 
       <div style={styles.content}>
         <Navigation />
-        {currentUser && (
+        {user && (
           <div style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-            Bonjour {currentUser.pseudo} !
+            Bonjour {user.pseudo} !
           </div>
         )}
         <h1 style={styles.title}>Profil</h1>

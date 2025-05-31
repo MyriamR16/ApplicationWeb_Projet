@@ -18,13 +18,13 @@ public class MessageController {
     @Autowired
     MessageRepository mr;
 
-    @GetMapping("/forum/{forumId}")
-    public List<Message> getMessagesByForum(@PathVariable Long forumId) {
-        return mr.findByForumId(forumId);
+    @GetMapping("/discussion/{discussionId}")
+    public List<Message> getMessagesByDiscussion(@PathVariable Long discussionId) {
+        return mr.findByDiscussionId(discussionId);
     }
 
     @GetMapping("/{id}")
-    public Message getMessage(@PathVariable Long forumId, @PathVariable Long id) {
+    public Message getMessage(@PathVariable Long discussionId, @PathVariable Long id) {
         return mr.findById(id).orElse(null);
     }
 
@@ -41,7 +41,7 @@ public class MessageController {
             existingMessage.setContenu(messageDetails.getContenu());
             existingMessage.setDateEnvoi(LocalDateTime.now());
             existingMessage.setAuteur(messageDetails.getAuteur());
-            existingMessage.setForum(messageDetails.getForum());
+            existingMessage.setDiscussion(messageDetails.getDiscussion());
             mr.save(existingMessage);
         }
     }

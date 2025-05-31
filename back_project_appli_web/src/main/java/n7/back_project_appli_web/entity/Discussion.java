@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Forum {
+public class Discussion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Forum {
     @OneToOne
     private Event event;
 
-    @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "discussion", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Message> messages = new ArrayList<>();
 

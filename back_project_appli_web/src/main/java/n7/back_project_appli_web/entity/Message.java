@@ -29,7 +29,7 @@ public class Message {
 
     @ManyToOne
     @JsonBackReference
-    private Forum forum;
+    private Discussion discussion;
 
 
 }
