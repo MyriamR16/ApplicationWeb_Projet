@@ -9,6 +9,7 @@ import ListeCourses from './pages/ListeCourses'
 import Profil from './pages/Profil'
 import ListeInscrits from './pages/ListeInscrits'
 import MesInfos from './pages/MesInfos'
+import MesCourses from './pages/MesCourses'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/profil" element={<Profil />} />
         <Route path="/listeinscrits" element={<ListeInscrits />} />
         <Route path="/mesinfos" element={<MesInfos />} />
+        <Route path="/mescourses" element={<MesCourses />} />
       </Routes>
     </BrowserRouter>
   )

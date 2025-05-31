@@ -85,4 +85,9 @@ public class PersonneController {
             pr.deleteById(id);
         }
     }
+
+    @GetMapping("/{id}/courses")
+    public List<Event> getCoursesByUser(@PathVariable Long id) {
+        return er.findAllByParticipantId(id);
+    }
 }
