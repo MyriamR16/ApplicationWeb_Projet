@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom"; 
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Navigation() {
   const [openMenu, setOpenMenu] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const styles = {
     nav: {
@@ -112,6 +112,18 @@ function Navigation() {
     {
       label: "Profil",
       link: "/profil"
+    },
+    {
+      label: "Paramètres",
+      link: null,
+      submenu: [
+        {
+          title: null,
+          items: [
+            <NavLink to="/mesinfos" style={styles.dropdownItem}>Mes infos</NavLink>
+          ]
+        }
+      ]
     },
     {
       label: "Déconnexion",

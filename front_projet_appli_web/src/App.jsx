@@ -8,6 +8,7 @@ import Connexion from './pages/Connexion'
 import ListeCourses from './pages/ListeCourses'
 import Profil from './pages/Profil'
 import ListeInscrits from './pages/ListeInscrits'
+import MesInfos from './pages/MesInfos'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/listecourses" element={<ListeCourses />} />
         <Route path="/profil" element={<Profil />} />
         <Route path="/listeinscrits" element={<ListeInscrits />} />
+        <Route path="/mesinfos" element={<MesInfos />} />
       </Routes>
     </BrowserRouter>
   )

@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,7 +46,7 @@ public class Event {
 
     private Niveau niveau;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "personne_event",
         joinColumns = @JoinColumn(name = "event_id"),
