@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 function Navigation() {
   const [openMenu, setOpenMenu] = useState(null);
   const navigate = useNavigate();
-  const role = localStorage.getItem('role'); // "USER", "MODERATEUR", ou "MODERATEUR_COUREUR" selon ton backend
+  const role = localStorage.getItem('role'); // "USER", "MODERATEUR", ou "MODERATEUR_COUREUR"
 
   const styles = {
     nav: {
@@ -69,83 +69,49 @@ function Navigation() {
     },
   };
 
-  // Construction dynamique du menu selon le rôle
+  // Menu principal, liens vers toutes les pages créées (ajustez selon vos besoins)
   const menuItems = [
     {
       label: "Accueil",
-      link: "/accueil",
+      link: "/accueil"
     },
-    // Pages classiques pour coureur ou modérateur-coureur
-    ...(role === "USER" || role === "MODERATEUR_COUREUR" || role === "MODERATEUR" ? [
-      {
-        label: "Événements",
-        link: null,
-        submenu: [
-          {
-            title: null,
-            items: [
-              <NavLink to="/listecourses" style={styles.dropdownItem}>Rechercher une course.</NavLink>,
-              <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement.</NavLink>,
-              (role === "USER" || role === "MODERATEUR_COUREUR") && <NavLink to="/mescourses" style={styles.dropdownItem}>Mes courses</NavLink>
-            ].filter(Boolean)
-          },
-        ],
-      }
-    ] : []),
-        // Pages classiques pour coureur ou modérateur-coureur
-    ...(role === "USER" || role === "MODERATEUR_COUREUR" || role === "MODERATEUR" ? [
-      {
-        label: "Communauté",
-        link: null,
-        submenu: [
-          {
-            title: null,
-            items: [
-              <NavLink to="/listegroupes" style={styles.dropdownItem}>Groupes d'amis / groupes de running</NavLink>,
-              <NavLink to="/ajoutgroupe" style={styles.dropdownItem}>Créer un groupe d'amis</NavLink>,
-              <NavLink to="/discussions" style={styles.dropdownItem}>Forums / Discussions</NavLink>,
-              (role === "USER" || role === "MODERATEUR_COUREUR") && <NavLink to="/mescourses" style={styles.dropdownItem}>Mes courses</NavLink>
-            ].filter(Boolean)
-          },
-        ],
-      }
-    ] : []),
-    // Pages de modération pour modérateur ou modérateur-coureur
-    ...(role === "MODERATEUR" || role === "MODERATEUR_COUREUR" ? [
-      {
-        label: "Modération",
-        link: null,
-        submenu: [
-          {
-            title: null,
-            items: [
-              <NavLink to="/listeinscrits" style={styles.dropdownItem}>Liste des inscrits</NavLink>,
-              <NavLink to="/listecourses" style={styles.dropdownItem}>Liste des courses</NavLink>
-            ]
-          }
-        ]
-      }
-    ] : []),
+    {
+      label: "Événements",
+      submenu: [
+        <NavLink to="/listecourses" style={styles.dropdownItem}>Rechercher une course</NavLink>,
+        <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement</NavLink>,
+        <NavLink to="/mescourses" style={styles.dropdownItem}>Mes courses</NavLink>
+      ]
+    },
+    {
+      label: "Communauté",
+      submenu: [
+        <NavLink to="/listegroupes" style={styles.dropdownItem}>Groupes d'amis / groupes de running</NavLink>,
+        <NavLink to="/ajoutgroupe" style={styles.dropdownItem}>Créer un groupe d'amis</NavLink>,
+        <NavLink to="/discussions" style={styles.dropdownItem}>Forums / Discussions</NavLink>
+      ]
+    },
+    {
+      label: "Modération",
+      submenu: [
+        <NavLink to="/listeinscrits" style={styles.dropdownItem}>Liste des inscrits</NavLink>,
+        <NavLink to="/listecourses" style={styles.dropdownItem}>Liste des courses</NavLink>
+      ]
+    },
     {
       label: "Profil",
       link: "/profil"
     },
     {
       label: "Paramètres",
-      link: null,
       submenu: [
-        {
-          title: null,
-          items: [
-            <NavLink to="/mesinfos" style={styles.dropdownItem}>Mes infos</NavLink>
-          ]
-        }
+        <NavLink to="/mesinfos" style={styles.dropdownItem}>Mes infos</NavLink>
       ]
     },
     {
       label: "Déconnexion",
       link: "/connexion"
-    },
+    }
   ];
 
   function handleLogout(e) {
@@ -177,7 +143,7 @@ function Navigation() {
               >
                 {menu.label}
               </a>
-            ) : (
+            ) : menu.link ? (
               <NavLink
                 to={menu.link}
                 style={({ isActive }) => ({
@@ -189,17 +155,14 @@ function Navigation() {
               >
                 {menu.label}
               </NavLink>
+            ) : (
+              <span style={styles.link}>{menu.label}</span>
             )}
 
             {openMenu === i && menu.submenu && (
               <div style={styles.dropdown}>
-                {menu.submenu.map((section, si) => (
-                  <div key={si} style={styles.dropdownSection}>
-                    {section.title && <div style={styles.dropdownTitle}>{section.title}</div>}
-                    {section.items.map((item, ii) => (
-                      <div key={ii} style={styles.dropdownItem}>{item}</div>
-                    ))}
-                  </div>
+                {menu.submenu.map((item, ii) => (
+                  <div key={ii} style={styles.dropdownItem}>{item}</div>
                 ))}
               </div>
             )}
