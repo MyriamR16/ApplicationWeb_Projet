@@ -16,6 +16,16 @@ function Inscription() {
     role: 'USER',
   });
 
+  const [isModerateur, setIsModerateur] = useState(false);
+
+  function handleCheckbox(e) {
+    setIsModerateur(e.target.checked);
+    setFormData(prev => ({
+      ...prev,
+      role: e.target.checked ? 'MODERATEUR' : 'USER'
+    }));
+  }
+
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -85,6 +95,12 @@ function Inscription() {
           <h2 style={styles.title}>Inscription</h2>
           <form onSubmit={handleSubmit}>
             <div style={styles.formGroup}>
+              <label>
+                <input type="checkbox" checked={isModerateur} onChange={handleCheckbox} />
+                Je veux être modérateur
+              </label>
+            </div>
+            <div style={styles.formGroup}>
               <input type="text" name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} required style={styles.input} />
             </div>
             <div style={styles.formGroup}>
@@ -98,7 +114,7 @@ function Inscription() {
             </div>
             <div>
               <label htmlFor="niveau">Niveau :</label>
-              <select name="niveau" value={formData.niveau} onChange={handleChange}>
+              <select name="niveau" value={formData.niveau} onChange={handleChange} disabled={isModerateur}>
                 <option value="DEBUTANT">DEBUTANT</option>
                 <option value="INTERMEDIAIRE">INTERMEDIAIRE</option>
                 <option value="AVANCE">AVANCE</option>

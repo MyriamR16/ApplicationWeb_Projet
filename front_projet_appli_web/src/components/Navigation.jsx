@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 function Navigation() {
   const [openMenu, setOpenMenu] = useState(null);
   const navigate = useNavigate();
+  const role = localStorage.getItem('role'); // "USER", "MODERATEUR", ou "MODERATEUR_COUREUR" selon ton backend
 
   const styles = {
     nav: {
@@ -12,7 +13,7 @@ function Navigation() {
       backgroundColor: 'rgba(255, 255, 255, 0.9)',
       borderRadius: '20px',
       boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-      padding: '0.5vh 3vw', // moins d'espace en haut
+      padding: '0.5vh 3vw',
       margin: '10px auto 20px auto',
       width: '90%',
       maxWidth: '1200px',
@@ -28,7 +29,7 @@ function Navigation() {
     },
     li: {
       position: 'relative',
-      fontSize: '1.2vw', // texte plus petit
+      fontSize: '1.2vw',
       fontWeight: '700',
       cursor: 'pointer',
       padding: '0.5vh 1vw',
@@ -68,49 +69,45 @@ function Navigation() {
     },
   };
 
-  // Contenu du menu, format tableau pour simplicité
+  // Construction dynamique du menu selon le rôle
   const menuItems = [
     {
       label: "Accueil",
       link: "/accueil",
-
     },
-    {
-      label: "Événements",
-      link: null,
-      submenu: [
-        {
-          title: null,
-          items: [
-            <NavLink to="/listecourses" style={styles.dropdownItem}>Rechercher une course.</NavLink>,
-            <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement.</NavLink>,
-            <NavLink to="/mescourses" style={styles.dropdownItem}>Mes courses</NavLink>
-
-          ]
-        },
-      ],
-    },
-    {
-      label: "Communauté",
-      link: null,
-      submenu: [
-        {
-          title: null,
-          items: [
-            "Liste des amis / groupes de running.",
-            "Forum / discussions.",
-            <NavLink to="/listeinscrits" style={styles.dropdownItem}>Liste des inscrits</NavLink>,
-          ]
-        },
-      ],
-    },
-    {
-      label: "Défis",
-      link: null,
-      submenu: [
-        { title: null, items: ["Défis hebdomadaires/mensuels.", "Classements."] },
-      ],
-    },
+    // Pages classiques pour coureur ou modérateur-coureur
+    ...(role === "USER" || role === "MODERATEUR_COUREUR" || role === "MODERATEUR" ? [
+      {
+        label: "Événements",
+        link: null,
+        submenu: [
+          {
+            title: null,
+            items: [
+              <NavLink to="/listecourses" style={styles.dropdownItem}>Rechercher une course.</NavLink>,
+              <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement.</NavLink>,
+              (role === "USER" || role === "MODERATEUR_COUREUR") && <NavLink to="/mescourses" style={styles.dropdownItem}>Mes courses</NavLink>
+            ].filter(Boolean)
+          },
+        ],
+      }
+    ] : []),
+    // Pages de modération pour modérateur ou modérateur-coureur
+    ...(role === "MODERATEUR" || role === "MODERATEUR_COUREUR" ? [
+      {
+        label: "Modération",
+        link: null,
+        submenu: [
+          {
+            title: null,
+            items: [
+              <NavLink to="/listeinscrits" style={styles.dropdownItem}>Liste des inscrits</NavLink>,
+              <NavLink to="/listecourses" style={styles.dropdownItem}>Liste des courses</NavLink>
+            ]
+          }
+        ]
+      }
+    ] : []),
     {
       label: "Profil",
       link: "/profil"
@@ -152,7 +149,7 @@ function Navigation() {
             style={styles.li}
             onMouseEnter={() => setOpenMenu(i)}
             onMouseLeave={() => setOpenMenu(null)}
-            onClick={() => toggleMenu(i)} // toggle au clic aussi
+            onClick={() => toggleMenu(i)}
           >
             {menu.label === "Déconnexion" ? (
               <a
@@ -175,7 +172,6 @@ function Navigation() {
                 {menu.label}
               </NavLink>
             )}
-
 
             {openMenu === i && menu.submenu && (
               <div style={styles.dropdown}>

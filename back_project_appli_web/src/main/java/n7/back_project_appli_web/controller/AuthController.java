@@ -3,6 +3,7 @@ package n7.back_project_appli_web.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import n7.back_project_appli_web.configuration.JwtUtils;
 import n7.back_project_appli_web.entity.Personne;
+import n7.back_project_appli_web.repository.ModerateurRepository;
 import n7.back_project_appli_web.repository.PersonneRepository;
 
 @RestController
@@ -34,14 +36,29 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
+    @Autowired
+    private ModerateurRepository moderateurRepository;
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Personne personne) {
         if (personneRepository.findByPseudo(personne.getPseudo()) != null) {
-            return ResponseEntity.badRequest().body("Ce pseudo est déjà connecté");
+            return ResponseEntity.badRequest().body("Pseudo déjà utilisé");
+        }
+        if (personneRepository.findByEmail(personne.getEmail()) != null) {
+            return ResponseEntity.badRequest().body("Email déjà utilisé");
+        }
+        // ENCODE le mot de passe AVANT de sauvegarder
+        personne.setMotDePasse(passwordEncoder.encode(personne.getMotDePasse()));
+        Personne saved = personneRepository.save(personne);
+
+        if ("MODERATEUR".equalsIgnoreCase(personne.getRole())) {
+            n7.back_project_appli_web.entity.Moderateur moderateur = new n7.back_project_appli_web.entity.Moderateur();
+            moderateur.setPseudo(personne.getPseudo());
+            moderateur.setMotDePasse(saved.getMotDePasse()); // mot de passe déjà encodé
+            moderateurRepository.save(moderateur);
         }
 
-        personne.setMotDePasse(passwordEncoder.encode(personne.getMotDePasse()));
-        return ResponseEntity.ok(personneRepository.save(personne));
+        return ResponseEntity.ok(saved);
     }
 
     @PostMapping("/login")
@@ -55,6 +72,7 @@ public class AuthController {
                 authData.put("token", jwtUtils.generateToken(personne.getPseudo()));
                 authData.put("type", "Bearer");
                 authData.put("userId", user.getId());
+                authData.put("role", user.getRole());
                 return ResponseEntity.ok(authData);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Pseudo ou Mot de Passe invalide");
