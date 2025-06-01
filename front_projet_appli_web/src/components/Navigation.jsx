@@ -92,6 +92,24 @@ function Navigation() {
         ],
       }
     ] : []),
+        // Pages classiques pour coureur ou modérateur-coureur
+    ...(role === "USER" || role === "MODERATEUR_COUREUR" || role === "MODERATEUR" ? [
+      {
+        label: "Communauté",
+        link: null,
+        submenu: [
+          {
+            title: null,
+            items: [
+              <NavLink to="/listegroupes" style={styles.dropdownItem}>Groupes d'amis / groupes de running</NavLink>,
+              <NavLink to="/ajoutgroupe" style={styles.dropdownItem}>Créer un groupe d'amis</NavLink>,
+              <NavLink to="/discussions" style={styles.dropdownItem}>Forums / Discussions</NavLink>,
+              (role === "USER" || role === "MODERATEUR_COUREUR") && <NavLink to="/mescourses" style={styles.dropdownItem}>Mes courses</NavLink>
+            ].filter(Boolean)
+          },
+        ],
+      }
+    ] : []),
     // Pages de modération pour modérateur ou modérateur-coureur
     ...(role === "MODERATEUR" || role === "MODERATEUR_COUREUR" ? [
       {

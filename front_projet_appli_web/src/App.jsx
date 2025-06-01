@@ -8,8 +8,16 @@ import Connexion from './pages/Connexion'
 import ListeCourses from './pages/ListeCourses'
 import Profil from './pages/Profil'
 import ListeInscrits from './pages/ListeInscrits'
+<<<<<<< HEAD
 import MesInfos from './pages/MesInfos'
 import MesCourses from './pages/MesCourses'
+=======
+import ListeGroupes from './pages/ListeGroupesAmis'
+import AjoutGroupeAmis from './pages/AjoutGroupeAmis'
+import GroupeAmis from './pages/GroupeAmis'
+import Discussion from './pages/Discussion'
+import ListeDiscussions from './pages/ListeDiscussions'
+>>>>>>> b8cc6c1 (Sauvegarde avant pull)
 
 function App() {
   return (
@@ -23,8 +31,16 @@ function App() {
         <Route path="/listecourses" element={<ListeCourses />} />
         <Route path="/profil" element={<Profil />} />
         <Route path="/listeinscrits" element={<ListeInscrits />} />
+<<<<<<< HEAD
         <Route path="/mesinfos" element={<MesInfos />} />
         <Route path="/mescourses" element={<MesCourses />} />
+=======
+        <Route path="/listegroupes" element={<ListeGroupes />} />
+        <Route path="/ajoutgroupe" element={<AjoutGroupeAmis />} />
+        <Route path="/groupeamis/:id" element={<GroupeAmis />} />
+        <Route path="/discussion/:id" element={<Discussion />} />
+        <Route path="/discussions" element={<ListeDiscussions />} />
+>>>>>>> b8cc6c1 (Sauvegarde avant pull)
       </Routes>
     </BrowserRouter>
   )

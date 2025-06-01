@@ -12,26 +12,26 @@ import n7.back_project_appli_web.entity.Message;
 import n7.back_project_appli_web.repository.MessageRepository;
 
 @RestController
-@RequestMapping("/api/messages")
+@RequestMapping("/api/message")
 public class MessageController {
 
     @Autowired
     MessageRepository mr;
 
-    @GetMapping("/discussion/{discussionId}")
-    public List<Message> getMessagesByDiscussion(@PathVariable Long discussionId) {
-        return mr.findByDiscussionId(discussionId);
+    @GetMapping("/discussion/{dId}")
+    public List<Message> getMessagesByForum(@PathVariable Long dId) {
+        return mr.findByDiscussionId(dId);
     }
 
     @GetMapping("/{id}")
-    public Message getMessage(@PathVariable Long discussionId, @PathVariable Long id) {
+    public Message getMessage(@PathVariable Long dId, @PathVariable Long id) {
         return mr.findById(id).orElse(null);
     }
 
     @PostMapping("/")
-    public void createMessage(@RequestBody Message message) {
+    public Message createMessage(@RequestBody Message message) {
         message.setDateEnvoi(LocalDateTime.now());
-        mr.save(message);
+        return mr.save(message);
     }
 
     @PutMapping("/{id}")
