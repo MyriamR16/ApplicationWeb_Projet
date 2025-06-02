@@ -1,164 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import logo from "../assets/logo-1.png";
+import "../pages/style/Navigation.css";
 
 function Navigation() {
-  const [openMenu, setOpenMenu] = useState(null);
-
-  const styles = {
-    nav: {
-      position: 'relative',
-      zIndex: 2,
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-      borderRadius: '20px',
-      boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-      padding: '0.5vh 3vw', // moins d'espace en haut
-      margin: '10px auto 20px auto',
-      width: '90%',
-      maxWidth: '1200px',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    ul: {
-      listStyle: 'none',
-      display: 'flex',
-      gap: '2vw',
-      margin: 0,
-      padding: 0,
-    },
-    li: {
-      position: 'relative',
-      fontSize: '1.2vw', // texte plus petit
-      fontWeight: '700',
-      cursor: 'pointer',
-      padding: '0.5vh 1vw',
-      color: '#333',
-      userSelect: 'none',
-    },
-    link: {
-      color: '#333',
-      textDecoration: 'none',
-    },
-    dropdown: {
-      position: 'absolute',
-      top: '100%',
-      left: 0,
-      backgroundColor: 'white',
-      borderRadius: '10px',
-      boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-      padding: '10px',
-      minWidth: '250px',
-      zIndex: 10,
-    },
-    dropdownSection: {
-      marginBottom: '10px',
-    },
-    dropdownTitle: {
-      fontWeight: '700',
-      borderBottom: '1px solid #ccc',
-      marginBottom: '5px',
-      fontSize: '1.1vw',
-    },
-    dropdownItem: {
-      fontWeight: '400',
-      fontSize: '0.9vw',
-      marginLeft: '10px',
-      padding: '2px 0',
-      color: '#555',
-    },
-  };
-
-  // Contenu du menu, format tableau pour simplicité
-  const menuItems = [
-    {
-      label: "Accueil",
-      link: "/accueil",
-
-    },
-    {
-      label: "Événements",
-      link: null,
-      submenu: [
-        { 
-          title: null, 
-          items: [
-            <NavLink to="/listecourses" style={styles.dropdownItem}>Rechercher une course.</NavLink>,
-            <NavLink to="/ajoutevent" style={styles.dropdownItem}>Créer un événement.</NavLink>
-          ] 
-        },
-      ],
-    },
-    {
-      label: "Communauté",
-      link: null,
-      submenu: [
-        { title: null, 
-          items: [
-            "Liste des amis / groupes de running.",
-            "Forum / discussions.", 
-            <NavLink to="/listeinscrits" style={styles.dropdownItem}>Liste des inscrits</NavLink>,
-            ] },
-      ],
-    },
-    {
-      label: "Défis",
-      link: null,
-      submenu: [
-        { title: null, items: ["Défis hebdomadaires/mensuels.", "Classements."] },
-      ],
-    },
-    {
-      label: "Profil",
-      link: "/profil"
-    },
-    {
-      label: "Déconnexion",
-      link: "/connexion"
-    },
-  ];
-
-  function toggleMenu(index) {
-    setOpenMenu(openMenu === index ? null : index);
-  }
-
   return (
-    <nav style={styles.nav}>
-      <ul style={styles.ul}>
-        {menuItems.map((menu, i) => (
-          <li
-            key={menu.label}
-            style={styles.li}
-            onMouseEnter={() => setOpenMenu(i)}
-            onMouseLeave={() => setOpenMenu(null)}
-            onClick={() => toggleMenu(i)} // toggle au clic aussi
-          >
-            <NavLink
-              to={menu.link}
-              style={({ isActive }) => ({
-                ...styles.link,
-                fontWeight: isActive ? '900' : '700',
-                textDecoration: isActive ? 'underline' : 'none',
-              })}
-              end={menu.link === "/"}
-            >
-              {menu.label}
-            </NavLink>
-
-            {openMenu === i && menu.submenu && (
-              <div style={styles.dropdown}>
-                {menu.submenu.map((section, si) => (
-                  <div key={si} style={styles.dropdownSection}>
-                    {section.title && <div style={styles.dropdownTitle}>{section.title}</div>}
-                    {section.items.map((item, ii) => (
-                      <div key={ii} style={styles.dropdownItem}>{item}</div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <Navbar expand="md" className="custom-navbar" variant="light">
+      <Container fluid>
+        <Navbar.Brand as={NavLink} to="/accueil">
+          <img src={logo} alt="Run7 Logo" className="navbar-logo" />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="main-navbar-nav" />
+        <Navbar.Collapse id="main-navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link as={NavLink} to="/accueil">Accueil</Nav.Link>
+            <NavDropdown title="Événements" id="events-dropdown">
+              <NavDropdown.Item as={NavLink} to="/listecourses">Rechercher une course</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/ajoutevent">Créer un événement</NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Communauté" id="community-dropdown">
+              <NavDropdown.Item disabled>Liste des amis / groupes de running</NavDropdown.Item>
+              <NavDropdown.Item disabled>Forum / discussions</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/listeinscrits">Liste des inscrits</NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Défis" id="defis-dropdown">
+              <NavDropdown.Item disabled>Défis hebdomadaires/mensuels</NavDropdown.Item>
+              <NavDropdown.Item disabled>Classements</NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link as={NavLink} to="/profil">Profil</Nav.Link>
+            <Nav.Link as={NavLink} to="/connexion">Déconnexion</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 

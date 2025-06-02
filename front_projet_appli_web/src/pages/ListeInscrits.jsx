@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
+import './style/ListeInscrits.css'; 
 
 function ListeInscrits() {
     const navigate = useNavigate();
@@ -51,87 +52,6 @@ function ListeInscrits() {
 
     return (
         <div className="container">
-            <style>
-                {`
-                    .container {
-                        max-width: 1200px;
-                        margin: 0 auto;
-                        padding: 20px;
-                    }
-
-                    .search-filter-container {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 15px;
-                        margin-bottom: 30px;
-                        justify-content: center;
-                    }
-
-                    .search-input,
-                    .filter-select {
-                        flex: 1 1 300px;
-                        padding: 12px 20px;
-                        font-size: 16px;
-                        border-radius: 25px;
-                        border: 1px solid #ccc;
-                        outline: none;
-                        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                        background-color: white;
-                    }
-
-                    .filter-select {
-                        appearance: none;
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='70,100 110,40 30,40' fill='%23666'/%3E%3C/svg%3E");
-                        background-repeat: no-repeat;
-                        background-position: right 15px center;
-                        background-size: 14px;
-                        cursor: pointer;
-                    }
-
-                    .table-container {
-                        overflow-x: auto;
-                        border-radius: 10px;
-                        box-shadow: 0 0 15px rgba(0,0,0,0.1);
-                        background: white;
-                    }
-
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-
-                    th, td {
-                        padding: 15px;
-                        text-align: left;
-                    }
-
-                    th {
-                        background-color: #5da7db;
-                        color: white;
-                    }
-
-                    tr:nth-child(even) {
-                        background-color: #f9f9f9;
-                    }
-
-                    .level-badge {
-                        padding: 5px 12px;
-                        border-radius: 15px;
-                        color: white;
-                        font-weight: 500;
-                        font-size: 14px;
-                        display: inline-block;
-                    }
-
-                    @media (max-width: 600px) {
-                        .search-input,
-                        .filter-select {
-                            flex: 1 1 100%;
-                        }
-                    }
-                `}
-            </style>
-
             <Navigation />
             <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Liste des inscrits</h2>
 

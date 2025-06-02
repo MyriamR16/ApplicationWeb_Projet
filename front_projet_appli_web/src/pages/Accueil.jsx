@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import Navigation from '../components/Navigation';
-import fondImage from '../assets/fond_page.jpg'; // Remplace par le bon nom de fichier
+import './style/Accueil.css';
+import MeteoCard from '../components/MeteoCard';
+import img1 from "../assets/img1.jpg";
 
 function Accueil() {
   const [weather, setWeather] = useState(null);
+  const position = [43.6, 1.44]; // Position Toulouse, France
 
   useEffect(() => {
     fetch('https://api.open-meteo.com/v1/forecast?latitude=43.6&longitude=1.44&current_weather=true')
@@ -12,94 +16,38 @@ function Accueil() {
       .catch((error) => console.error('Erreur météo:', error));
   }, []);
 
-  return (
-    <div style={styles.page}>
-      <img src={fondImage} alt="fond" style={styles.backgroundImage} />
-
-      <div style={styles.content}>
-        <Navigation />
-        <h1 style={styles.title}>Run7 - Accueil</h1>
-        <p style={styles.subtitle}>Bienvenue sur la page d'accueil de Run7 !</p>
-
-        {weather && (
-          <div style={styles.weather}>
-            <p>📍 Météo à Toulouse</p>
-            <p>🌡 Température : <strong>{weather.temperature}°C</strong></p>
-            <p>💨 Vent : <strong>{weather.windspeed} km/h</strong></p>
-          </div>
-        )}
+return (
+  <div className="accueil-page">
+    <Navigation />
+    <div className="accueil-banner">
+      <img className="accueil-img" src={img1} alt="img 1" />
+      <div className="accueil-header-text">
+        <h1 className="accueil-title">Run7 - Accueil</h1>
+        <p className="accueil-subtitle">Bienvenue sur la page d'accueil de Run7 !</p>
       </div>
     </div>
-
-          // Tableau de bord personnel :
-          //   "Statistiques de course (km parcourus ce mois-ci, objectifs atteints, etc.)",
-          //   "Progression sous forme de graphique (ex : courbe de performance).",
-          //   "Dernières activités enregistrées (date, distance, temps).",
-
-          // Événements à venir:
-          //   "Liste des courses/événements sportifs auxquels l'utilisateur est inscrit.",
-          //   "Suggestions d'événements populaires près de chez lui.",
-        
-      
-          // Défis & Récompenses:
-          //   'Badges à débloquer (ex : "5 km en moins de 25 min").',
-          //   "Classement amical (comparaison avec les amis).",
-          //   "Récompenses (réductions chez des partenaires sportifs).",
-        
-          // Motivation
-          //   "Citation inspirante aléatoire.",
-          //   "Météo locale (pour encourager à courir aujourd’hui).",
-
-          //   "Musique recommandée (playlist Spotify ou autre).",
-
-
-
-
-  );
+    <Container fluid className="accueil-main-content">
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="accueil-about">
+            <h2>À propos de Run7</h2>
+            <p>
+              Run7 est la plateforme pour les passionnés de course à pied à Toulouse. 
+              Rejoignez-nous pour des événements, des défis et une communauté active !
+            </p>
+          </div>
+        </Col>
+      </Row>
+      <Row className="justify-content-center mt-4">
+        <Col xs={12} md={10} lg={8}>
+          <div className="accueil-weather-card">
+            {weather && <MeteoCard weather={weather} position={position} />}
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  </div>
+);
 }
 
 export default Accueil;
-
-const styles = {
-  page: {
-    position: 'relative',
-    minHeight: '100vh',
-    overflow: 'hidden',
-  },
-  backgroundImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    zIndex: 0,
-  },
-  content: {
-    position: 'relative',
-    zIndex: 1,
-    margin: '3vh auto',
-    width: '85%',
-    backgroundColor: 'white',
-    borderRadius: '2vw',
-    padding: '4vh 4vw',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-  },
-  title: {
-    fontSize: '32px',
-    marginBottom: '20px',
-    fontWeight: '700',
-  },
-  subtitle: {
-    fontSize: '18px',
-    marginBottom: '30px',
-  },
-  weather: {
-    fontSize: '16px',
-    backgroundColor: '#f0f8ff',
-    borderRadius: '10px',
-    padding: '20px',
-    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
-    lineHeight: '1.6',
-  },
-};

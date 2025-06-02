@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import image_runners from '../assets/connexion_runners.jpg';
+import image_runners from '../assets/runner_2.jpg';
+import './style/Connexion.css';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 
 function Connexion() {
   const navigate = useNavigate();
@@ -17,8 +19,6 @@ function Connexion() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('handleSubmit appelé'); // <== vérifie que le clic fonctionne
-
     fetch('http://localhost:8081/api/user/login', {
       method: 'POST',
       headers: {
@@ -31,9 +31,9 @@ function Connexion() {
     })
       .then(async (response) => {
         if (response.ok) {
-          const data = await response.json(); // ✅ on lit le JSON contenant le token
-          localStorage.setItem('token', data.token); // ✅ on stocke le token pour s'en servir après
-          navigate('/accueil'); // redirection
+          const data = await response.json();
+          localStorage.setItem('token', data.token);
+          navigate('/accueil');
         } else {
           const errorMessage = await response.text();
           alert(errorMessage);
@@ -43,127 +43,57 @@ function Connexion() {
         console.error('Erreur réseau:', error);
         alert('Erreur lors de la connexion, réessayez plus tard.');
       });
-
-
-
   }
 
-
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.formSection}>
-          <h2 style={styles.title}>Connexion</h2>
-          <form onSubmit={handleSubmit}>
-            <div style={styles.formGroup}>
-              <input
-                type="email"
-                placeholder="Votre Email"
-                value={valueEmail}
-                onChange={handleEmailChange}
-                required
-                style={styles.input}
+    <div className="connexion-container">
+      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+        <Card className="connexion-card p-4" style={{ maxWidth: '800px', width: '100%', boxShadow: '0 8px 32px rgba(10, 155, 143, 0.612)' }}>
+          <Row className="g-0 align-items-stretch">
+            <Col md={7} className="p-3 d-flex flex-column justify-content-center align-items-center">
+              <h2 className="connexion-title text-center mb-4">Connexion</h2>
+              <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400 }} className="d-flex flex-column align-items-center">
+                <Form.Group className="mb-3 w-100" controlId="formEmail">
+                  <Form.Control
+                    type="email"
+                    placeholder="Votre Email"
+                    value={valueEmail}
+                    onChange={handleEmailChange}
+                    required
+                    className="connexion-input"
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3 w-100" controlId="formPassword">
+                  <Form.Control
+                    type="password"
+                    placeholder="Mot de passe"
+                    value={valuePassword}
+                    onChange={handlePasswordChange}
+                    required
+                    className="connexion-input"
+                  />
+                </Form.Group>
+                <Button variant="info" type="submit" className="connexion-button w-100 mb-2" style={{ color: '#008080', fontWeight: 700 }}>
+                  Se connecter
+                </Button>
+              </Form>
+              <div className="connexion-link text-center mt-2">
+                <a href="/inscription" className="connexion-link-text">Je n'ai pas encore de compte</a>
+              </div>
+            </Col>
+            <Col md={5} className="connexion-image-section d-flex justify-content-center align-items-center p-0">
+              <img
+                src={image_runners}
+                alt="Connexion Illustration"
+                className="connexion-image img-fluid rounded h-100"
+                style={{ objectFit: 'cover', maxHeight: 'none', width: '100%' }}
               />
-            </div>
-            <div style={styles.formGroup}>
-              <input
-                type="password"
-                placeholder="Mot de passe"
-                value={valuePassword}
-                onChange={handlePasswordChange}
-                required
-                style={styles.input}
-              />
-            </div>
-            <button type="submit" style={styles.button}>Se connecter</button>
-          </form>
-          <div style={styles.link}>
-            <a href="/inscription" style={styles.linkText}>Je n'ai pas encore de compte</a>
-          </div>
-        </div>
-        <div style={styles.imageSection}>
-          <img
-            src={image_runners}
-            alt="Connexion Illustration"
-            style={styles.image}
-          />
-        </div>
-      </div>
+            </Col>
+          </Row>
+        </Card>
+      </Container>
     </div>
   );
 }
 
 export default Connexion;
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#f5f5f5',
-  },
-  card: {
-    display: 'flex',
-    background: '#fff',
-    borderRadius: '20px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-    overflow: 'hidden',
-    width: '800px',
-    maxWidth: '95%',
-  },
-  formSection: {
-    flex: 1,
-    padding: '40px',
-  },
-  title: {
-    fontSize: '32px',
-    marginBottom: '30px',
-    fontWeight: '700',
-  },
-  formGroup: {
-    marginBottom: '20px',
-  },
-  input: {
-    width: '100%',
-    border: 'none',
-    borderBottom: '1px solid #ccc',
-    padding: '10px',
-    fontSize: '16px',
-    background: 'transparent',
-    outline: 'none',
-  },
-  button: {
-    backgroundColor: '#5da7db',
-    color: 'white',
-    border: 'none',
-    borderRadius: '6px',
-    padding: '10px 30px',
-    fontSize: '16px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s',
-    marginTop: '10px',
-  },
-  link: {
-    marginTop: '20px',
-    textAlign: 'right',
-    fontSize: '14px',
-  },
-  linkText: {
-    textDecoration: 'underline',
-    color: '#000',
-  },
-  imageSection: {
-    flex: 1,
-    background: 'white',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '40px',
-  },
-  image: {
-    maxWidth: '100%',
-    height: 'auto',
-    objectFit: 'contain',
-  },
-};

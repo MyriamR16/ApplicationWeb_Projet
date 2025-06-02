@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'leaflet/dist/leaflet.css';
 import Index from './pages/Index'
 import Accueil from './pages/Accueil'
 import AjoutEvent from './pages/AjoutEvenement'

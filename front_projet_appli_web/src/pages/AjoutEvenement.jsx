@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Navigation from '../components/Navigation';
 import { useNavigate } from 'react-router-dom';
+import { Container, Form, Row, Col, Button, Alert } from 'react-bootstrap';
+import './style/AjoutEvenement.css'; 
 
 function AjoutEvent() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     nomEvent: '',
     nomOrganisateur: '',
@@ -17,6 +18,8 @@ function AjoutEvent() {
     nombreParticipantsMax: '',
     op: 'ajoutEvent',
   });
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -25,7 +28,8 @@ function AjoutEvent() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
+    setError(null);
+    setSuccess(null);
     if (
       !formData.nomEvent ||
       !formData.nomOrganisateur ||
@@ -35,15 +39,13 @@ function AjoutEvent() {
       !formData.heure ||
       !formData.nombreParticipantsMax
     ) {
-      alert("Veuillez remplir tous les champs obligatoires.");
+      setError("Veuillez remplir tous les champs obligatoires.");
       return;
     }
-
     if (isNaN(formData.nombreParticipantsMax) || Number(formData.nombreParticipantsMax) <= 0) {
-      alert("Le nombre de participants doit être un nombre positif.");
+      setError("Le nombre de participants doit être un nombre positif.");
       return;
     }
-
     const payload = {
       nomEvent: formData.nomEvent,
       nomOrganisateur: formData.nomOrganisateur,
@@ -56,7 +58,6 @@ function AjoutEvent() {
       nombreParticipantsMax: Number(formData.nombreParticipantsMax),
       op: formData.op,
     };
-
     fetch('http://localhost:8081/api/event/', {
       method: 'POST',
       headers: {
@@ -68,256 +69,146 @@ function AjoutEvent() {
         if (!response.ok) {
           throw new Error("Erreur lors de l'ajout de l'évènement");
         }
-        alert("Évènement ajouté avec succès !");
-        navigate('/accueil');
+        setSuccess("Évènement ajouté avec succès !");
+        setTimeout(() => navigate('/accueil'), 1200);
       })
       .catch((error) => {
-        console.error('Erreur :', error);
-        alert("Une erreur est survenue lors de l'ajout de l'évènement.");
+        setError("Une erreur est survenue lors de l'ajout de l'évènement.");
       });
   }
 
   return (
-    <div style={styles.container}>
+    <>
       <Navigation />
-      <div style={styles.formContainer}>
-        <h1 style={styles.title}>Ajouter un nouvel événement</h1>
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nom de l'évènement :</label>
-            <input 
-              type="text" 
-              name="nomEvent" 
-              value={formData.nomEvent} 
-              onChange={handleChange} 
-              style={styles.input}
-              placeholder="Nom de l'événement"
-            />
-          </div>
-
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nom de l'organisateur :</label>
-            <input 
-              type="text" 
-              name="nomOrganisateur" 
-              value={formData.nomOrganisateur} 
-              onChange={handleChange} 
-              style={styles.input}
-              placeholder="Organisateur"
-            />
-          </div>
-
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Description de l'évènement :</label>
-            <textarea
-              name="description"
-              rows="5"
-              placeholder="Description détaillée de l'événement..."
-              value={formData.description}
-              onChange={handleChange}
-              style={styles.textarea}
-            />
-          </div>
-
-          <div style={styles.formRow}>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Niveau :</label>
-              <select 
-                name="niveau" 
-                value={formData.niveau} 
-                onChange={handleChange}
-                style={styles.select}
-              >
-                <option value="DEBUTANT">Débutant</option>
-                <option value="INTERMEDIAIRE">Intermédiaire</option>
-                <option value="AVANCE">Avancé</option>
-                <option value="EXPERT">Expert</option>
-              </select>
-            </div>
-
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Type :</label>
-              <select 
-                name="type" 
-                value={formData.type} 
-                onChange={handleChange}
-                style={styles.select}
-              >
-                <option value="COURSE_3KM">Course 3km</option>
-                <option value="COURSE_5KM">Course 5km</option>
-                <option value="COURSE_10KM">Course 10km</option>
-                <option value="SEMI_MARATHON">Semi-marathon</option>
-                <option value="MARATHON">Marathon</option>
-                <option value="RELAIS">Relais</option>
-                <option value="COURSE_A_PIED">Course à pied</option>
-                <option value="COURSE_OBSTACLE">Course obstacle</option>
-                <option value="AUTRE">Autre</option>
-              </select>
-            </div>
-          </div>
-
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Lieu de départ :</label>
-            <input 
-              type="text" 
-              name="lieu" 
-              placeholder="Adresse ou lieu précis" 
-              value={formData.lieu} 
-              onChange={handleChange} 
-              style={styles.input}
-            />
-          </div>
-
-          <div style={styles.formRow}>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Date de la course :</label>
-              <input 
-                type="date" 
-                name="dateEvent" 
-                value={formData.dateEvent} 
+      <div className="ajout-event-main-bg">
+        <Container className="ajout-event-container py-4">
+          <h1 className="mb-4 ajout-event-title">Ajouter un nouvel événement</h1>
+          {error && <Alert variant="danger">{error}</Alert>}
+          {success && <Alert variant="success">{success}</Alert>}
+          <Form onSubmit={handleSubmit} className="ajout-event-form bg-dark p-4 rounded shadow-sm">
+            <Row className="mb-3">
+              <Col md={4}>
+                <Form.Group>
+                  <Form.Label>Nom de l'évènement</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="nomEvent" 
+                    value={formData.nomEvent} 
+                    onChange={handleChange} 
+                    placeholder="Nom de l'événement" 
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group>
+                  <Form.Label>Nom de l'organisateur</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="nomOrganisateur" 
+                    value={formData.nomOrganisateur} 
+                    onChange={handleChange} 
+                    placeholder="Organisateur" 
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group>
+                  <Form.Label>Nombre de participants maximal</Form.Label>
+                  <Form.Control 
+                    type="number" 
+                    name="nombreParticipantsMax" 
+                    value={formData.nombreParticipantsMax} 
+                    onChange={handleChange} 
+                    min="1" 
+                    placeholder="50" 
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label>Description de l'évènement</Form.Label>
+              <Form.Control 
+                as="textarea" 
+                name="description" 
+                rows={4} 
+                placeholder="Description détaillée de l'événement..." 
+                value={formData.description} 
                 onChange={handleChange} 
-                style={styles.input}
               />
-            </div>
-
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Heure de début :</label>
-              <input 
-                type="time" 
-                name="heure" 
-                value={formData.heure} 
+            </Form.Group>
+            <Row>
+              <Col md={6} className="mb-3">
+                <Form.Group>
+                  <Form.Label>Niveau</Form.Label>
+                  <Form.Select name="niveau" value={formData.niveau} onChange={handleChange}>
+                    <option value="DEBUTANT">Débutant</option>
+                    <option value="INTERMEDIAIRE">Intermédiaire</option>
+                    <option value="AVANCE">Avancé</option>
+                    <option value="EXPERT">Expert</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group>
+                  <Form.Label>Type</Form.Label>
+                  <Form.Select name="type" value={formData.type} onChange={handleChange}>
+                    <option value="COURSE_3KM">Course 3km</option>
+                    <option value="COURSE_5KM">Course 5km</option>
+                    <option value="COURSE_10KM">Course 10km</option>
+                    <option value="SEMI_MARATHON">Semi-marathon</option>
+                    <option value="MARATHON">Marathon</option>
+                    <option value="RELAIS">Relais</option>
+                    <option value="COURSE_A_PIED">Course à pied</option>
+                    <option value="COURSE_OBSTACLE">Course obstacle</option>
+                    <option value="AUTRE">Autre</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label>Lieu de départ</Form.Label>
+              <Form.Control 
+                type="text" 
+                name="lieu" 
+                placeholder="Adresse ou lieu précis" 
+                value={formData.lieu} 
                 onChange={handleChange} 
-                style={styles.input}
               />
+            </Form.Group>
+            <Row>
+              <Col md={6} className="mb-3">
+                <Form.Group>
+                  <Form.Label>Date de la course</Form.Label>
+                  <Form.Control 
+                    type="date" 
+                    name="dateEvent" 
+                    value={formData.dateEvent} 
+                    onChange={handleChange} 
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group>
+                  <Form.Label>Heure de début</Form.Label>
+                  <Form.Control 
+                    type="time" 
+                    name="heure" 
+                    value={formData.heure} 
+                    onChange={handleChange} 
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <div className="d-flex justify-content-end">
+              <Button variant="primary" type="submit" className="ajout-event-btn">
+                Créer l'événement
+              </Button>
             </div>
-          </div>
-
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nombre de participants maximal :</label>
-            <input 
-              type="number" 
-              name="nombreParticipantsMax" 
-              value={formData.nombreParticipantsMax} 
-              onChange={handleChange} 
-              style={styles.input}
-              min="1"
-              placeholder="50"
-            />
-          </div>
-
-          <button type="submit" style={styles.submitButton}>Créer l'événement</button>
-        </form>
+          </Form>
+        </Container>
       </div>
-    </div>
+    </>
   );
 }
-
-const styles = {
-  container: {
-    fontFamily: "'Open Sans', sans-serif",
-    backgroundColor: '#f8f9fa',
-    minHeight: '100vh',
-    paddingBottom: '50px',
-  },
-  formContainer: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '30px',
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-    marginTop: '30px',
-  },
-  title: {
-    color: '#2c3e50',
-    textAlign: 'center',
-    marginBottom: '30px',
-    fontSize: '28px',
-    fontWeight: '600',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  formRow: {
-    display: 'flex',
-    gap: '20px',
-    '@media (max-width: 768px)': {
-      flexDirection: 'column',
-      gap: '20px',
-    },
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-  },
-  label: {
-    marginBottom: '8px',
-    fontWeight: '600',
-    color: '#34495e',
-    fontSize: '14px',
-  },
-  input: {
-    padding: '12px 15px',
-    borderRadius: '8px',
-    border: '1px solid #dfe6e9',
-    fontSize: '16px',
-    transition: 'all 0.3s',
-    ':focus': {
-      borderColor: '#3498db',
-      boxShadow: '0 0 0 3px rgba(52, 152, 219, 0.2)',
-      outline: 'none',
-    },
-  },
-  textarea: {
-    padding: '12px 15px',
-    borderRadius: '8px',
-    border: '1px solid #dfe6e9',
-    fontSize: '16px',
-    resize: 'vertical',
-    minHeight: '100px',
-    transition: 'all 0.3s',
-    ':focus': {
-      borderColor: '#3498db',
-      boxShadow: '0 0 0 3px rgba(52, 152, 219, 0.2)',
-      outline: 'none',
-    },
-  },
-  select: {
-    padding: '12px 15px',
-    borderRadius: '8px',
-    border: '1px solid #dfe6e9',
-    fontSize: '16px',
-    backgroundColor: 'white',
-    transition: 'all 0.3s',
-    ':focus': {
-      borderColor: '#3498db',
-      boxShadow: '0 0 0 3px rgba(52, 152, 219, 0.2)',
-      outline: 'none',
-    },
-  },
-  submitButton: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    padding: '14px 20px',
-    fontSize: '16px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'all 0.3s',
-    marginTop: '10px',
-    ':hover': {
-      backgroundColor: '#2980b9',
-      transform: 'translateY(-2px)',
-      boxShadow: '0 4px 12px rgba(52, 152, 219, 0.3)',
-    },
-    ':active': {
-      transform: 'translateY(0)',
-    },
-  },
-};
 
 export default AjoutEvent;

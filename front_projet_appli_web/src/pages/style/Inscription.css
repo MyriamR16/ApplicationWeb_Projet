@@ -1,0 +1,133 @@
+body, html {
+  font-family: 'Times New Roman', Times, serif;
+}
+/* Fond général */
+.inscription-container {
+  min-height: 100vh;
+  background: #204040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Carte d'inscription */
+.inscription-card {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(10, 155, 143, 0.22);
+  background: #fff;
+  border: none;
+  padding: 1.5rem !important;
+  max-width: 70%;
+  width: 100%;
+}
+
+/* Titre */
+.inscription-title {
+  font-size: 2.3rem;
+  font-family: 'Times New Roman', serif;
+  font-weight: 800;
+  color: #008080;
+  letter-spacing: 1.5px;
+}
+
+/* Inputs */
+.inscription-input {
+  border-radius: 8px;
+  border: 1px solid #cceaea;
+  background: #f7fefe;
+  color: #008080;
+  font-size: 1.1rem;
+  font-family: 'Times New Roman', serif;
+  padding: 0.45rem 0.9rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  min-width: 0;
+}
+.inscription-input:focus {
+  border-color: #8fd3d6;
+  box-shadow: 0 0 0 2px #b2ebf255;
+}
+
+.mb-separation {
+  margin-bottom: 1.5rem;
+}
+
+/* Select */
+.inscription-form-section select.inscription-input {
+  padding-right: 2rem;
+}
+
+/* Bouton */
+.inscription-button {
+  background: #b2ebf2 !important;
+  color: #008080 !important;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  transition: background 0.2s, color 0.2s;
+}
+.inscription-button:hover, .inscription-button:focus {
+  background: #008080 !important;
+  color: #fff !important;
+}
+
+/* Lien connexion */
+.inscription-link-text {
+  color: #008080;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.inscription-link-text:hover {
+  color: #005959;
+}
+
+/* Image section */
+.inscription-image-section {
+  background: #e0f7fa;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+}
+.inscription-image {
+  max-width: 100%;
+  max-height: 280px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(10, 155, 143, 0.15);
+  object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .inscription-card {
+    max-width: 500px;
+    padding: 1rem !important;
+  }
+}
+@media (max-width: 768px) {
+  .inscription-card {
+    padding: 1.2rem !important;
+  }
+  .inscription-image-section {
+    min-height: 180px;
+    padding: 0.5rem !important;
+  }
+  .inscription-title {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .inscription-card {
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0.5rem !important;
+  }
+  .inscription-image-section {
+    display: none;
+  }
+}
