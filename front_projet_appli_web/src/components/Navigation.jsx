@@ -86,31 +86,34 @@ function Navigation() {
         {menuItems.map((menu, i) => (
           <li
             key={menu.label}
-            className="navigation-item"
+            className={menu.submenu ? "nav-item dropdown navigation-item" : "nav-item navigation-item"}
             onMouseEnter={() => setOpenMenu(i)}
             onMouseLeave={() => setOpenMenu(null)}
             onClick={() => toggleMenu(i)}
+            style={{ position: 'relative' }}
           >
             {menu.label === "Déconnexion" ? (
-              <a href="/connexion" className="navigation-link" onClick={handleLogout}>
+              <a href="/connexion" className="nav-link" onClick={handleLogout}>
                 {menu.label}
               </a>
             ) : menu.link ? (
               <NavLink
                 to={menu.link}
                 className={({ isActive }) =>
-                  isActive ? "navigation-link active" : "navigation-link"
+                  isActive ? "nav-link active" : "nav-link"
                 }
                 end={menu.link === "/"}
               >
                 {menu.label}
               </NavLink>
             ) : (
-              <span className="navigation-link">{menu.label}</span>
+              <span className="dropdown-toggle nav-link" role="button" aria-haspopup="true" aria-expanded={openMenu === i}>
+                {menu.label}
+              </span>
             )}
 
             {openMenu === i && menu.submenu && (
-              <div className="navigation-dropdown">
+              <div className="dropdown-menu show" style={{ display: 'block', position: 'absolute', top: '120%', left: 0 }}>
                 {menu.submenu.map((item, ii) => (
                   <div key={ii} className="dropdown-item">
                     {item}
