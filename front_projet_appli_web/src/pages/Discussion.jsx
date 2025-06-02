@@ -147,8 +147,21 @@ function Discussion() {
               <div key={i} style={{
                 display: 'flex',
                 flexDirection: isMine ? 'row-reverse' : 'row',
-                marginBottom: 16
+                marginBottom: 16,
+                alignItems: 'flex-end'
               }}>
+                <img
+                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(msg.auteur?.pseudo || msg.auteur?.id || 'user')}`}
+                  alt="Avatar"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: '50%',
+                    margin: isMine ? '0 0 0 10px' : '0 10px 0 0',
+                    background: '#eee',
+                    border: '2px solid #4A90E2'
+                  }}
+                />
                 <div style={{
                   background: isMine ? '#d1e7dd' : '#ffffff',
                   color: '#333',

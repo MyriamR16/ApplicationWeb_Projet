@@ -18,6 +18,29 @@ function Accueil() {
       .catch((error) => console.error('Erreur météo:', error));
   }, []);
 
+    useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    if (token && userId) {
+      fetch(`http://localhost:8081/api/user/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Erreur HTTP ' + res.status);
+          return res.json();
+        })
+        .then(data => setUser(data))
+        .catch(err => {
+          setUser(null);
+          console.error('Erreur chargement utilisateur:', err);
+        });
+    }
+  }, []);
+
 return (
   <div className="accueil-page">
     <Navigation />
