@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
+import BadgeDisplay from '../components/BadgeDisplay';
 import './style/Profil.css';
 
 function Profil() {
   const [user, setUser] = useState(null);
+  const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -25,6 +27,13 @@ function Profil() {
           })
           .then(data => {
             setUser(data);
+            // Charger les badges
+            fetch(`http://localhost:8081/api/user/${userId}/badges`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+            })
+              .then(res => res.json())
+              .then(setBadges)
+              .catch(() => setBadges([]));
             setLoading(false);
           })
           .catch(err => {
@@ -61,26 +70,27 @@ function Profil() {
           </div>
         )}
         <h1 className="profil-title">Profil</h1>
-
         {loading && <p>Chargement du profil...</p>}
-
         {!loading && !error && user ? (
-          <div className="profil-profile-container">
-            <img
-              src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.pseudo || user.id)}`}
-              alt="Avatar"
-              className="profil-avatar"
-            />
-            <div className="profil-info">
-              <p><strong>ID :</strong> {user.id}</p>
-              <p><strong>Nom :</strong> {user.nom}</p>
-              <p><strong>Prénom :</strong> {user.prenom}</p>
-              <p><strong>Pseudo :</strong> {user.pseudo}</p>
-              <p><strong>Email :</strong> {user.email}</p>
+          <>
+            <div className="profil-profile-container">
+              <img
+                src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.pseudo || user.id)}`}
+                alt="Avatar"
+                className="profil-avatar"
+              />
+              <div className="profil-info">
+                <p><strong>ID :</strong> {user.id}</p>
+                <p><strong>Nom :</strong> {user.nom}</p>
+                <p><strong>Prénom :</strong> {user.prenom}</p>
+                <p><strong>Pseudo :</strong> {user.pseudo}</p>
+                <p><strong>Email :</strong> {user.email}</p>
+              </div>
             </div>
-          </div>
+            <h2 className="profil-title" style={{ fontSize: '22px', marginTop: 24 }}>Mes badges</h2>
+            <BadgeDisplay badges={badges} />
+          </>
         ) : null}
-
         {!loading && !error && !user && (
           <p>Aucun utilisateur trouvé pour cet ID.</p>
         )}

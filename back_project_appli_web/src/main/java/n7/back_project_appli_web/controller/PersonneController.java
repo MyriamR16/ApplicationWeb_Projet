@@ -97,4 +97,12 @@ public class PersonneController {
         pr.deleteById(id);
         return ResponseEntity.ok("Personne supprimée avec succès.");
     }
+
+    @GetMapping("/{userId}/badges")
+    public ResponseEntity<?> getBadges(@PathVariable Long userId) {
+        Personne personne = pr.findById(userId).orElse(null);
+        if (personne == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(personne.getBadges());
+    }
 }

@@ -18,6 +18,7 @@ import n7.back_project_appli_web.entity.Event;
 import n7.back_project_appli_web.entity.Personne;
 import n7.back_project_appli_web.repository.EventRepository;
 import n7.back_project_appli_web.repository.PersonneRepository;
+import n7.back_project_appli_web.service.BadgeService;
 
 @RestController
 @RequestMapping("/api/event")
@@ -28,6 +29,9 @@ public class EventController {
 
     @Autowired
     private PersonneRepository personneRepository;
+
+    @Autowired
+    private BadgeService badgeService;
 
     @GetMapping("/")
     public List<Event> listEvents() {
@@ -78,7 +82,13 @@ public class EventController {
             return ResponseEntity.badRequest().body("Event ou utilisateur introuvable");
         }
 
-        // On verifie si le nombre de participants maximal n'est pas dépassé
+        // Vérifie si c'est la première participation à ce type de course
+        boolean dejaParticipe = personne.getEvents().stream()
+                .anyMatch(e -> e.getTypeEvent() == event.getTypeEvent());
+        if (!dejaParticipe) {
+            badgeService.attribuerBadgeSiPremier(event.getTypeEvent(), personne);
+        }
+
         if (event.getParticipants().size() >= event.getNombreParticipantsMax()) {
             return ResponseEntity.badRequest().body("Nombre maximal de participants atteint");
         }
