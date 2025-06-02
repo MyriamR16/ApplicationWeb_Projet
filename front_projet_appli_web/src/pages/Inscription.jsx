@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import image_runners from '../assets/runner_3.png';
 import './style/Inscription.css';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 
 function Inscription() {
   const navigate = useNavigate();
@@ -19,12 +19,15 @@ function Inscription() {
   });
 
   const [isModerateur, setIsModerateur] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   function handleCheckbox(e) {
-    setIsModerateur(e.target.checked);
+    const checked = e.target.checked;
+    setIsModerateur(checked);
     setFormData(prev => ({
       ...prev,
-      role: e.target.checked ? 'MODERATEUR' : 'USER'
+      role: checked ? 'MODERATEUR' : 'USER'
     }));
   }
 
@@ -33,16 +36,23 @@ function Inscription() {
     setFormData(prev => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(event) {
+  function isPasswordStrong(password) {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#^()_+=-])[A-Za-z\d@$!%*?&.#^()_+=-]{8,}$/;
+    return regex.test(password);
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
+    setErrorMessage('');
+    setSuccessMessage('');
 
     if (!isPasswordStrong(formData.motDePasse)) {
-      alert('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
+      setErrorMessage('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
       return;
     }
 
     if (formData.motDePasse !== formData.motDePasseConfirm) {
-      alert("Les mots de passe ne correspondent pas.");
+      setErrorMessage("Les mots de passe ne correspondent pas.");
       return;
     }
 
@@ -56,59 +66,52 @@ function Inscription() {
       role: formData.role,
     };
 
-    fetch('http://localhost:8081/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorMessage = await response.text();
-          throw new Error(errorMessage);
-        }
-        alert('Inscription réussie !');
-        navigate('/connexion');
-      })
-      .catch((error) => {
-        console.error('Erreur :', error);
-<<<<<<< HEAD
-        if (error.message.includes('Pseudo déjà utilisé')) {
-          alert('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
-        } else {
-          alert(error.message);
-        }
-      });
-=======
-
-        if (error.message.includes('Pseudo déjà utilisé')) {
-          alert('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
-        } else {
-          alert(error.message); // Pour d'autres types d'erreurs
-        }
+    try {
+      const response = await fetch('http://localhost:8081/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
->>>>>>> main
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
+
+      setSuccessMessage('Inscription réussie ! Vous allez être redirigé(e) vers la connexion...');
+      setTimeout(() => navigate('/connexion'), 2000);
+    } catch (error) {
+      console.error('Erreur :', error);
+      if (error.message.includes('Pseudo déjà utilisé')) {
+        setErrorMessage('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
+      } else {
+        setErrorMessage(error.message);
+      }
+    }
   }
-
-  function isPasswordStrong(password) {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#^()_+=-])[A-Za-z\d@$!%*?&.#^()_+=-]{8,}$/;
-    return regex.test(password);
-  }
-
-
 
   return (
-<<<<<<< HEAD
     <div className="inscription-container">
       <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
         <Card className="inscription-card p-4">
           <Row className="g-0 align-items-stretch">
             <Col md={7} className="p-3 d-flex flex-column justify-content-center align-items-center">
               <h2 className="inscription-title text-center mb-4">Inscription</h2>
+
+              {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+              {successMessage && <Alert variant="success">{successMessage}</Alert>}
+
               <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400 }} className="d-flex flex-column ">
-               
+                <Form.Group className="mb-3 d-flex align-items-center">
+                  <Form.Check 
+                    type="checkbox"
+                    id="moderateur-checkbox"
+                    label="Je veux être modérateur"
+                    checked={isModerateur}
+                    onChange={handleCheckbox}
+                  />
+                </Form.Group>
+
                 <Row className="w-100">
                   <Col>
                     <Form.Group className="mb-3 w-100">
@@ -120,6 +123,7 @@ function Inscription() {
                         onChange={handleChange}
                         className="inscription-input"
                         required
+                        aria-label="Prénom"
                       />
                     </Form.Group>
                   </Col>
@@ -133,10 +137,12 @@ function Inscription() {
                         onChange={handleChange}
                         className="inscription-input"
                         required
+                        aria-label="Nom"
                       />
                     </Form.Group>
                   </Col>
                 </Row>
+
                 <Row className="w-100 align-items-stretch mb-separation">
                   <Col className="d-flex align-items-stretch">
                     <Form.Group className="mb-3 w-100 h-100 d-flex align-items-stretch">
@@ -148,6 +154,7 @@ function Inscription() {
                         onChange={handleChange}
                         className="inscription-input h-100"
                         required
+                        aria-label="Pseudo"
                       />
                     </Form.Group>
                   </Col>
@@ -161,23 +168,29 @@ function Inscription() {
                         onChange={handleChange}
                         className="inscription-input h-100"
                         required
+                        aria-label="Email"
                       />
                     </Form.Group>
                   </Col>
                 </Row>
+
                 <Form.Group className="mb-3 w-100">
-                  <Form.Label>Niveau :</Form.Label>
+                  <Form.Label htmlFor="niveau">Niveau :</Form.Label>
                   <Form.Select
+                    id="niveau"
                     name="niveau"
                     value={formData.niveau}
                     onChange={handleChange}
                     className="inscription-input"
+                    disabled={isModerateur}
+                    aria-label="Niveau"
                   >
                     <option value="DEBUTANT">DEBUTANT</option>
                     <option value="INTERMEDIAIRE">INTERMEDIAIRE</option>
                     <option value="AVANCE">AVANCE</option>
                   </Form.Select>
                 </Form.Group>
+
                 <Form.Group className="mb-3 w-100">
                   <Form.Control
                     type="password"
@@ -187,8 +200,10 @@ function Inscription() {
                     onChange={handleChange}
                     className="inscription-input"
                     required
+                    aria-label="Mot de passe"
                   />
                 </Form.Group>
+
                 <Form.Group className="mb-3 w-100">
                   <Form.Control
                     type="password"
@@ -198,16 +213,22 @@ function Inscription() {
                     onChange={handleChange}
                     className="inscription-input"
                     required
+                    aria-label="Confirmer le mot de passe"
                   />
                 </Form.Group>
+
                 <Button type="submit" className="inscription-button w-100 mb-2">
                   S'inscrire
                 </Button>
               </Form>
+
               <div className="text-center mt-2">
-                <a href="/connexion" className="inscription-link-text">J'ai déjà un compte</a>
+                <Link to="/connexion" className="inscription-link-text">
+                  J'ai déjà un compte
+                </Link>
               </div>
             </Col>
+
             <Col md={5} className="inscription-image-section d-flex justify-content-center align-items-center p-0">
               <img
                 src={image_runners}
@@ -219,99 +240,8 @@ function Inscription() {
           </Row>
         </Card>
       </Container>
-=======
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.formSection}>
-          <h2 style={styles.title}>Inscription</h2>
-          <form onSubmit={handleSubmit}>
-            <div style={styles.formGroup}>
-              <label>
-                <input type="checkbox" checked={isModerateur} onChange={handleCheckbox} />
-                Je veux être modérateur
-              </label>
-            </div>
-            <div style={styles.formGroup}>
-              <input type="text" name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} required style={styles.input} />
-            </div>
-            <div style={styles.formGroup}>
-              <input type="text" name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} required style={styles.input} />
-            </div>
-            <div style={styles.formGroup}>
-              <input type="text" name="pseudo" placeholder="Pseudo" value={formData.pseudo} onChange={handleChange} required style={styles.input} />
-            </div>
-            <div style={styles.formGroup}>
-              <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required style={styles.input} />
-            </div>
-            <div>
-              <label htmlFor="niveau">Niveau :</label>
-              <select name="niveau" value={formData.niveau} onChange={handleChange} disabled={isModerateur}>
-                <option value="DEBUTANT">DEBUTANT</option>
-                <option value="INTERMEDIAIRE">INTERMEDIAIRE</option>
-                <option value="AVANCE">AVANCE</option>
-                <option value="EXPERT">EXPERT</option>
-              </select>
-            </div>
-            <div style={styles.formGroup}>
-              <input type="password" name="motDePasse" placeholder="Mot de passe" value={formData.motDePasse} onChange={handleChange} required style={styles.input} />
-            </div>
-            <div style={styles.formGroup}>
-              <input type="password" name="motDePasseConfirm" placeholder="Confirmer le mot de passe" value={formData.motDePasseConfirm} onChange={handleChange} required style={styles.input} />
-            </div>
-            <input type="hidden" name="role" value={formData.role} />
-            <button type="submit" style={styles.button}>S'inscrire</button>
-          </form>
-          <div style={styles.link}>
-            <a href="/connexion" style={styles.linkText}>J'ai déjà un compte</a>
-          </div>
-        </div>
-        <div style={styles.imageSection}>
-          <img
-            src={image_runners}
-            alt="Inscription Illustration"
-            style={styles.image}
-          />
-        </div>
-      </div>
->>>>>>> main
     </div>
   );
 }
 
 export default Inscription;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

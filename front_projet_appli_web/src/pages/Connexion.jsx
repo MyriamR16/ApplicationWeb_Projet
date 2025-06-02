@@ -19,13 +19,8 @@ function Connexion() {
 
   function handleSubmit(event) {
     event.preventDefault();
-<<<<<<< HEAD
-    fetch('http://localhost:8081/api/user/login', {
-=======
-    console.log('handleSubmit appelé');
 
     fetch('http://localhost:8081/api/auth/login', {
->>>>>>> main
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -39,13 +34,9 @@ function Connexion() {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem('token', data.token);
-<<<<<<< HEAD
-          navigate('/accueil');
-=======
           localStorage.setItem('userId', data.userId);
-          localStorage.setItem('role', data.role); 
-          navigate('/accueil'); // redirection
->>>>>>> main
+          localStorage.setItem('role', data.role);
+          navigate('/accueil');
         } else {
           const errorMessage = await response.text();
           alert(errorMessage);
@@ -58,25 +49,24 @@ function Connexion() {
   }
 
   return (
-<<<<<<< HEAD
     <div className="connexion-container">
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <Card className="connexion-card p-4" style={{ maxWidth: '800px', width: '100%', boxShadow: '0 8px 32px rgba(10, 155, 143, 0.612)' }}>
+      <Container className="d-flex justify-content-center align-items-center min-vh-100">
+        <Card className="connexion-card p-4" style={{ maxWidth: '800px', width: '100%', boxShadow: '0 8px 32px rgba(10, 155, 143, 0.6)' }}>
           <Row className="g-0 align-items-stretch">
             <Col md={7} className="p-3 d-flex flex-column justify-content-center align-items-center">
               <h2 className="connexion-title text-center mb-4">Connexion</h2>
-              <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400 }} className="d-flex flex-column align-items-center">
-                <Form.Group className="mb-3 w-100" controlId="formEmail">
+              <Form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: 400 }}>
+                <Form.Group className="mb-3" controlId="formPseudo">
                   <Form.Control
-                    type="email"
-                    placeholder="Votre Email"
-                    value={valueEmail}
-                    onChange={handleEmailChange}
+                    type="text"
+                    placeholder="Votre Pseudo"
+                    value={valuePseudo}
+                    onChange={handlePseudoChange}
                     required
                     className="connexion-input"
                   />
                 </Form.Group>
-                <Form.Group className="mb-3 w-100" controlId="formPassword">
+                <Form.Group className="mb-3" controlId="formPassword">
                   <Form.Control
                     type="password"
                     placeholder="Mot de passe"
@@ -86,7 +76,7 @@ function Connexion() {
                     className="connexion-input"
                   />
                 </Form.Group>
-                <Button variant="info" type="submit" className="connexion-button w-100 mb-2" style={{ color: '#008080', fontWeight: 700 }}>
+                <Button variant="info" type="submit" className="connexion-button w-100 mb-2">
                   Se connecter
                 </Button>
               </Form>
@@ -99,22 +89,6 @@ function Connexion() {
                 src={image_runners}
                 alt="Connexion Illustration"
                 className="connexion-image img-fluid rounded h-100"
-                style={{ objectFit: 'cover', maxHeight: 'none', width: '100%' }}
-=======
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.formSection}>
-          <h2 style={styles.title}>Connexion</h2>
-          <form onSubmit={handleSubmit}>
-            <div style={styles.formGroup}>
-              <input
-                type="text"
-                placeholder="Votre Pseudo"
-                value={valuePseudo}
-                onChange={handlePseudoChange}
-                required
-                style={styles.input}
->>>>>>> main
               />
             </Col>
           </Row>
