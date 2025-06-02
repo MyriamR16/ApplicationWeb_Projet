@@ -15,7 +15,18 @@ function Inscription() {
     niveau: 'DEBUTANT',
     motDePasse: '',
     motDePasseConfirm: '',
+    role: 'USER',
   });
+
+  const [isModerateur, setIsModerateur] = useState(false);
+
+  function handleCheckbox(e) {
+    setIsModerateur(e.target.checked);
+    setFormData(prev => ({
+      ...prev,
+      role: e.target.checked ? 'MODERATEUR' : 'USER'
+    }));
+  }
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -42,9 +53,10 @@ function Inscription() {
       email: formData.email,
       niveau: formData.niveau,
       motDePasse: formData.motDePasse,
+      role: formData.role,
     };
 
-    fetch('http://localhost:8081/api/user/', {
+    fetch('http://localhost:8081/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -61,12 +73,23 @@ function Inscription() {
       })
       .catch((error) => {
         console.error('Erreur :', error);
+<<<<<<< HEAD
         if (error.message.includes('Pseudo déjà utilisé')) {
           alert('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
         } else {
           alert(error.message);
         }
       });
+=======
+
+        if (error.message.includes('Pseudo déjà utilisé')) {
+          alert('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
+        } else {
+          alert(error.message); // Pour d'autres types d'erreurs
+        }
+      });
+
+>>>>>>> main
   }
 
   function isPasswordStrong(password) {
@@ -77,6 +100,7 @@ function Inscription() {
 
 
   return (
+<<<<<<< HEAD
     <div className="inscription-container">
       <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
         <Card className="inscription-card p-4">
@@ -195,6 +219,61 @@ function Inscription() {
           </Row>
         </Card>
       </Container>
+=======
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <div style={styles.formSection}>
+          <h2 style={styles.title}>Inscription</h2>
+          <form onSubmit={handleSubmit}>
+            <div style={styles.formGroup}>
+              <label>
+                <input type="checkbox" checked={isModerateur} onChange={handleCheckbox} />
+                Je veux être modérateur
+              </label>
+            </div>
+            <div style={styles.formGroup}>
+              <input type="text" name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} required style={styles.input} />
+            </div>
+            <div style={styles.formGroup}>
+              <input type="text" name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} required style={styles.input} />
+            </div>
+            <div style={styles.formGroup}>
+              <input type="text" name="pseudo" placeholder="Pseudo" value={formData.pseudo} onChange={handleChange} required style={styles.input} />
+            </div>
+            <div style={styles.formGroup}>
+              <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required style={styles.input} />
+            </div>
+            <div>
+              <label htmlFor="niveau">Niveau :</label>
+              <select name="niveau" value={formData.niveau} onChange={handleChange} disabled={isModerateur}>
+                <option value="DEBUTANT">DEBUTANT</option>
+                <option value="INTERMEDIAIRE">INTERMEDIAIRE</option>
+                <option value="AVANCE">AVANCE</option>
+                <option value="EXPERT">EXPERT</option>
+              </select>
+            </div>
+            <div style={styles.formGroup}>
+              <input type="password" name="motDePasse" placeholder="Mot de passe" value={formData.motDePasse} onChange={handleChange} required style={styles.input} />
+            </div>
+            <div style={styles.formGroup}>
+              <input type="password" name="motDePasseConfirm" placeholder="Confirmer le mot de passe" value={formData.motDePasseConfirm} onChange={handleChange} required style={styles.input} />
+            </div>
+            <input type="hidden" name="role" value={formData.role} />
+            <button type="submit" style={styles.button}>S'inscrire</button>
+          </form>
+          <div style={styles.link}>
+            <a href="/connexion" style={styles.linkText}>J'ai déjà un compte</a>
+          </div>
+        </div>
+        <div style={styles.imageSection}>
+          <img
+            src={image_runners}
+            alt="Inscription Illustration"
+            style={styles.image}
+          />
+        </div>
+      </div>
+>>>>>>> main
     </div>
   );
 }

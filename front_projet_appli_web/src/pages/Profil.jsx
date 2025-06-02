@@ -1,48 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-
 import './style/Profil.css';
 
 function Profil() {
-  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    fetch(`http://localhost:8081/api/user/${id}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erreur HTTP ${response.status}`);
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    if (token && userId) {
+      fetch(`http://localhost:8081/api/user/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-        return response.json();
       })
-      .then((data) => {
-        setUser(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Erreur chargement utilisateur :', error);
-        setError('Impossible de charger le profil utilisateur.');
-        setLoading(false);
-      });
-  }, [id]);
+        .then(res => {
+          if (!res.ok) throw new Error('Erreur HTTP ' + res.status);
+          return res.json();
+        })
+        .then(data => {
+          setUser(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          setUser(null);
+          setError("Erreur lors du chargement du profil utilisateur.");
+          setLoading(false);
+          console.error('Erreur chargement utilisateur:', err);
+        });
+    } else {
+      setLoading(false);
+      setError("Utilisateur non authentifié.");
+    }
+  }, []);
 
   return (
     <div className="profil-page">
-       <Navigation />
+      <img src={fondImage} alt="fond" className="profil-background-image" />
       <div className="profil-content">
-        
+        <Navigation />
+        {user && (
+          <div className="profil-welcome">
+            Bonjour <strong>{user.pseudo}</strong> !
+          </div>
+        )}
         <h1 className="profil-title">Profil</h1>
 
         {loading && <p>Chargement du profil...</p>}
-
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        {!loading && !error && user ? (
+        {!loading && !error && user && (
           <div className="profil-profile-container">
             <div className="profil-info">
               <p><strong>ID :</strong> {user.id}</p>
@@ -52,7 +63,7 @@ function Profil() {
               <p><strong>Email :</strong> {user.email}</p>
             </div>
           </div>
-        ) : null}
+        )}
 
         {!loading && !error && !user && (
           <p>Aucun utilisateur trouvé pour cet ID.</p>

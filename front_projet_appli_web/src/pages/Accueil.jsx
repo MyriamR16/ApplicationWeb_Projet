@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Navigation from '../components/Navigation';
 import './style/Accueil.css';
+
 import MeteoCard from '../components/MeteoCard';
 import img1 from "../assets/img1.jpg";
 
 function Accueil() {
   const [weather, setWeather] = useState(null);
   const position = [43.6, 1.44]; // Position Toulouse, France
+
 
   useEffect(() => {
     fetch('https://api.open-meteo.com/v1/forecast?latitude=43.6&longitude=1.44&current_weather=true')
@@ -33,7 +35,7 @@ return (
             <h2>À propos de Run7</h2>
             <p>
               Run7 est la plateforme pour les passionnés de course à pied à Toulouse. 
-              Rejoignez-nous pour des événements, des défis et une communauté active !
+              Rejoignez-nous pour des événements, des défis et une communauté active !
             </p>
           </div>
         </Col>
@@ -51,3 +53,4 @@ return (
 }
 
 export default Accueil;
+

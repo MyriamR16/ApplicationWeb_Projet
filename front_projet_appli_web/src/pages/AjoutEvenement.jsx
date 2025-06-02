@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, Row, Col, Button, Alert } from 'react-bootstrap';
-import './style/AjoutEvenement.css'; 
+import './style/AjoutEvenement.css';
 
 function AjoutEvent() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
   const [formData, setFormData] = useState({
     nomEvent: '',
-    nomOrganisateur: '',
     description: '',
     niveau: 'DEBUTANT',
     type: 'COURSE_3KM',
@@ -21,6 +22,25 @@ function AjoutEvent() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    if (userId && token) {
+      fetch(`http://localhost:8081/api/user/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Utilisateur non trouvé');
+          return res.json();
+        })
+        .then(data => setUser(data))
+        .catch(err => console.error('Erreur chargement utilisateur:', err));
+    }
+  }, []);
+
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -32,7 +52,6 @@ function AjoutEvent() {
     setSuccess(null);
     if (
       !formData.nomEvent ||
-      !formData.nomOrganisateur ||
       !formData.description ||
       !formData.lieu ||
       !formData.dateEvent ||
@@ -48,7 +67,7 @@ function AjoutEvent() {
     }
     const payload = {
       nomEvent: formData.nomEvent,
-      nomOrganisateur: formData.nomOrganisateur,
+      nomOrganisateur: user ? user.pseudo : '',
       description: formData.description,
       niveau: formData.niveau,
       typeEvent: formData.type,
@@ -62,6 +81,7 @@ function AjoutEvent() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(payload),
     })
@@ -104,10 +124,8 @@ function AjoutEvent() {
                   <Form.Label>Nom de l'organisateur</Form.Label>
                   <Form.Control 
                     type="text" 
-                    name="nomOrganisateur" 
-                    value={formData.nomOrganisateur} 
-                    onChange={handleChange} 
-                    placeholder="Organisateur" 
+                    value={user?.pseudo || ''} 
+                    disabled 
                   />
                 </Form.Group>
               </Col>
@@ -165,20 +183,22 @@ function AjoutEvent() {
                 </Form.Group>
               </Col>
             </Row>
-            <Form.Group className="mb-3">
-              <Form.Label>Lieu de départ</Form.Label>
-              <Form.Control 
-                type="text" 
-                name="lieu" 
-                placeholder="Adresse ou lieu précis" 
-                value={formData.lieu} 
-                onChange={handleChange} 
-              />
-            </Form.Group>
-            <Row>
-              <Col md={6} className="mb-3">
+            <Row className="mb-3">
+              <Col md={6}>
                 <Form.Group>
-                  <Form.Label>Date de la course</Form.Label>
+                  <Form.Label>Lieu de départ</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="lieu" 
+                    placeholder="Adresse ou lieu précis" 
+                    value={formData.lieu} 
+                    onChange={handleChange} 
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={3}>
+                <Form.Group>
+                  <Form.Label>Date</Form.Label>
                   <Form.Control 
                     type="date" 
                     name="dateEvent" 
@@ -187,9 +207,9 @@ function AjoutEvent() {
                   />
                 </Form.Group>
               </Col>
-              <Col md={6} className="mb-3">
+              <Col md={3}>
                 <Form.Group>
-                  <Form.Label>Heure de début</Form.Label>
+                  <Form.Label>Heure</Form.Label>
                   <Form.Control 
                     type="time" 
                     name="heure" 
@@ -199,11 +219,7 @@ function AjoutEvent() {
                 </Form.Group>
               </Col>
             </Row>
-            <div className="d-flex justify-content-end">
-              <Button variant="primary" type="submit" className="ajout-event-btn">
-                Créer l'événement
-              </Button>
-            </div>
+            <Button variant="primary" type="submit">Ajouter l'évènement</Button>
           </Form>
         </Container>
       </div>
