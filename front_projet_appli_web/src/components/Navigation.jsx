@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../pages/style/Navigation.css"; 
+import logo from '../assets/logo-1.png';
 
 function Navigation() {
   const [openMenu, setOpenMenu] = useState(null);
@@ -79,7 +80,8 @@ function Navigation() {
   }
 
   return (
-    <nav className="navigation">
+    <nav className="custom-navbar">
+      <img src={logo} alt="Logo" className="navbar-logo" />
       <ul className="navigation-menu">
         {menuItems.map((menu, i) => (
           <li
