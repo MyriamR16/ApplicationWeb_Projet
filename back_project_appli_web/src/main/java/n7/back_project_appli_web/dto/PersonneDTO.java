@@ -1,21 +1,38 @@
 package n7.back_project_appli_web.dto;
 
 public class PersonneDTO {
-    private final String pseudo;
-    private final String niveau;
+    private Long id;
+    private String pseudo;
+    private String niveau;
 
     // Constructeur
-    public PersonneDTO(String pseudo, String niveau) {
+    public PersonneDTO(Long id, String pseudo, String niveau) {
+        this.id = id;
         this.pseudo = pseudo;
         this.niveau = niveau;
     }
 
-    // Getters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getPseudo() {
-        return this.pseudo;
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public String getNiveau() {
-        return this.niveau;
+        return niveau;
+    }
+
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
     }
 }

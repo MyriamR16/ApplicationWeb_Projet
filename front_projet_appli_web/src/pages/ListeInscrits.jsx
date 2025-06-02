@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navigation from '../components/Navigation';
+import React, { useEffect, useState } from "react";
+import Navigation from "../components/Navigation";
 
 function ListeInscrits() {
-    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,10 +10,11 @@ function ListeInscrits() {
     const [levelFilter, setLevelFilter] = useState('TOUS');
     const [currentUser, setCurrentUser] = useState(null);
 
+    const role = localStorage.getItem('role');
+
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
-        console.log('TOKEN:', token, 'USERID:', userId);
         if (userId && token) {
             fetch(`http://localhost:8081/api/user/${userId}`, {
                 headers: {
@@ -54,185 +53,203 @@ function ListeInscrits() {
 
     useEffect(() => {
         let results = users;
-
         if (pseudoSearch) {
             results = results.filter(user =>
                 user.pseudo.toLowerCase().includes(pseudoSearch.toLowerCase())
             );
         }
-
         if (levelFilter !== 'TOUS') {
             results = results.filter(user =>
                 user.niveau === levelFilter
             );
         }
-
         setFilteredUsers(results);
     }, [pseudoSearch, levelFilter, users]);
 
-    if (loading) return <p>Chargement en cours...</p>;
-    if (error) return <p>Erreur : {error}</p>;
+    function handleDeleteUser(userId) {
+        const token = localStorage.getItem('token');
+        if (!window.confirm("Supprimer cet utilisateur ?")) return;
+        fetch(`http://localhost:8081/api/moderateur/personne/${userId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Erreur lors de la suppression");
+                alert("Utilisateur supprimé !");
+                setUsers(users.filter(u => u.id !== userId));
+            })
+            .catch(err => alert("Erreur : " + err.message));
+    }
+
+    if (loading) return <div style={styles.centered}><p>Chargement en cours...</p></div>;
+    if (error) return <div style={styles.centered}><p>Erreur : {error}</p></div>;
+
+    function getLevelColor(niveau) {
+        switch (niveau?.toUpperCase()) {
+            case 'DEBUTANT': return '#4CAF50';
+            case 'INTERMEDIAIRE': return '#2196F3';
+            case 'AVANCE': return '#9C27B0';
+            case 'EXPERT': return '#F44336';
+            default: return '#607D8B';
+        }
+    }
 
     return (
-        <div className="container">
-            <style>
-                {`
-                    .container {
-                        max-width: 1200px;
-                        margin: 0 auto;
-                        padding: 20px;
-                    }
-
-                    .search-filter-container {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 15px;
-                        margin-bottom: 30px;
-                        justify-content: center;
-                    }
-
-                    .search-input,
-                    .filter-select {
-                        flex: 1 1 300px;
-                        padding: 12px 20px;
-                        font-size: 16px;
-                        border-radius: 25px;
-                        border: 1px solid #ccc;
-                        outline: none;
-                        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                        background-color: white;
-                    }
-
-                    .filter-select {
-                        appearance: none;
-                        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='70,100 110,40 30,40' fill='%23666'/%3E%3C/svg%3E");
-                        background-repeat: no-repeat;
-                        background-position: right 15px center;
-                        background-size: 14px;
-                        cursor: pointer;
-                    }
-
-                    .table-container {
-                        overflow-x: auto;
-                        border-radius: 10px;
-                        box-shadow: 0 0 15px rgba(0,0,0,0.1);
-                        background: white;
-                    }
-
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-
-                    th, td {
-                        padding: 15px;
-                        text-align: left;
-                    }
-
-                    th {
-                        background-color: #5da7db;
-                        color: white;
-                    }
-
-                    tr:nth-child(even) {
-                        background-color: #f9f9f9;
-                    }
-
-                    .level-badge {
-                        padding: 5px 12px;
-                        border-radius: 15px;
-                        color: white;
-                        font-weight: 500;
-                        font-size: 14px;
-                        display: inline-block;
-                    }
-
-                    @media (max-width: 600px) {
-                        .search-input,
-                        .filter-select {
-                            flex: 1 1 100%;
-                        }
-                    }
-                `}
-            </style>
-
+        <div style={styles.container}>
             <Navigation />
-            {currentUser && (
-                <div style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-                    Bonjour {currentUser.pseudo} !
+            <div style={styles.tableContainer}>
+                {currentUser && (
+                    <div style={{ marginBottom: 20, fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
+                        Bonjour {currentUser.pseudo} !
+                    </div>
+                )}
+                <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Liste des inscrits</h2>
+                <div style={styles.filterContainer}>
+                    <input
+                        type="text"
+                        placeholder="Rechercher un pseudo..."
+                        value={pseudoSearch}
+                        onChange={(e) => setPseudoSearch(e.target.value)}
+                        style={styles.input}
+                    />
+                    <select
+                        value={levelFilter}
+                        onChange={(e) => setLevelFilter(e.target.value)}
+                        style={styles.select}
+                    >
+                        <option value="TOUS">Tous les niveaux</option>
+                        <option value="DEBUTANT">Débutant</option>
+                        <option value="INTERMEDIAIRE">Intermédiaire</option>
+                        <option value="AVANCE">Avancé</option>
+                        <option value="EXPERT">Expert</option>
+                    </select>
                 </div>
-            )}
-            <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Liste des inscrits</h2>
-
-            <div className="search-filter-container">
-                <input
-                    type="text"
-                    placeholder="Rechercher un pseudo..."
-                    value={pseudoSearch}
-                    onChange={(e) => setPseudoSearch(e.target.value)}
-                    className="search-input"
-                />
-                <select
-                    value={levelFilter}
-                    onChange={(e) => setLevelFilter(e.target.value)}
-                    className="filter-select"
-                >
-                    <option value="TOUS">Tous les niveaux</option>
-                    <option value="DEBUTANT">Débutant</option>
-                    <option value="INTERMEDIAIRE">Intermédiaire</option>
-                    <option value="AVANCE">Avancé</option>
-                    <option value="EXPERT">Expert</option>
-                </select>
-            </div>
-
-            {filteredUsers.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#666' }}>
-                    Aucun utilisateur ne correspond à vos critères
-                </p>
-            ) : (
-                <div className="table-container">
-                    <table>
+                {filteredUsers.length === 0 ? (
+                    <p style={{ textAlign: 'center', color: '#666' }}>
+                        Aucun utilisateur ne correspond à vos critères
+                    </p>
+                ) : (
+                    <table style={styles.table}>
                         <thead>
                             <tr>
-                                <th>Pseudo</th>
-                                <th>Niveau</th>
+                                <th style={styles.th}>Pseudo</th>
+                                <th style={styles.th}>Niveau</th>
+                                {role === "MODERATEUR" && <th style={styles.th}>Action</th>}
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredUsers.map((user, index) => (
-                                <tr key={user.pseudo}>
-                                    <td>{user.pseudo}</td>
-                                    <td>
+                            {filteredUsers.map((user) => (
+                                <tr key={user.id}>
+                                    <td style={styles.td}>{user.pseudo}</td>
+                                    <td style={styles.td}>
                                         <span
-                                            className="level-badge"
-                                            style={{ backgroundColor: getLevelColor(user.niveau) }}
+                                            style={{ ...styles.levelBadge, backgroundColor: getLevelColor(user.niveau) }}
                                         >
                                             {user.niveau}
                                         </span>
                                     </td>
+                                    {role === "MODERATEUR" && (
+                                        <td style={styles.td}>
+                                            <button
+                                                style={styles.deleteBtn}
+                                                onClick={() => handleDeleteUser(user.id)}
+                                            >
+                                                Supprimer
+                                            </button>
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }
 
-function getLevelColor(niveau) {
-    switch (niveau.toUpperCase()) {
-        case 'DEBUTANT':
-            return '#4CAF50';
-        case 'INTERMEDIAIRE':
-            return '#2196F3';
-        case 'AVANCE':
-            return '#9C27B0';
-        case 'EXPERT':
-            return '#F44336';
-        default:
-            return '#607D8B';
-    }
-}
-
 export default ListeInscrits;
+
+const styles = {
+  container: {
+    minHeight: '100vh',
+    background: '#f5f7fa',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: 40,
+  },
+  centered: {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: '#f5f7fa',
+  },
+  tableContainer: {
+    margin: '0 auto',
+    background: '#fff',
+    borderRadius: 12,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+    padding: 32,
+    maxWidth: 700,
+    width: '100%',
+  },
+  filterContainer: {
+    display: 'flex',
+    gap: 16,
+    marginBottom: 24,
+    justifyContent: 'center',
+  },
+  input: {
+    padding: '8px 12px',
+    borderRadius: 6,
+    border: '1px solid #ccc',
+    fontSize: 15,
+    width: 180,
+  },
+  select: {
+    padding: '8px 12px',
+    borderRadius: 6,
+    border: '1px solid #ccc',
+    fontSize: 15,
+  },
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+    marginBottom: 30,
+  },
+  th: {
+    textAlign: 'left',
+    padding: '12px 8px',
+    background: '#f0f4f8',
+    fontWeight: 700,
+    fontSize: 16,
+  },
+  td: {
+    padding: '10px 8px',
+    fontSize: 15,
+    borderBottom: '1px solid #eee',
+  },
+  levelBadge: {
+    padding: '4px 10px',
+    borderRadius: 8,
+    color: 'white',
+    fontWeight: 600,
+    fontSize: 13,
+    display: 'inline-block',
+    minWidth: 70,
+    textAlign: 'center',
+  },
+  deleteBtn: {
+    background: "#e74c3c",
+    color: "white",
+    border: "none",
+    borderRadius: 6,
+    padding: "6px 12px",
+    cursor: "pointer",
+    fontWeight: 600,
+    fontSize: 15,
+    transition: "background 0.2s",
+  },
+};

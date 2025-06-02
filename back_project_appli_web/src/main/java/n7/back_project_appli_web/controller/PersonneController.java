@@ -41,9 +41,8 @@ public class PersonneController {
     public ResponseEntity<List<PersonneDTO>> listPersonnesSimplified() {
         List<Personne> personnes = pr.findAll();
         List<PersonneDTO> dtos = personnes.stream()
-                .map(p -> new PersonneDTO(p.getPseudo(), p.getNiveau()))
+                .map(p -> new PersonneDTO(p.getId(), p.getPseudo(), p.getNiveau()))
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(dtos);
     }
 
@@ -89,5 +88,13 @@ public class PersonneController {
     @GetMapping("/{id}/courses")
     public List<Event> getCoursesByUser(@PathVariable Long id) {
         return er.findAllByParticipantId(id);
+    }
+
+    @DeleteMapping("/admin/personne/{id}")
+    public ResponseEntity<String> deletePersonneByAdmin(@PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        pr.deleteById(id);
+        return ResponseEntity.ok("Personne supprimée avec succès.");
     }
 }
