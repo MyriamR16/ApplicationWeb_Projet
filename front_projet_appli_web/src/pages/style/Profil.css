@@ -17,7 +17,7 @@
   min-width: 320px;
   width: 90%;
   height: auto;
-  background: #77c5c580;
+  background: white;
   box-shadow: 0 2px 12px rgba(19, 121, 144, 0.32);
   border-radius: 24px;
   padding: 0 0 32px 0;
@@ -34,17 +34,18 @@
   font-size: 2.4rem;
   margin: 0;
   font-weight: 800;
-  color: #ffffff;
+  color: #2fbcbc;
   letter-spacing: 1px;
   text-align: center;
   padding: 32px 0 0 0;
 }
 
 .profil-welcome {
+  margin-top: 20px;
   margin-bottom: 10px;
   font-weight: 500;
   font-size: 1.5rem;
-  color: #ffffff;
+  color: #18cbcb;
   text-align: center;
   letter-spacing: 0.2px;
 }
@@ -78,7 +79,7 @@
 .profil-info {
   font-size: 17px;
   line-height: 1.7;
-  color: #ffffff;
+  color: #000000;
   background: none;
   border-radius: 0;
   padding: 0 0 0 0;

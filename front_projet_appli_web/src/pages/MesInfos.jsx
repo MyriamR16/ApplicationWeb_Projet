@@ -63,7 +63,7 @@ function MesInfos() {
     { label: 'Email', key: 'email' },
     { label: 'Niveau', key: 'niveau' },
     { label: 'Pseudo', key: 'pseudo' },
-    // Ajoute d'autres champs si besoin
+   
   ];
 
   return (

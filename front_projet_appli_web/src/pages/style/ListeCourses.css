@@ -6,13 +6,13 @@
 }
 
 .liste-courses-container {
-
+  background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(38, 115, 120, 0.231);
   padding: 32px 24px;
   max-width: 1100px;
   margin: 0 auto;
-  color: #fff;
+  color: #1fc8d1;
 }
 
 .liste-courses-table {
@@ -33,12 +33,12 @@
 .liste-courses-table th, .liste-courses-table td {
   white-space: nowrap;
   padding: 8px 12px;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #bdf4ff;
   border-left: none;
 }
 
 .liste-courses-table th:first-child, .liste-courses-table td:first-child {
-  border-left: 1px solid #e0e0e0;
+  border-left: 1px solid #bdf4ff;
 }
 
 .liste-courses-table th:last-child, .liste-courses-table td:last-child {
@@ -61,7 +61,7 @@
 }
 
 .liste-courses-table tr {
-  border-bottom: 1px solid #355354;
+  border-bottom: 1px solid #bdf4ff;
 }
 
 .liste-courses-table tr:last-child {
@@ -77,7 +77,7 @@
 }
 
 h2.mb-4 {
-  color: #fff;
+  color: #1fc8d1;
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 28px !important;

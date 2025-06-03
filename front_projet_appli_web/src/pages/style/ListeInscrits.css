@@ -6,7 +6,7 @@
 }
 
 .listeinscrits-container {
-    background: #b6f4f44e;
+    background: white;
     border-radius: 18px;
     box-shadow: 0 4px 24px rgba(11, 185, 198, 0.393);
     padding: 40px 32px;
@@ -15,7 +15,7 @@
 }
 
 .bonjour-blanc {
-    color: #fff !important;
+    color: #18dae1 !important;
 }
 
 table {
@@ -47,16 +47,16 @@ tr:nth-child(even) {
     transition: background 0.2s, color 0.2s;
 }
 .level-badge.debutant {
-    background: rgba(155, 23, 232, 0.961); 
+    background: rgba(117, 0, 185, 0.961); 
 }
 .level-badge.intermediaire {
-    background: rgba(21, 185, 255, 0.961); 
+    background: rgba(0, 135, 193, 0.961); 
 }
 .level-badge.avance {
-    background: rgba(16, 216, 46, 0.989); 
+    background: rgba(0, 179, 27, 0.989); 
 }
 .level-badge.expert {
-    background: rgba(202, 54, 79, 0.989); 
+    background: rgba(132, 0, 22, 0.989); 
 }
 
 .liste-inscrits-table {

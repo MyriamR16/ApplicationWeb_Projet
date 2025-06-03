@@ -9,7 +9,7 @@
 }
 
 .ajout-event-container {
-  background: #52cdcd42;
+  background: #ffffff;
   border-radius: 18px;
   padding: 32px 24px;
   max-width: 700px;
@@ -18,7 +18,7 @@
 }
 
 .ajout-event-title {
-  color: #fff;
+  color: #1fc8d1;
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 28px !important;
@@ -31,7 +31,7 @@
 }
 
 .form-label {
-  color: #ffffff;
+  color: #1fc8d1;
   font-weight: 600;
 }
 

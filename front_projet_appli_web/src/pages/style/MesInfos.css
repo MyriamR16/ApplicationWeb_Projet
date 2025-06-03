@@ -1,5 +1,3 @@
-
-
 .mesinfos-bg {
   background: #52cdcd79;
   min-height: 100vh;
@@ -8,7 +6,7 @@
 }
 
 .mesinfos-container {
-  background: #77c5c580;
+  background: white;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(38, 115, 120, 0.18);
   padding: 40px 32px;
@@ -21,7 +19,7 @@
 }
 
 .mesinfos-title {
-  color: #ffffff;
+  color: #2bcbcb;
   font-weight: 700;
   font-size: 2rem;
   margin-bottom: 28px;
@@ -85,14 +83,29 @@
   cursor: pointer;
   transition: background 0.2s;
 }
-.mesinfos-btn.edit { background: #91c5c5cf; color: #fff; }
-.mesinfos-btn.save { background: #27ae5fd4; color: #fff; }
-.mesinfos-btn.cancel { background: #e67d22d8; color: #fff; }
-.mesinfos-btn.delete { background: #d31414c4; color: #fff; margin-top: 10px; padding: 10px 20px; }
+.mesinfos-btn.edit { background: #31d2d2cf; color: #fff; }
+.mesinfos-btn.save { 
+  background: #30df79ed; 
+  color: #fff; 
+  min-width: 120px;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 12px;
+  margin-right: 16px;
+}
+.mesinfos-btn.cancel { 
+  background: #ffa201; 
+  color: #fff; 
+  min-width: 120px;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.mesinfos-btn.delete { background: #ee1818e7; color: #fff; margin-top: 10px; padding: 10px 20px; }
 
 .mesinfos-btn.edit:hover { background: #55eded; }
 .mesinfos-btn.save:hover { background: #219150; }
-.mesinfos-btn.cancel:hover { background: #c96a1a; }
+.mesinfos-btn.cancel:hover { background: #ef832b; }
 .mesinfos-btn.delete:hover { background: #ff2007; }
 
 .mesinfos-message {
