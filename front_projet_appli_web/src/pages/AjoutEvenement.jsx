@@ -131,7 +131,7 @@ function AjoutEvent() {
               </Col>
               <Col md={4}>
                 <Form.Group>
-                  <Form.Label>Nombre de participants maximal</Form.Label>
+                  <Form.Label>Max participants </Form.Label>
                   <Form.Control 
                     type="number" 
                     name="nombreParticipantsMax" 
@@ -219,7 +219,7 @@ function AjoutEvent() {
                 </Form.Group>
               </Col>
             </Row>
-            <Button variant="primary" type="submit">Ajouter l'évènement</Button>
+            <Button className='ajout-event-btn' variant="primary" type="submit">Ajouter l'évènement</Button>
           </Form>
         </Container>
       </div>

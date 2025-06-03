@@ -1,0 +1,9 @@
+.alert-compact {
+  padding: 0.25rem 0.75rem !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 0.75rem !important;
+  border-radius: 6px !important;
+  max-width: 600px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

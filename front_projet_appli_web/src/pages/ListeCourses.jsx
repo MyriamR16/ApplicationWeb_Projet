@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { Container, Table, Alert, Spinner } from 'react-bootstrap';
 import './style/ListeCourses.css';
+import '../pages/style/ListeInscrits.css';
+import { getLevelColor } from '../pages/ListeInscrits';
 
 function ListeCourses() {
     const navigate = useNavigate();
@@ -155,7 +157,7 @@ function ListeCourses() {
                                             <td>{course.lieu}</td>
                                             <td>{course.description}</td>
                                             <td>{course.nomOrganisateur}</td>
-                                            <td>{course.niveau}</td>
+                                            <td><span className="level-badge" style={{ backgroundColor: getLevelColor(course.niveau), color: '#1B2A32', fontWeight: 700 }}>{course.niveau}</span></td>
                                             <td>{course.typeEvent || course.type}</td>
                                             <td>{placesRestantes}</td>
                                             <td>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
+import { Container, Table, Spinner, Alert } from 'react-bootstrap';
+import { getLevelColor } from '../pages/ListeInscrits';
 
 function MesCourses() {
   const [courses, setCourses] = useState([]);
@@ -19,58 +21,73 @@ function MesCourses() {
   }, []);
 
   const now = new Date();
-
   const coursesAVenir = courses.filter(c => new Date(c.date) >= now);
   const coursesPassees = courses.filter(c => new Date(c.date) < now);
 
   function renderTable(coursesList) {
     return (
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 30 }}>
+      <Table striped bordered hover responsive className="mb-4">
         <thead>
-          <tr style={{ borderBottom: '2px solid #ccc' }}>
-            <th style={{ padding: 8 }}>Nom</th>
-            <th style={{ padding: 8 }}>Date</th>
-            <th style={{ padding: 8 }}>Heure</th>
-            <th style={{ padding: 8 }}>Lieu</th>
-            <th style={{ padding: 8 }}>Description</th>
-            <th style={{ padding: 8 }}>Organisateur</th>
-            <th style={{ padding: 8 }}>Niveau</th>
-            <th style={{ padding: 8 }}>Type</th>
+          <tr>
+            <th>Nom</th>
+            <th>Date</th>
+            <th>Heure</th>
+            <th>Lieu</th>
+            <th>Description</th>
+            <th>Organisateur</th>
+            <th>Niveau</th>
+            <th>Type</th>
           </tr>
         </thead>
         <tbody>
           {coursesList.map(course => (
-            <tr key={course.id} style={{ borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: 8 }}>{course.nomEvent}</td>
-              <td style={{ padding: 8 }}>{new Date(course.date).toLocaleDateString()}</td>
-              <td style={{ padding: 8 }}>{course.debutHoraire}</td>
-              <td style={{ padding: 8 }}>{course.lieu}</td>
-              <td style={{ padding: 8 }}>{course.description}</td>
-              <td style={{ padding: 8 }}>{course.nomOrganisateur}</td>
-              <td style={{ padding: 8 }}>{course.niveau}</td>
-              <td style={{ padding: 8 }}>{course.typeEvent}</td>
+            <tr key={course.id}>
+              <td>{course.nomEvent}</td>
+              <td>{new Date(course.date).toLocaleDateString()}</td>
+              <td>{course.debutHoraire}</td>
+              <td>{course.lieu}</td>
+              <td>{course.description}</td>
+              <td>{course.nomOrganisateur}</td>
+              <td><span className="level-badge" style={{ backgroundColor: getLevelColor(course.niveau), color: '#1B2A32', fontWeight: 700 }}>{course.niveau}</span></td>
+              <td>{course.typeEvent}</td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     );
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <>
       <Navigation />
-      <h2>Mes courses</h2>
-      {loading ? (
-        <p>Chargement...</p>
-      ) : (
-        <>
-          <h3>À venir</h3>
-          {coursesAVenir.length === 0 ? <p>Aucune course à venir.</p> : renderTable(coursesAVenir)}
-          <h3>Passées</h3>
-          {coursesPassees.length === 0 ? <p>Aucune course passée.</p> : renderTable(coursesPassees)}
-        </>
-      )}
-    </div>
+      <div className="liste-courses-main-bg">
+        <Container className="liste-courses-container">
+          <h2 className="mb-4 text-center">Mes courses</h2>
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100px' }}>
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Chargement...</span>
+              </Spinner>
+            </div>
+          ) : (
+            <>
+              <h3 className="mt-4">À venir</h3>
+              {coursesAVenir.length === 0 ? (
+                <Alert variant="info" className="alert-compact">Aucune course à venir.</Alert>
+              ) : (
+                renderTable(coursesAVenir)
+              )}
+              <h3 className="mt-4">Passées</h3>
+              {coursesPassees.length === 0 ? (
+                <Alert variant="info" className="alert-compact">Aucune course passée.</Alert>
+              ) : (
+                renderTable(coursesPassees)
+              )}
+            </>
+          )}
+        </Container>
+      </div>
+    </>
   );
 }
 

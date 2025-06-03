@@ -1,0 +1,125 @@
+
+
+.mesinfos-bg {
+  background: #52cdcd79;
+  min-height: 100vh;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.mesinfos-container {
+  background: #77c5c580;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(38, 115, 120, 0.18);
+  padding: 40px 32px;
+  max-width: 700px;
+  margin: 0 auto;
+  color: #3e3d3d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mesinfos-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.mesinfos-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 30px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(38, 115, 120, 0.08);
+}
+
+.mesinfos-table th, .mesinfos-table td {
+  padding: 10px 12px;
+  font-size: 1rem;
+}
+
+.mesinfos-table td.label {
+  font-weight: 700;
+  background:  transparent;
+  width: 140px;
+   padding-left: 2%;
+  color : rgb(38, 162, 162);
+}
+
+.mesinfos-table td.value {
+  background: transparent;
+  width: 220px;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+  padding-left: 2%;
+  
+}
+
+.mesinfos-table td.action {
+  text-align: center;
+  background: transparent;
+  width: 120px;
+}
+
+.mesinfos-input {
+  padding: 6px 10px;
+  width: 90%;
+  border-radius: 6px;
+  border: 1px solid #b2d8d8;
+  font-size: 1rem;
+}
+
+.mesinfos-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-right: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.mesinfos-btn.edit { background: #91c5c5cf; color: #fff; }
+.mesinfos-btn.save { background: #27ae5fd4; color: #fff; }
+.mesinfos-btn.cancel { background: #e67d22d8; color: #fff; }
+.mesinfos-btn.delete { background: #d31414c4; color: #fff; margin-top: 10px; padding: 10px 20px; }
+
+.mesinfos-btn.edit:hover { background: #55eded; }
+.mesinfos-btn.save:hover { background: #219150; }
+.mesinfos-btn.cancel:hover { background: #c96a1a; }
+.mesinfos-btn.delete:hover { background: #ff2007; }
+
+.mesinfos-message {
+  margin-top: 20px;
+  color: #27ae60;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .mesinfos-container {
+    padding: 20px 6px;
+  }
+  .mesinfos-title {
+    font-size: 1.3rem;
+  }
+  .mesinfos-table th, .mesinfos-table td {
+    font-size: 0.95rem;
+    padding: 7px 6px;
+  }
+}
+@media (max-width: 600px) {
+  .mesinfos-container {
+    padding: 10px 2px;
+  }
+  .mesinfos-table th, .mesinfos-table td {
+    font-size: 0.9rem;
+    padding: 5px 3px;
+  }
+}

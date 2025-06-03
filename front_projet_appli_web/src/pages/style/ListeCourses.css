@@ -1,12 +1,12 @@
 .liste-courses-main-bg {
-  background: #1e3a3a;
+  background: #52cdcd79;
   min-height: 100vh;
   padding-top: 40px;
   padding-bottom: 40px;
 }
 
 .liste-courses-container {
-  background: #0f7e7e66;
+
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(38, 115, 120, 0.231);
   padding: 32px 24px;
@@ -18,12 +18,35 @@
 .liste-courses-table {
   background: transparent;
   border-radius: 10px;
-  overflow: hidden;
+  overflow-x: auto;
   margin-top: 16px;
+  display: block;
+  width: 100%;
+}
+
+.liste-courses-table table {
+  min-width: 900px;
+  width: 100%;
+  border-collapse: separate;
+}
+
+.liste-courses-table th, .liste-courses-table td {
+  white-space: nowrap;
+  padding: 8px 12px;
+  border-right: 1px solid #e0e0e0;
+  border-left: none;
+}
+
+.liste-courses-table th:first-child, .liste-courses-table td:first-child {
+  border-left: 1px solid #e0e0e0;
+}
+
+.liste-courses-table th:last-child, .liste-courses-table td:last-child {
+  border-right: none;
 }
 
 .liste-courses-table th {
-  background: #198080;
+  background: #20cbcba9;
   color: #fff;
   font-weight: 600;
   border: none;
@@ -63,6 +86,27 @@ h2.mb-4 {
 .alert-info, .alert-danger {
   border-radius: 10px;
   font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .liste-courses-table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+  .liste-courses-table table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 600px) {
+  .liste-courses-table table {
+    min-width: 500px;
+  }
+  .liste-courses-table th, .liste-courses-table td {
+    font-size: 0.92rem;
+    padding: 6px 6px;
+  }
 }
 
 @media (max-width: 768px) {

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
 import BadgeDisplay from '../components/BadgeDisplay';
+import { getLevelColor } from '../pages/ListeInscrits';
 import './style/Profil.css';
+
 
 function Profil() {
   const [user, setUser] = useState(null);
@@ -62,8 +64,9 @@ function Profil() {
 
   return (
     <div className="profil-page">
+      <Navigation />
       <div className="profil-content">
-        <Navigation />
+        
         {user && (
           <div className="profil-welcome">
             Bonjour <strong>{user.pseudo}</strong> !
@@ -85,6 +88,7 @@ function Profil() {
                 <p><strong>Prénom :</strong> {user.prenom}</p>
                 <p><strong>Pseudo :</strong> {user.pseudo}</p>
                 <p><strong>Email :</strong> {user.email}</p>
+                <p><strong>Niveau :</strong> <span className="level-badge" style={{ backgroundColor: getLevelColor(user.niveau), color: '#1B2A32', fontWeight: 700 }}>{user.niveau}</span></p>
               </div>
             </div>
             <h2 className="profil-title" style={{ fontSize: '22px', marginTop: 24 }}>Mes badges</h2>

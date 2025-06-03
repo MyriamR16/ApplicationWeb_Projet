@@ -1,5 +1,5 @@
 .ajout-event-main-bg {
-  background: #1e3a3a;
+  background: #52cdcd73;
   min-height: 100vh;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -9,7 +9,7 @@
 }
 
 .ajout-event-container {
-  background: #0f7e7e66;
+  background: #52cdcd42;
   border-radius: 18px;
   padding: 32px 24px;
   max-width: 700px;
@@ -31,7 +31,7 @@
 }
 
 .form-label {
-  color: #b2dfdb;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -42,7 +42,7 @@
 
 
 .ajout-event-btn {
-  background-color: #1db5b8;
+  background-color: hsla(183, 71%, 40%, 0.724);
   border: none;
   color: #fff;
   font-weight: 600;
@@ -52,12 +52,12 @@
 }
 
 .ajout-event-btn:hover, .ajout-event-btn:focus {
-  background-color: #2eccc9;
-  color: #fff;
+  background-color: #5efffce6;
+  color: #007780;
 }
 
 .ajout-event-form .form-control:focus, .ajout-event-form .form-select:focus {
-  border-color: #1db5b8;
+  border-color: #60dcde;
   box-shadow: 0 0 0 0.2rem rgba(29, 181, 184, 0.25);
 }
 

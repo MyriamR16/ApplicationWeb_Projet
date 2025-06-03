@@ -1,6 +1,6 @@
 .accueil-page {
   min-height: 100vh;
-  background: #204040;
+  background: #52cdcd79;
   font-family: 'Times New Roman', Times, serif;
 }
 
@@ -51,7 +51,7 @@
   bottom: 20px;
   left: 30px;
   z-index: 2;
-  background:#0f7e7e66; 
+  background:#11b8b866; 
   padding: 18px 28px 14px 24px;
   border-radius: 8px;
   color: #fff;
@@ -95,7 +95,7 @@
 
 .accueil-about {
   color: #fff;  
-  background-color: #0f7e7e66;
+  background-color: #4ac7c764;
   border-radius: 14px;
   padding: 28px 36px;
   margin: 24px auto 0 auto;

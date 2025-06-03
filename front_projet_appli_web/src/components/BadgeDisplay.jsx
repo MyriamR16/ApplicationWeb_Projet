@@ -1,4 +1,6 @@
 import React from 'react';
+import { getLevelColor } from '../pages/ListeInscrits';
+import '../pages/style/ListeInscrits.css';
 
 const badgeImages = {
   COURSE_3KM: '/src/assets/badges/3k.png',
@@ -23,7 +25,9 @@ function BadgeDisplay({ badges }) {
             alt={badge.nom}
             className="badge-img"
           />
-          <div className="badge-label">{badge.nom}</div>
+          <div className="badge-label" style={badge.niveau ? { backgroundColor: getLevelColor(badge.niveau), color: '#1B2A32', borderRadius: 10, padding: '2px 8px', fontWeight: 700, marginTop: 4 } : {}}>
+            {badge.nom}
+          </div>
         </div>
       ))}
     </div>
