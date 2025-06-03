@@ -1,0 +1,84 @@
+body, .groupe-amis-page {
+  min-height: 100vh;
+  background: #52cdcd79;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.groupe-amis-card {
+  background: #fffffff6;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.groupe-amis-title {
+  color: #4fcadd;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.groupe-amis-desc {
+  font-size: 18px;
+  color: #000000;
+}
+
+.groupe-amis-btn-discussion {
+  background: #4fcadd;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: 'Times New Roman', Times, serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 12px 32px;
+  transition: background 0.2s, transform 0.2s;
+  margin-top: 10px;
+}
+.groupe-amis-btn-discussion:hover, .groupe-amis-btn-discussion:focus {
+  background: #3ff2ff;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+}
+
+.groupe-amis-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.groupe-amis-btn-modifier {
+  background: #2170e6;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 26px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: background 0.2s, transform 0.2s;
+}
+.groupe-amis-btn-modifier:hover, .groupe-amis-btn-modifier:focus {
+  background: #1d20cb;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.groupe-amis-btn-supprimer {
+  background: #f74532;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 26px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: background 0.2s, transform 0.2s;
+}
+.groupe-amis-btn-supprimer:hover, .groupe-amis-btn-supprimer:focus {
+  background: #dc2814;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}

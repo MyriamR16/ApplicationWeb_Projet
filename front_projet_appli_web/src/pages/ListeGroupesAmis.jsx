@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, Container, Card, ListGroup } from 'react-bootstrap';
 import Navigation from "../components/Navigation";
+import "./style/ListeGroupesAmis.css";
 
 function ListeGroupesAmis() {
     const [groupesamis, setGroupesamis] = useState([]);
@@ -71,45 +73,47 @@ function ListeGroupesAmis() {
 
     function renderGroupe(groupe) {
         return (
-            <li key={groupe.id} style={styles.groupItem}>
+            <ListGroup.Item key={groupe.id} className="groupe-amis-list-item d-flex justify-content-between align-items-center">
                 <div>
-                    <Link to={`/groupeamis/${groupe.id}`} style={styles.groupName}>
+                    <Link to={`/groupeamis/${groupe.id}`} className="groupe-amis-list-name">
                         {groupe.nom}
                     </Link>
-                    <div style={styles.groupDesc}>{groupe.description}</div>
+                    <div className="groupe-amis-list-desc">{groupe.description}</div>
                 </div>
                 {role === "MODERATEUR" && (
-                    <button
+                    <Button
+                        className="groupe-amis-btn-supprimer"
                         onClick={() => handleDeleteGroupe(groupe.id)}
-                        style={styles.deleteBtn}
                     >
                         Supprimer
-                    </button>
+                    </Button>
                 )}
-            </li>
+            </ListGroup.Item>
         );
     }
 
     return (
-        <div style={styles.container}>
+        <div className="groupe-amis-list-page">
             <Navigation />
-            {user && (
-                <div style={{ marginBottom: 20, fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
-                    Bonjour {user.pseudo} !
-                </div>
-            )}
-            <h2 style={{ textAlign: 'center', marginBottom: 30 }}>Liste des groupes</h2>
-            <div style={styles.listContainer}>
-                {groupesamis.length === 0 ? (
-                    <p style={{ textAlign: 'center', color: '#666' }}>
-                        Aucun groupe n'est enregistré pour l'instant.
-                    </p>
-                ) : (
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        {groupesamis.map(groupe => renderGroupe(groupe))}
-                    </ul>
+            <Container className="py-4 d-flex flex-column align-items-center">
+                {user && (
+                    <div className="groupe-amis-list-bonjour">
+                        Bonjour {user.pseudo} !
+                    </div>
                 )}
-            </div>
+                <h2 className="groupe-amis-list-title">Liste des groupes</h2>
+                <Card className="groupe-amis-list-card">
+                    <Card.Body>
+                        {groupesamis.length === 0 ? (
+                            <p className="groupe-amis-list-empty">Aucun groupe n'est enregistré pour l'instant.</p>
+                        ) : (
+                            <ListGroup variant="flush">
+                                {groupesamis.map(groupe => renderGroupe(groupe))}
+                            </ListGroup>
+                        )}
+                    </Card.Body>
+                </Card>
+            </Container>
         </div>
     );
 }
@@ -117,14 +121,6 @@ function ListeGroupesAmis() {
 export default ListeGroupesAmis;
 
 const styles = {
-    container: {
-        minHeight: '100vh',
-        background: '#f5f7fa',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingTop: 40,
-    },
     centered: {
         minHeight: '100vh',
         display: 'flex',
@@ -132,46 +128,4 @@ const styles = {
         justifyContent: 'center',
         background: '#f5f7fa',
     },
-    listContainer: {
-        margin: '0 auto',
-        background: '#fff',
-        borderRadius: 12,
-        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-        padding: 32,
-        maxWidth: 700,
-        width: '100%',
-    },
-    groupItem: {
-        marginBottom: 18,
-        background: '#f8fafd',
-        borderRadius: 8,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-        padding: '18px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    groupName: {
-        fontSize: 20,
-        color: '#3498db',
-        textDecoration: 'none',
-        fontWeight: 600,
-    },
-    groupDesc: {
-        color: '#555',
-        fontSize: 15,
-        marginTop: 4,
-    },
-    deleteBtn: {
-        backgroundColor: '#e74c3c',
-        color: 'white',
-        border: 'none',
-        borderRadius: 5,
-        padding: '8px 16px',
-        cursor: 'pointer',
-        marginLeft: 16,
-        fontWeight: 600,
-        fontSize: 15,
-        transition: "background 0.2s",
-    }
 };

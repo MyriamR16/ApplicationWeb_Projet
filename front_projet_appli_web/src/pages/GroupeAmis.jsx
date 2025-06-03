@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Container, Card, Button, Row, Col, ListGroup, Badge } from 'react-bootstrap';
 import Navigation from '../components/Navigation';
 import { useParams } from 'react-router-dom';
+import "./style/GroupeAmis.css";
 
 function GroupeAmis() {
   const { id } = useParams();
@@ -126,73 +128,78 @@ function GroupeAmis() {
   if (!groupe) return <div>Groupe introuvable</div>;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8f9fa' }}>
+    <div className="groupe-amis-page">
       <Navigation />
-      <div style={{ maxWidth: 700, margin: '30px auto', background: 'white', borderRadius: 12, boxShadow: '0 4px 20px rgba(0,0,0,0.08)', padding: 32 }}>
-        {user && groupe.admin && user.id === groupe.admin.id && !editMode && (
-          <div style={{display:'flex', gap: '10px', marginBottom:20}}>
-            <button onClick={() => setEditMode(true)} style={{ background:'#3498db', color:'white', border:'none', borderRadius:6, padding:'8px 18px', fontWeight:600, cursor:'pointer'}}>Modifier le groupe</button>
-            <button onClick={handleDeleteGroupe} style={{ background:'#e74c3c', color:'white', border:'none', borderRadius:6, padding:'8px 18px', fontWeight:600, cursor:'pointer'}}>Supprimer le groupe</button>
+      <Container className="py-4 d-flex justify-content-center">
+        <Card className="groupe-amis-card p-4" style={{ maxWidth: 700, width: '100%' }}>
+          {user && groupe.admin && user.id === groupe.admin.id && !editMode && (
+            <div className="groupe-amis-actions">
+              <Button className="groupe-amis-btn-modifier" onClick={() => setEditMode(true)}>Modifier le groupe</Button>
+              <Button className="groupe-amis-btn-supprimer" onClick={handleDeleteGroupe}>Supprimer le groupe</Button>
+            </div>
+          )}
+          {editMode ? (
+            <form onSubmit={handleEditSubmit} className="mb-3">
+              <Row className="mb-2">
+                <Col>
+                  <label>Nom du groupe :</label>
+                  <input value={editNom} onChange={e => setEditNom(e.target.value)} className="form-control" required />
+                </Col>
+              </Row>
+              <Row className="mb-2">
+                <Col>
+                  <label>Description :</label>
+                  <textarea value={editDescription} onChange={e => setEditDescription(e.target.value)} className="form-control" rows={3} />
+                </Col>
+              </Row>
+              <Row className="mb-2">
+                <Col>
+                  <label>Admin du groupe :</label>
+                  <select value={editAdminId} onChange={e => setEditAdminId(e.target.value)} className="form-select" required>
+                    {groupe.membres && groupe.membres.map(m => (
+                      <option key={m.id} value={m.id}>{m.pseudo}</option>
+                    ))}
+                  </select>
+                </Col>
+              </Row>
+              <div className="d-flex gap-2">
+                <Button type="submit" variant="success">Enregistrer</Button>
+                <Button type="button" variant="danger" onClick={() => setEditMode(false)}>Annuler</Button>
+              </div>
+            </form>
+          ) : null}
+          <h1 className="groupe-amis-title mb-3">{groupe.nom || <span className="text-danger">Nom manquant</span>}</h1>
+          <p className="groupe-amis-desc mb-3">{groupe.description || <span className="text-danger">Description manquante</span>}</p>
+          <div className="mb-3">
+            <strong>Admin :</strong> {groupe.admin ? groupe.admin.pseudo : <span className="text-danger">Non défini</span>}
           </div>
-        )}
-        {editMode ? (
-          <form onSubmit={handleEditSubmit} style={{marginBottom:20}}>
-            <div style={{marginBottom:10}}>
-              <label>Nom du groupe : </label>
-              <input value={editNom} onChange={e => setEditNom(e.target.value)} style={{padding:6, borderRadius:4, border:'1px solid #ccc', width:'100%'}} required />
-            </div>
-            <div style={{marginBottom:10}}>
-              <label>Description : </label>
-              <textarea value={editDescription} onChange={e => setEditDescription(e.target.value)} style={{padding:6, borderRadius:4, border:'1px solid #ccc', width:'100%'}} rows={3} />
-            </div>
-            <div style={{marginBottom:10}}>
-              <label>Admin du groupe : </label>
-              <select value={editAdminId} onChange={e => setEditAdminId(e.target.value)} style={{padding:6, borderRadius:4, border:'1px solid #ccc', width:'100%'}} required>
-                {groupe.membres && groupe.membres.map(m => (
-                  <option key={m.id} value={m.id}>{m.pseudo}</option>
-                ))}
-              </select>
-            </div>
-            <button type="submit" style={{background:'#27ae60', color:'white', border:'none', borderRadius:6, padding:'8px 18px', fontWeight:600, cursor:'pointer', marginRight:10}}>Enregistrer</button>
-            <button type="button" onClick={() => setEditMode(false)} style={{background:'#e74c3c', color:'white', border:'none', borderRadius:6, padding:'8px 18px', fontWeight:600, cursor:'pointer'}}>Annuler</button>
-          </form>
-        ) : null}
-        <h1 style={{ color: '#2c3e50', fontSize: 28, fontWeight: 600, marginBottom: 20 }}>{groupe.nom || <span style={{color:'red'}}>Nom manquant</span>}</h1>
-        <p style={{ fontSize: 18, color: '#555', marginBottom: 20 }}>{groupe.description || <span style={{color:'red'}}>Description manquante</span>}</p>
-        <div style={{ marginBottom: 20 }}>
-          <strong>Admin :</strong> {groupe.admin ? groupe.admin.pseudo : <span style={{color:'red'}}>Non défini</span>}
-        </div>
-        <div>
-          <strong>Membres du groupe :</strong>
-          <ul style={{ marginTop: 10 }}>
-            {groupe.membres && groupe.membres.length > 0 ? (
-              groupe.membres.map(membre => (
-                <li key={membre.id} style={{ fontSize: 16, marginBottom: 6 }}>
-                  {membre.pseudo} {groupe.admin && membre.id === groupe.admin.id && <span title="Admin" style={{color:'#f1c40f', fontSize:18, marginLeft:6}}>★</span>}
-                </li>
-              ))
-            ) : (
-              <li>Aucun membre pour l'instant.</li>
-            )}
-          </ul>
-        </div>
-        <div style={{marginTop: 30, textAlign: 'center'}}>
-          <a href={`/discussion/${groupe.id}`} style={{
-            display: 'inline-block',
-            background: '#25D366',
-            color: 'white',
-            padding: '12px 28px',
-            borderRadius: '30px',
-            fontWeight: 600,
-            fontSize: 18,
-            textDecoration: 'none',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-            marginTop: 10
-          }}>
-            💬 Discussion du groupe
-          </a>
-        </div>
-      </div>
+          <div className="mb-3">
+            <strong>Membres du groupe :</strong>
+            <ListGroup className="mt-2">
+              {groupe.membres && groupe.membres.length > 0 ? (
+                groupe.membres.map(membre => (
+                  <ListGroup.Item key={membre.id} className="d-flex align-items-center">
+                    <span style={{ fontSize: 16 }}>{membre.pseudo}</span>
+                    {groupe.admin && membre.id === groupe.admin.id && (
+                      <Badge bg="warning" text="dark" className="ms-2">Admin</Badge>
+                    )}
+                  </ListGroup.Item>
+                ))
+              ) : (
+                <ListGroup.Item>Aucun membre pour l'instant.</ListGroup.Item>
+              )}
+            </ListGroup>
+          </div>
+          <div className="text-center mt-4">
+            <Button
+              href={`/discussion/${groupe.id}`}
+              className="groupe-amis-btn-discussion"
+            >
+              Discussion du groupe
+            </Button>
+          </div>
+        </Card>
+      </Container>
     </div>
   );
 }

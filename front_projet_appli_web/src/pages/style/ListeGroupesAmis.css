@@ -1,0 +1,69 @@
+.groupe-amis-list-page {
+  min-height: 100vh;
+  background: #52cdcd79;
+  font-family: 'Times New Roman', Times, serif;
+}
+.groupe-amis-list-bonjour {
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 18px;
+  color: white ;
+  text-align: center;
+}
+.groupe-amis-list-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 32px;
+  font-family: 'Times New Roman', Times, serif;
+}
+.groupe-amis-list-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+.groupe-amis-list-empty {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+.groupe-amis-list-item {
+  background: #f8fafd;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  padding: 18px 24px;
+  font-family: 'Times New Roman', Times, serif;
+}
+.groupe-amis-list-name {
+  font-size: 20px;
+  color: #1ed4e8;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'Times New Roman', Times, serif;
+}
+.groupe-amis-list-desc {
+  color: #0665a0;
+  font-size: 15px;
+  margin-top: 4px;
+  font-family: 'Times New Roman', Times, serif;
+}
+.groupe-amis-btn-supprimer {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 26px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: background 0.2s, transform 0.2s;
+}
+.groupe-amis-btn-supprimer:hover, .groupe-amis-btn-supprimer:focus {
+  background: #c0392b;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}

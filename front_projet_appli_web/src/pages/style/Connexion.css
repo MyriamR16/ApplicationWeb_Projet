@@ -1,7 +1,7 @@
 body, html {
   font-family: 'Times New Roman', Times, serif;
 }
-/* Fond général */
+
 .connexion-container {
   min-height: 100vh;
   background:#52cdcd79;
@@ -10,7 +10,6 @@ body, html {
   justify-content: center;
 }
 
-/* Carte de connexion */
 .connexion-card {
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(10, 155, 143, 0.35);
@@ -18,7 +17,7 @@ body, html {
   border: none;
 }
 
-/* Titre */
+
 .connexion-title {
   font-size: 2.3rem;
   font-family: 'Times New Roman', serif;
@@ -27,7 +26,7 @@ body, html {
   letter-spacing: 1.5px;
 }
 
-/* Inputs */
+
 .connexion-input {
   border-radius: 8px;
   border: 1.5px solid #b2ebf2;
@@ -43,7 +42,6 @@ body, html {
   box-shadow: 0 0 0 2px #b2ebf2;
 }
 
-/* Bouton */
 .connexion-button {
   background: #b2ebf2 !important;
   color: #008080 !important;
@@ -59,7 +57,7 @@ body, html {
   color: #fff !important;
 }
 
-/* Lien inscription */
+
 .connexion-link-text {
   color: #008080;
   font-weight: 600;
@@ -70,7 +68,6 @@ body, html {
   color: #005959;
 }
 
-/* Image section */
 .connexion-image-section {
   background: #e0f7fa;
   border-radius: 12px;
@@ -87,7 +84,7 @@ body, html {
   object-fit: cover;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .connexion-card {
     padding: 1.2rem !important;

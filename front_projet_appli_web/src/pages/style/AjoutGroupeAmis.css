@@ -1,0 +1,77 @@
+.ajout-groupe-page {
+  min-height: 100vh;
+  background: #52cdcd79;
+  font-family: 'Times New Roman', Times, serif;
+}
+.ajout-groupe-card {
+  max-width: 800px;
+  margin: 30px auto 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  background: #fff;
+  width: 100%;
+}
+.ajout-groupe-title {
+  color: #0f858e;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 600;
+  font-family: 'Times New Roman', Times, serif;
+}
+.ajout-groupe-bonjour {
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  color: #1bb2bd;
+}
+.ajout-groupe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ajout-groupe-form-group {
+  display: flex;
+  flex-direction: column;
+}
+.ajout-groupe-label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #34495e;
+  font-size: 14px;
+  font-family: 'Times New Roman', Times, serif;
+}
+.ajout-groupe-input, .ajout-groupe-textarea {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #dfe6e9;
+  font-size: 16px;
+  font-family: 'Times New Roman', Times, serif;
+}
+.ajout-groupe-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.ajout-groupe-btn {
+  background: #17c4d1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 32px;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: 'Times New Roman', Times, serif;
+  cursor: pointer;
+  margin: 18px auto 0 auto;
+  display: block;
+  width: auto;
+  min-width: 120px;
+  max-width: 220px;
+  transition: background 0.2s, transform 0.2s;
+}
+.ajout-groupe-btn:hover, .ajout-groupe-btn:focus {
+  background: #50dee8;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}

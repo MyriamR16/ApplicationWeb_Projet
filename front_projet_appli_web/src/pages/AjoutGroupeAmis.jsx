@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import { useNavigate } from 'react-router-dom';
+import { Container, Card, Form, Button } from 'react-bootstrap';
+import "./style/AjoutGroupeAmis.css";
 
 function AjoutGroupeAmis() {
   const navigate = useNavigate();
@@ -73,115 +75,49 @@ function AjoutGroupeAmis() {
   }
 
   return (
-    <div style={styles.container}>
+    <div className="ajout-groupe-page">
       <Navigation />
-      <div style={styles.formContainer}>
-        <h1 style={styles.title}>Créer un nouveau groupe</h1>
-        {user && (
-          <div style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-            Bonjour {user.pseudo} !
-          </div>
-        )}
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nom du groupe :</label>
-            <input
-              type="text"
-              name="nom"
-              value={formData.nom}
-              onChange={handleChange}
-              style={styles.input}
-              placeholder="Nom du groupe"
-            />
-          </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Description du groupe :</label>
-            <textarea
-              name="description"
-              rows="5"
-              placeholder="Description détaillée du groupe..."
-              value={formData.description}
-              onChange={handleChange}
-              style={styles.textarea}
-            />
-          </div>
-          <button type="submit" style={styles.submitButton}>Créer le groupe</button>
-        </form>
-      </div>
+      <Container className="py-4 d-flex flex-column align-items-center">
+        <Card className="ajout-groupe-card">
+          <Card.Body>
+            <h1 className="ajout-groupe-title">Créer un nouveau groupe</h1>
+            {user && (
+              <div className="ajout-groupe-bonjour">
+                Bonjour {user.pseudo} !
+              </div>
+            )}
+            <Form onSubmit={handleSubmit} className="ajout-groupe-form">
+              <Form.Group className="ajout-groupe-form-group">
+                <Form.Label className="ajout-groupe-label">Nom du groupe :</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nom"
+                  value={formData.nom}
+                  onChange={handleChange}
+                  className="ajout-groupe-input"
+                  placeholder="Nom du groupe"
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="ajout-groupe-form-group">
+                <Form.Label className="ajout-groupe-label">Description du groupe :</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  rows={5}
+                  placeholder="Description détaillée du groupe..."
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="ajout-groupe-textarea"
+                />
+              </Form.Group>
+              <Button type="submit" className="ajout-groupe-btn">Créer le groupe</Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    fontFamily: "'Open Sans', sans-serif",
-    backgroundColor: '#f8f9fa',
-    minHeight: '100vh',
-    paddingBottom: '50px',
-  },
-  formContainer: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '30px',
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-    marginTop: '30px',
-  },
-  title: {
-    color: '#2c3e50',
-    textAlign: 'center',
-    marginBottom: '30px',
-    fontSize: '28px',
-    fontWeight: '600',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  label: {
-    marginBottom: '8px',
-    fontWeight: '600',
-    color: '#34495e',
-    fontSize: '14px',
-  },
-  input: {
-    padding: '12px 15px',
-    borderRadius: '8px',
-    border: '1px solid #dfe6e9',
-    fontSize: '16px',
-  },
-  textarea: {
-    padding: '12px 15px',
-    borderRadius: '8px',
-    border: '1px solid #dfe6e9',
-    fontSize: '16px',
-    resize: 'vertical',
-    minHeight: '100px',
-  },
-  submitButton: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    padding: '14px 20px',
-    fontSize: '16px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    marginTop: '10px',
-  },
-  message: {
-    marginTop: '20px',
-    fontSize: '16px',
-    color: '#27ae60',
-    fontWeight: '500',
-    textAlign: 'center',
-  }
-};
 
 export default AjoutGroupeAmis;

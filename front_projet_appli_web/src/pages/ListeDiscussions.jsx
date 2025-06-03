@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
 import { Link } from 'react-router-dom';
+import { Container, Card, ListGroup, Button } from 'react-bootstrap';
+import "./style/ListeDiscussions.css";
+
 
 function ListeDiscussions() {
   const [discussions, setDiscussions] = useState([]);
@@ -75,24 +78,28 @@ function ListeDiscussions() {
   if (error) return <div style={{color:'red'}}>{error}</div>;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#ece5dd' }}>
+    <div className="liste-discussions-page">
       <Navigation />
-      <div style={{ maxWidth: 600, margin: '30px auto', background: '#fff', borderRadius: 16, boxShadow: '0 4px 20px rgba(0,0,0,0.08)', padding: 32 }}>
-        <h2 style={{ color: '#075e54', marginBottom: 24 }}>Mes discussions de groupe</h2>
-        {discussions.length === 0 ? (
-          <div>Aucune discussion trouvée.</div>
-        ) : (
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            {discussions.map(disc => (
-              <li key={disc.id} style={{ marginBottom: 18, background: '#f7f7f7', borderRadius: 8, padding: '16px 20px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
-                <div style={{ fontWeight: 600, fontSize: 18, color: '#075e54' }}>{disc.groupeNom}</div>
-                <div style={{ color: '#333', fontSize: 15, marginBottom: 8 }}>{disc.titre}</div>
-                <Link to={`/discussion/${disc.groupeId}`} style={{ color: '#3498db', fontWeight: 600, textDecoration: 'none' }}>Ouvrir la discussion</Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Container className="py-4 d-flex flex-column align-items-center">
+        <Card className="liste-discussions-card">
+          <Card.Body>
+            <h2 className="liste-discussions-title">Mes discussions de groupe</h2>
+            {discussions.length === 0 ? (
+              <div className="liste-discussions-empty">Aucune discussion trouvée.</div>
+            ) : (
+              <ListGroup variant="flush">
+                {discussions.map(disc => (
+                  <ListGroup.Item key={disc.id} className="liste-discussions-item">
+                    <div className="liste-discussions-groupe">{disc.groupeNom}</div>
+                    <div className="liste-discussions-titre">{disc.titre}</div>
+                    <Button as={Link} to={`/discussion/${disc.groupeId}`} className="liste-discussions-btn">Ouvrir la discussion</Button>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            )}
+          </Card.Body>
+        </Card>
+      </Container>
     </div>
   );
 }

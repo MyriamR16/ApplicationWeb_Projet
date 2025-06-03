@@ -1,0 +1,63 @@
+body, html {
+  font-family: 'Times New Roman', Times, serif;
+  background: #52cdcd79;
+}
+
+.liste-discussions-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  max-width: 600px;
+  width: 100%;
+  margin: 30px auto;
+  background: #fff;
+}
+.liste-discussions-title {
+  color: #2caeb7;
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+  font-weight: bold;
+}
+.liste-discussions-empty {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+.liste-discussions-item {
+  background: #68f5ff55;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  font-family: 'Times New Roman', Times, serif;
+}
+.liste-discussions-groupe {
+  font-weight: 600;
+  font-size: 18px;
+  color: #058f98;
+}
+.liste-discussions-titre {
+  color: #333;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.liste-discussions-btn {
+  background: #2caeb7;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 8px 22px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: background 0.2s, transform 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.liste-discussions-btn:hover, .liste-discussions-btn:focus {
+  background: #3be0ec;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}

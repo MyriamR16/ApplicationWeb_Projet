@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Navigation from '../components/Navigation';
 import { useParams } from 'react-router-dom';
+import '../pages/style/Discussion.css';
 
 function Discussion() {
   const { id } = useParams();
@@ -109,78 +110,31 @@ function Discussion() {
   if (!discussion) return <div>Chargement de la discussion...</div>;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f9f9f9', fontFamily: 'Arial, sans-serif' }}>
+    <div className="discussion-container">
       <Navigation />
-      <div style={{
-        maxWidth: 700,
-        margin: '30px auto',
-        background: '#ffffff',
-        borderRadius: 20,
-        boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '80vh',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          background: '#4A90E2',
-          color: 'white',
-          padding: '20px 24px',
-          fontSize: 22,
-          fontWeight: 'bold',
-          borderRadius: '20px 20px 0 0'
-        }}>
+      <div className="discussion-box">
+        <div className="discussion-header">
           {discussion.groupeAmis && discussion.groupeAmis.nom
             ? discussion.groupeAmis.nom
             : "Discussion"}
         </div>
 
-        <div style={{
-          flex: 1,
-          overflowY: 'auto',
-          padding: '20px',
-          background: '#f4f6f9'
-        }}>
+        <div className="discussion-messages">
           {messages.map((msg, i) => {
             const isMine = user && msg.auteur && msg.auteur.id === user.id;
             return (
-              <div key={i} style={{
-                display: 'flex',
-                flexDirection: isMine ? 'row-reverse' : 'row',
-                marginBottom: 16,
-                alignItems: 'flex-end'
-              }}>
+              <div key={i} className={`message-row${isMine ? ' mine' : ''}`}> 
                 <img
                   src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(msg.auteur?.pseudo || msg.auteur?.id || 'user')}`}
                   alt="Avatar"
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: '50%',
-                    margin: isMine ? '0 0 0 10px' : '0 10px 0 0',
-                    background: '#eee',
-                    border: '2px solid #4A90E2'
-                  }}
+                  className="avatar"
                 />
-                <div style={{
-                  background: isMine ? '#d1e7dd' : '#ffffff',
-                  color: '#333',
-                  borderRadius: 16,
-                  padding: '12px 16px',
-                  maxWidth: '75%',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-                  fontSize: 15
-                }}>
-                  <div style={{ fontWeight: 600, fontSize: 13, color: '#4A90E2', marginBottom: 4 }}>
+                <div className="message-bubble">
+                  <div className="message-author">
                     {msg.auteur ? msg.auteur.pseudo : 'Utilisateur'}
                   </div>
                   <div>{msg.contenu}</div>
-                  <div style={{
-                    fontSize: 11,
-                    color: '#aaa',
-                    marginTop: 6,
-                    textAlign: 'right'
-                  }}>
+                  <div className="message-date">
                     {msg.dateEnvoi ? new Date(msg.dateEnvoi).toLocaleString() : ''}
                   </div>
                 </div>
@@ -190,38 +144,15 @@ function Discussion() {
           <div ref={messagesEndRef} />
         </div>
 
-        <form onSubmit={handleSend} style={{
-          display: 'flex',
-          borderTop: '1px solid #e0e0e0',
-          padding: '12px 16px',
-          background: '#fff',
-          borderRadius: '0 0 20px 20px'
-        }}>
+        <form onSubmit={handleSend} className="discussion-form">
           <input
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder="Écrire un message..."
-            style={{
-              flex: 1,
-              border: '1px solid #ddd',
-              borderRadius: 10,
-              padding: '12px 16px',
-              fontSize: 16,
-              outline: 'none',
-              marginRight: 12
-            }}
+            className="discussion-input"
           />
-          <button type="submit" style={{
-            background: '#4A90E2',
-            color: 'white',
-            border: 'none',
-            borderRadius: 10,
-            padding: '12px 20px',
-            fontWeight: 600,
-            fontSize: 16,
-            cursor: 'pointer'
-          }}>
+          <button type="submit" className="discussion-send-btn">
             Envoyer
           </button>
         </form>
