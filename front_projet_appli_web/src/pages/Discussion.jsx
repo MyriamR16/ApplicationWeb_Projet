@@ -125,7 +125,7 @@ function Discussion() {
             return (
               <div key={i} className={`message-row${isMine ? ' mine' : ''}`}> 
                 <img
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(msg.auteur?.pseudo || msg.auteur?.id || 'user')}`}
+                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(msg.auteur?.id || 'user')}`}
                   alt="Avatar"
                   className="avatar"
                 />

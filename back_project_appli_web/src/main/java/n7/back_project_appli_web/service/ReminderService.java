@@ -20,9 +20,9 @@ public class ReminderService {
     private EmailService emailService;
 
     // Exécuté tous les jours à 8h
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void sendReminders() {
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        LocalDate tomorrow = LocalDate.now();
         List<Event> events = eventRepository.findByDate(tomorrow);
 
         for (Event event : events) {

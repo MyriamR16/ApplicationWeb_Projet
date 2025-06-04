@@ -78,7 +78,7 @@ function Profil() {
           <>
             <div className="profil-profile-container">
               <img
-                src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.pseudo || user.id)}`}
+                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user.id)}`}
                 alt="Avatar"
                 className="profil-avatar"
               />
